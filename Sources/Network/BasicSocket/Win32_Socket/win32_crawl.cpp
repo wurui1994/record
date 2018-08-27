@@ -317,7 +317,6 @@ int main()
 
 	// 遍历的起始地址
 	string urlStart = "http://www.wmpic.me/tupian";
-	//string urlStart = "http://www.guotu56.com/";
 
 	// 使用广度遍历
 	// 提取网页中的超链接放入hrefUrl中，提取图片链接，下载图片。
