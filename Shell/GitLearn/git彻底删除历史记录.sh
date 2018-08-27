@@ -1,4 +1,4 @@
-git checkout --orphan HEAD
+git checkout --orphan latest_branch
 git add -A
 git commit -am "Reset All"
 git branch -D master
