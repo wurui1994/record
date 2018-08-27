@@ -1,0 +1,17 @@
+<Project  xmlns="http://schemas.microsoft.com/developer/msbuild/2003">  
+  <!-- <PropertyGroup>   -->
+    <!-- <OutputName>main</OutputName> -->
+  <!-- </PropertyGroup>   -->
+  <Target Name="Build">
+    <Exec Command="g++ -o $(MSBuildProjectName) %(SourceFiles.Identity)"/>
+  </Target>
+   <Target Name="Run">
+    <Exec Command="$(MSBuildProjectName)"/>
+  </Target>
+  <Target Name="Clean">
+    <Exec Command="del $(MSBuildProjectName).exe"/>
+  </Target>
+  <ItemGroup>  
+    <SourceFiles Include="main.cpp" />  
+  </ItemGroup>
+</Project>  

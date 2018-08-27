@@ -1,0 +1,20 @@
+%!
+/mergestr {2 copy length exch length add string dup dup
+4 3 roll 4 index length exch putinterval 3 1 roll exch
+0 exch putinterval} def
+/Courier 30  selectfont
+/s (hello) def
+0 500 moveto
+(This is a) ( merged string.) mergestr show
+0 300 moveto
+
+
+
+100 50 200 { 
+	/a exch def
+	100 50 200{
+	/b exch def
+	newpath a b 30 0 360 arc stroke
+	}for
+} for
+showpage

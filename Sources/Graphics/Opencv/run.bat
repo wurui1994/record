@@ -1,0 +1,2 @@
+@clang++ %1 -I"D:\Program\OpenCV\cxcore\include" -I"D:\Program\OpenCV\cv\include" -I"D:\Program\OpenCV\cvaux\include" -I"D:\Program\OpenCV\ml\include" -I"D:\Program\OpenCV\otherlibs\highgui" -L"D:\Program\OpenCV\lib" -lcv -lcxcore -lml -lhighgui -o %~n1.exe
+pause

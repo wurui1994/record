@@ -1,0 +1,36 @@
+digraph idp_modules{
+ 
+  rankdir = TB;
+  fontname = "Microsoft YaHei";
+  fontsize = 12;
+   
+  node [ fontname = "Microsoft YaHei", fontsize = 12, shape = "record" ];
+  edge [ fontname = "Microsoft YaHei", fontsize = 12 ];
+   
+      subgraph cluster_sl{
+          label="IDP支持层";
+          bgcolor="mintcream";
+          node [shape="Mrecord", color="skyblue", style="filled"];
+          network_mgr [label=" 网络管理器 "];
+          log_mgr [label=" 日志管理器 "];
+          module_mgr [label=" 模块管理器 "];
+          conf_mgr [label=" 配置管理器 "];
+          db_mgr [label=" 数据库管理器 "];
+      };
+   
+      subgraph cluster_md{
+          label=" 可插拔模块集 ";
+          bgcolor="lightcyan";
+          node [color="chartreuse2", style="filled"];
+          mod_dev [label=" 开发支持模块 "];
+          mod_dm [label=" 数据建模模块 "];
+          mod_dp [label=" 部署发布模块 "];
+      };
+   
+  mod_dp -> mod_dev [label="依赖..."];
+  mod_dp -> mod_dm [label="依赖..."];
+  mod_dp -> module_mgr [label="安装...", color="yellowgreen", arrowhead="none"];
+  mod_dev -> mod_dm [label="依赖..."];
+  mod_dev -> module_mgr [label="安装...", color="yellowgreen", arrowhead="none"];
+  mod_dm -> module_mgr [label="安装...", color="yellowgreen", arrowhead="none"];
+}

@@ -1,0 +1,49 @@
+diff --git a/tcc.h b/tcc.h
+index da26298..e51b7f7 100644
+--- a/tcc.h
++++ b/tcc.h
+@@ -199,7 +199,7 @@ extern long double strtold (const char *__nptr, char **__endptr);
+ /* system include paths */
+ #ifndef CONFIG_TCC_SYSINCLUDEPATHS
+ # ifdef TCC_TARGET_PE
+-#  define CONFIG_TCC_SYSINCLUDEPATHS "{B}/include"PATHSEP"{B}/include/winapi"
++#  define CONFIG_TCC_SYSINCLUDEPATHS "{B}/include"PATHSEP"{B}/include/winapi"PATHSEP"{B}/../include/tcc"PATHSEP"{B}/../include/tcc/winapi"PATHSEP"{B}/../include"
+ # else
+ #  define CONFIG_TCC_SYSINCLUDEPATHS \
+         "{B}/include" \
+@@ -211,7 +211,7 @@ extern long double strtold (const char *__nptr, char **__endptr);
+ /* library search paths */
+ #ifndef CONFIG_TCC_LIBPATHS
+ # ifdef TCC_TARGET_PE
+-#  define CONFIG_TCC_LIBPATHS "{B}/lib"
++#  define CONFIG_TCC_LIBPATHS "{B}/lib"PATHSEP"{B}/../lib/tcc"PATHSEP"{B}/../bin"
+ # else
+ #  define CONFIG_TCC_LIBPATHS \
+         ALSO_TRIPLET(CONFIG_SYSROOT "/usr/" CONFIG_LDDIR) \
+diff --git a/win32/build-tcc.bat b/win32/build-tcc.bat
+index ceb4411..c8efa64 100644
+--- a/win32/build-tcc.bat
++++ b/win32/build-tcc.bat
+@@ -128,11 +128,13 @@ for %%f in (*tcc.exe *tcc.dll) do @del %%f
+ 
+ if not exist libtcc mkdir libtcc
+ if not exist doc mkdir doc
++if not exist share mkdir share
+ copy>nul ..\include\*.h include
+ copy>nul ..\tcclib.h include
+ copy>nul ..\libtcc.h libtcc
+ copy>nul ..\tests\libtcc_test.c examples
+ copy>nul tcc-win32.txt doc
++copy>nul ..\COPYING share
+ 
+ .\tcc -impdef libtcc.dll -o libtcc\libtcc.def
+ @if errorlevel 1 goto :the_end
+@@ -183,7 +185,7 @@ if not exist %BIN% mkdir %BIN%
+ for %%f in (*tcc.exe *tcc.dll) do @copy>nul %%f %BIN%\%%f
+ @if not exist %INST%\lib mkdir %INST%\lib
+ for %%f in (lib\*.a lib\*.def) do @copy>nul %%f %INST%\%%f
+-for %%f in (include examples libtcc doc) do @xcopy>nul /s/i/q/y %%f %INST%\%%f
++for %%f in (include examples libtcc doc share) do @xcopy>nul /s/i/q/y %%f %INST%\%%f
+ 
+ :the_end
+ exit /B %ERRORLEVEL%

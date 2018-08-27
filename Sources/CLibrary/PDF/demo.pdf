@@ -1,0 +1,96 @@
+%PDF-1.3
+%·¾­ª
+1 0 obj
+<<
+/Type /Catalog
+/Pages 2 0 R
+>>
+endobj
+2 0 obj
+<<
+/Type /Pages
+/Kids [ 4 0 R ]
+/Count 1
+>>
+endobj
+
+4 0 obj
+<<
+/Type /Page
+/MediaBox [ 0 0 764.67999 210 ]
+/Contents 5 0 R
+/Resources <<
+/ProcSet [ /PDF /Text /ImageB /ImageC /ImageI ]
+/Font <<
+/F1 7 0 R
+/F2 8 0 R
+>>
+>>
+/Parent 2 0 R
+>>
+endobj
+5 0 obj
+<<
+/Length 6 0 R
+>>
+stream
+/F2 10 Tf
+BT
+10 190 Td
+(Consolas) Tj
+/F2 15 Tf
+10 -20 Td
+(abcdefghijklmnopqrstuvwxyz) Tj
+0 -20 Td
+(ABCDEFGHIJKLMNOPQRSTUVWXYZ) Tj
+0 -20 Td
+(1234567890) Tj
+0 -20 Td
+/F2 10 Tf
+(The quick brown fox jumps over the lazy dog.) Tj
+0 -18 Td
+/F2 16 Tf
+(The quick brown fox jumps over the lazy dog.) Tj
+0 -27 Td
+/F2 23 Tf
+(The quick brown fox jumps over the lazy dog.) Tj
+0 -36 Td
+/F2 30 Tf
+(The quick brown fox jumps over the lazy dog.) Tj
+0 -36 Td
+ET
+0.5 w
+10 185 m
+754.67999 185 l
+S
+10 125 m
+754.67999 125 l
+S
+
+endstream
+endobj
+% 6 0 obj
+% 503
+% endobj
+% 7 0 obj
+% <<
+% /Type /Font
+% /BaseFont /Helvetica
+% /Subtype /Type1
+% /Encoding /StandardEncoding
+% >>
+% endobj
+8 0 obj
+<<
+% /Type /Font
+/BaseFont /Cambria
+% /Subtype /TrueType
+% /FirstChar 32
+% /LastChar 255
+% /MissingWidth 549
+% /FontDescriptor 1 0 R
+% /Encoding /StandardEncoding
+>>
+endobj
+
+%%EO

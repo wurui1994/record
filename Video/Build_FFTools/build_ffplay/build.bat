@@ -1,0 +1,1 @@
+gcc  -lm -I/usr/include/SDL2 -lSDL2 -lavutil -lavformat -lavcodec -lswresample -lavdevice -lavfilter -lswscale  -lpostproc cmdutils.c ffplay.c -o ffplay

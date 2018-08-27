@@ -1,0 +1,9 @@
+src := $(shell ls internal/*.cc) 
+objs := $(patsubst %.cc,%.o,$(src))
+libcld2.a: $(objs)
+	ar rcs $@ $^
+%.o:%.cc
+	gcc -c -o $@ $<
+
+clean:
+	rm -f test internal/*.o

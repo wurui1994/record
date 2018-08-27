@@ -1,0 +1,11 @@
+LIBRARY tool.dll
+EXPORTS
+GetCTool
+_Z3addii
+_Z3mulii
+_Z6fntoolv
+_ZN5Ctool3divEii
+_ZN5Ctool3subEii
+_ZN5CtoolC1Ev
+_ZN5CtoolC2Ev
+ntool DATA

@@ -1,0 +1,1 @@
+cmd /c tcc -LD:\Program\msys2\usr\tcc\mingw -lsqlite3-0 -run main.c & pause

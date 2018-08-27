@@ -1,0 +1,1 @@
+ffplay -i Zootopia.2016.1080p.BluRay.x264-SPARKS.mkv -vf "scale='if(gt(a*9,16),1920,-2)':'if(gt(a*9,16),-2,1080)', pad=1920:1080:(ow-iw)/2:(oh-ih)/2, subtitles=Zootopia.2016.1080p.BluRay.x264-SPARKS.ass"

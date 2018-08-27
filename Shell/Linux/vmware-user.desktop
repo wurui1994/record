@@ -1,0 +1,6 @@
+[Desktop Entry]
+Type=Application
+Name=VMWare User Agent
+Exec=/usr/bin/vmware-user-suid-wrapper
+Icon=system-run
+Comment=Enable Unity, DnD, etc.

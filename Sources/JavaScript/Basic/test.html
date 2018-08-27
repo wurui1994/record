@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>为 HTML 添加新元素</title>
+<script>document.createElement("myHero")</script>
+<style>
+myHero {
+	display: block;
+	width: 200px;
+	border: 2px solid magenta;
+	background-color:skyblue;
+	padding: 50px;
+	margin-left:250px;
+	font-size: 24px;
+} 
+</style> 
+</head>
+
+<body>
+
+<h1>我的第一个标题</h1>
+
+<p>我的第一个段落。</p>
+
+<myHero>我的第一个新元素</myHero>
+
+<audio controls>
+  <source src="http://www.runoob.com/try/horse.ogg" >
+  <source src="http://www.runoob.com/try/horse.mp3" >
+您的浏览器不支持 audio 元素。
+</audio>
+
+<form oninput="x.value=parseInt(a.value)+parseInt(b.value)">0
+<input type="range" id="a" value="50">100
++<input type="number" id="b" value="50">
+=<output name="x" for="a b"></output>
+</form>
+
+<p><strong>注意:</strong>  Internet Explorer 不支持 output 标签。</p>
+
+<article>
+  <h1>Internet Explorer 9</h1>
+  <p> Windows Internet Explorer 9(缩写为 IE9 )在2011年3月14日21:00 发布。</p>
+</article>
+
+<p>The Pulpit Rock is a massive cliff 604 metres (1982 feet) above Lysefjorden, opposite the Kjerag plateau, in Forsand, Ryfylke, Norway. The top of the cliff is approximately 25 by 25 metres (82 by 82 feet) square and almost flat, and is a famous tourist attraction in Norway.</p>
+
+<figure>
+  <img src="img_pulpit.jpg" alt="The Pulpit Rock" width="304" height="228">
+  <figcaption>Fig.1 - A view of the pulpit rock in Norway.</figcaption>
+</figure>
+
+<p>Do not forget to buy <mark>milk</mark> today.</p>
+
+<p>展示给定的数据范围：</p>
+<meter value="2" min="0" max="10">2 out of 10</meter><br>
+<meter value="0.6">60%</meter>
+
+<p><strong>注意：</strong> IE 浏览器不支持 meter 标签。</p>
+
+<nav>
+<a href="/html/">HTML</a> |
+<a href="/css/">CSS</a> |
+<a href="/js/">JavaScript</a> |
+<a href="/jquery/">jQuery</a>
+</nav>
+
+下载进度：
+<progress value="22" max="100">
+</progress>
+
+<p><strong>注意：</strong> IE 9 或者更早版本的 IE 浏览器不支持 progress 标签。</p>
+
+<ruby>
+  漢 <rp>(</rp><rt>Kan</rt><rp>)</rp>
+  字 <rp>(</rp><rt>ji</rt><rp>)</rp>
+</ruby>
+
+<p>我们在每天早上 <time>9:00</time> 开始营业。</p>
+<p>我在 <time datetime="2016-02-14">情人节</time> 有个约会。</p>
+<p><strong>注意：</strong>Internet Explorer 8 及更早版本不支持  time 标签。</p>
+
+<p>学习 AJAX ,您必须熟悉 <wbr>Http<wbr>Request 对象。</p>
+
+
+
+<canvas id="myCanvas" width="200" height="100" style="border:1px solid skyblue;" left="200">
+您的浏览器不支持 HTML5 canvas 标签。
+</canvas>
+
+<script>
+
+var c=document.getElementById("myCanvas");
+var ctx=c.getContext("2d");
+ctx.fillStyle="blue";
+ctx.fillRect(0,0,150,75);
+
+</script>
+
+<script>
+
+var c=document.getElementById("myCanvas");
+var ctx=c.getContext("2d");
+ctx.strokeStyle = "red";
+ctx.moveTo(0,0);
+ctx.lineTo(200,100);
+ctx.stroke();
+
+</script>
+
+<br></br>
+<svg xmlns="http://www.w3.org/2000/svg" version="1.1" height="190">
+   <polygon points="100,10 40,180 190,60 10,60 160,180"
+   style="fill:lime;stroke:purple;stroke-width:5;fill-rule:evenodd;"/>
+</svg>
+
+<math xmlns="http://www.w3.org/1998/Math/MathML">
+
+	<mrow>
+	<msup><mi>a</mi><mn>2</mn></msup>
+	<mo>+</mo>
+		
+	<msup><mi>b</mi><mn>2</mn></msup>
+	<mo>=</mo>
+		
+	<msup><mi>c</mi><mn>2</mn></msup>
+	</mrow>
+	
+</math>
+
+<form action="demo-form.php">
+  生日: <input type="date" name="bday">
+  <input type="submit">
+</form>
+
+生日 (月和年): <input type="month" name="bdaymonth">
+
+</body>
+</html>

@@ -1,0 +1,10 @@
+cc=clang
+all:main run clean
+main.exe:main.o
+	# $(cc) -v
+	$(cc) -o $@ $< -lopengl32 -lglu32 -lglut32
+main.o:main.c
+run:
+	./main.exe
+clean:
+	rm *.o *.exe

@@ -1,0 +1,14 @@
+<Project  xmlns="http://schemas.microsoft.com/developer/msbuild/2003">  
+  <Target Name="Build">
+    <Exec Command="cl /EHsc /nologo %(SourceFiles.Identity) /Fe:$(MSBuildProjectName) /Fo:$(MSBuildProjectName) "/>
+  </Target>
+   <Target Name="Run">
+    <Exec Command="$(MSBuildProjectName)"/>
+  </Target>
+  <Target Name="Clean">
+    <Exec Command="del $(MSBuildProjectName).obj $(MSBuildProjectName).exe"/>
+  </Target>
+  <ItemGroup>  
+    <SourceFiles Include="main.cpp" />  
+  </ItemGroup>
+</Project>  

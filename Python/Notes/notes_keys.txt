@@ -1,0 +1,19 @@
+最近在进行基因组数据处理的时候，需要读取较大数据（2.7G）存入字典中，然后对被处理数据进行字典key值的匹配，在被处理文件中每次读取一行进行处理后查找是否在字典的keys中，以下两段代码的效率差别非常大：
+
+第一段：
+
+if(pos in fre_dist.keys()):
+newvalue= fre_dist[pos]
+
+第二段：
+
+if(pos in fre_dist):
+newValue=fre_dist[pos]
+
+在处理3万条数据时，第二段代码的速度是第一段代码速度的上千倍。
+
+原因是：第一段代码 fre_dist.keys()变成了list，Python在检索list的时候是比较慢的，第二段代码 fre_dist是字典，python在检索字典的时候速度是比较快的。
+
+血的教训。
+
+python3 优化掉了，不明显。

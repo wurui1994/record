@@ -1,0 +1,1 @@
+SystemParametersInfo(SPI_SETDROPSHADOW, 0, (PVOID) 0, 0);

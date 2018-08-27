@@ -1,0 +1,3 @@
+-I"D:\Program\OpenCV\cxcore\include" -I"D:\Program\OpenCV\cv\include" \
+-I"D:\Program\OpenCV\cvaux\include" -I"D:\Program\OpenCV\ml\include" -I"D:\Program\OpenCV\otherlibs\highgui"
+-LD:\Program\OpenCV\lib

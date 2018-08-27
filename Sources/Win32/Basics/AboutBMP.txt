@@ -1,0 +1,15 @@
+
+只有4位（16色）的颜色面是4，其他1位（黑白）、8位（256色）、16位、24位、32位都是1 
+COLORONCOLOR或STRETCH_DELETESCANS StretchBlt简单地消除像素行或列，而没有
+任何逻辑组合。这是通常是处理彩色位图的最佳方法。
+HALFTONE模式比其他三种模式需要对源图像进行更多的处理，也比其他模式慢，但它能产生高质量图像。
+也应注意在设置HALFTONE模式之后，应调用SetBrushOrgEx函数以避免出现刷子没对准现象。
+
+如果您有小型的DIB并且需要频繁地操作像素位，您可以使用SetDIBitsToDevice和
+StretchDIBits来显示它们。然而，对于大型的DIB，此技术会遇到显示效能的问题，尤其在8位视讯
+显示器上和Windows NT环境下。
+您可以使用CreateDIBitmap和SetDIBits把DIB转化为DDB。现在，显示位图可以使用快速的
+BitBlt和StretchBlt函数来进行了。然而，您不能直接存取这些与设备无关的像素位。
+CreateDIBSection是一个很好的折衷方案。在Windows NT下通过BitBlt和StretchBlt使用位图
+句柄比使用SetDIBitsToDevice和StretchDIBits（但没有DDB的缺陷）会得到更好的效能。您仍然
+可以存取DIB像素位。

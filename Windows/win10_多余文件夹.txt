@@ -1,0 +1,10 @@
+输出HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\MyComputer\NameSpace下的项
+
+删除C:\Users\wurui\AppData\Roaming\Microsoft\Windows\Libraries
+
+关于删除导航栏中的onedrive。
+卸载onedrive是不能清除导航栏里面的onedrive，进入注册表：
+HKEY_CLASSES_ROOT\CLSID\{018D5C66-4533-4307-9B53-224DE2ED1FE6}\ShellFolder
+把右侧的Attributes属性的值 f080004d修改为f090004d。
+重启资源管理器后生效
+

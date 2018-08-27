@@ -1,0 +1,9 @@
+ascii编码的中文，又称为acsii(gbk/gb2312)格y式。
+在C语言中，可以直接输出。MSVC2017支持(UTF-8-BOM)。
+以UTF-8保存的文件，C语言无法在CMD中正确输出。
+
+Windows下难以使用wcstombs和mbstowcs正确转换编码。
+
+最好使用MultiByteToWideChar和WideCharToMultiByte。
+设定好CP_ACP(ANSI字符集)和CP_UTF8(使用UTF-8转换)之间的标志就行。
+也可以选择使用libiconv的Windows版本(比如VCPKG集成版本)。

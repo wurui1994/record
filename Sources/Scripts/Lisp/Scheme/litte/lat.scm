@@ -1,0 +1,25 @@
+(define (print x)
+	(write x)(newline)
+)
+(define lat?
+	(lambda (l)
+		(cond
+			((null? l)  #t )
+			((atom? (car l)) (lat? (cdr l)))
+			(else  #f)
+		)
+	)
+)
+(define (mylat? l)
+	(if (null? l) 
+		#t
+		(if(atom? (car l))
+			(mylat? (cdr l))
+			#f
+		)
+	)
+)
+(print (lat? '(bacon and eggs)))
+(print (lat? '((bacon) and eggs)))
+(print (mylat? '(bacon and eggs)))
+(print (mylat? '((bacon) and eggs)))

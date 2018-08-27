@@ -1,0 +1,6 @@
+yaourt -S openframeworks-nightly
+# /opt/openFrameworks/scripts/of-make-workspace of
+# projectGenerator -oof example
+projectGenerator -o/opt/openFrameworks example
+cd example
+sudo make -j8

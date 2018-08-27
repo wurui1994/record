@@ -1,0 +1,3 @@
+wsl arch上出现:error while loading shared libraries: libQt5WebEngineCore.so.5: cannot enable executable stack as shared object requires: Invalid argument
+
+解决方案:QMAKE_LFLAGS +=-Wl,-z,execstack

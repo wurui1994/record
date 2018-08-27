@@ -1,0 +1,41 @@
+cflags = -Wall
+lflags = -Os
+
+rule cc
+    command = gcc $cflags -c $in -o $out
+
+rule link
+    command = gcc $lflags $in -o $out
+
+rule cc_link
+    command = gcc $cflags $in -o $out
+
+rule exe
+    command = ./$in
+
+rule tcc
+    command = tcc -run $in
+
+rule lsdir
+    command = ls
+
+rule graph.png
+    command = ninja -t graph | dot -Tpng -o graph.png
+
+rule clean
+    command = ninja -t clean && rm .ninja*
+
+build main.o: cc main.c
+build main: link main.o | ls
+build run: exe main
+
+build main_one: cc main.c
+build run_one: exe main_one
+
+build tcc: tcc main.c
+build ls: lsdir
+
+build graph.png: graph.png
+build clean: clean
+
+default tcc main graph.png

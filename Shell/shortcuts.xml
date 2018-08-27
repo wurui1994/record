@@ -1,0 +1,27 @@
+<NotepadPlus>
+    <InternalCommands>
+        <Shortcut id="43002" Ctrl="no" Alt="no" Shift="no" Key="0" />
+        <Shortcut id="43046" Ctrl="no" Alt="no" Shift="no" Key="0" />
+        <Shortcut id="43006" Ctrl="no" Alt="no" Shift="no" Key="0" />
+    </InternalCommands>
+    <Macros>
+        <Macro name="Trim Trailing and save" Ctrl="no" Alt="yes" Shift="yes" Key="83">
+            <Action type="2" message="0" wParam="42024" lParam="0" sParam="" />
+            <Action type="2" message="0" wParam="41006" lParam="0" sParam="" />
+        </Macro>
+    </Macros>
+    <UserDefinedCommands>
+        <Command name="TccRun" Ctrl="no" Alt="no" Shift="no" Key="115">cmd /c cd /d $(CURRENT_DIRECTORY)&amp;tcc -run $(FILE_NAME)&amp;pause</Command>
+        <Command name="GccRun" Ctrl="no" Alt="no" Shift="no" Key="0">cmd /c clang $(FULL_CURRENT_PATH) -o $(CURRENT_DIRECTORY)\$(NAME_PART).exe&amp; $(CURRENT_DIRECTORY)\$(NAME_PART) &amp; pause</Command>
+        <Command name="G++Run" Ctrl="no" Alt="no" Shift="no" Key="0">cmd /c clang++ --std=c++1z $(FULL_CURRENT_PATH) -o $(CURRENT_DIRECTORY)\$(NAME_PART).exe&amp; $(CURRENT_DIRECTORY)\$(NAME_PART) &amp; pause</Command>
+        <Command name="RunFile" Ctrl="no" Alt="no" Shift="no" Key="0">cmd /c cd /d $(CURRENT_DIRECTORY)&amp;$(FILE_NAME)</Command>
+        <Command name="Makefile" Ctrl="no" Alt="no" Shift="no" Key="114">cmd /c cd/d $(CURRENT_DIRECTORY)&amp;make&amp;pause</Command>
+        <Command name="Scheme" Ctrl="no" Alt="no" Shift="no" Key="0">cmd /c cd /d $(CURRENT_DIRECTORY) &amp; scheme --script $(FILE_NAME) &amp; pause</Command>
+        <Command name="XmlFormat" Ctrl="no" Alt="no" Shift="no" Key="0">cmd /c cd /d $(CURRENT_DIRECTORY)&amp;xmlint -format $(FILE_NAME) -o $(FILE_NAME)&amp;pause</Command>
+        <Command name="JavaRun" Ctrl="no" Alt="no" Shift="no" Key="0">cmd /c cd /d $(CURRENT_DIRECTORY)&amp;javarun $(FILE_NAME)&amp;pause</Command>
+        <Command name="PythonRun" Ctrl="no" Alt="no" Shift="no" Key="0">cmd /c cd /d $(CURRENT_DIRECTORY)&amp;python.exe -i &quot;$(FILE_NAME)&quot;&amp;pause</Command>
+        <Command name="Processing" Ctrl="no" Alt="no" Shift="no" Key="0">processing-java --sketch=$(CURRENT_DIRECTORY) --run</Command>
+    </UserDefinedCommands>
+    <PluginCommands />
+    <ScintillaKeys />
+</NotepadPlus>

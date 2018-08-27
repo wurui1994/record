@@ -1,0 +1,14 @@
+For MacOS:
+	error: include file 'stdio.h' not found
+	Solve:
+		tcc -I/usr/include -L. -run file.c
+		
+For Linux:
+	tcc -L. -run file.c
+	
+For Windows:
+	1.copy libui.dll to tcc.exe
+	2.tcc -impdef libui.dll gen libui.def
+	3.copy libui.def to lib dir.
+	
+	tcc -run file.c

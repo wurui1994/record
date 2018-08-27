@@ -1,0 +1,6 @@
+library(ggplot2)
+# postscript("test.eps")
+t<-seq(-3.14,3.14,0.1)
+qplot(t,sin(t),color="b",geom="line")+theme(text = element_text(family = 'Times'))
+dev.off()
+system('cmd /c D:/Program/SumatraPDF/SumatraPDF.exe Rplots.pdf')

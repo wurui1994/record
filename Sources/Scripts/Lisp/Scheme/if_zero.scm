@@ -1,0 +1,5 @@
+(set! x 12)
+(if (= x 0) 
+	(display "is zero")
+	(display "not zero")
+)

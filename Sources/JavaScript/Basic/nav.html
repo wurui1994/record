@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <title>菜鸟教程(runoob.com)</title>
+</head>
+
+<body>
+
+    <div id="example"></div>
+    <script>
+        txt = "<p>浏览器代号: " + navigator.appCodeName + "</p>";
+        txt += "<p>浏览器名称: " + navigator.appName + "</p>";
+        txt += "<p>浏览器版本: " + navigator.appVersion + "</p>";
+        txt += "<p>启用Cookies: " + navigator.cookieEnabled + "</p>";
+        txt += "<p>硬件平台: " + navigator.platform + "</p>";
+        txt += "<p>用户代理: " + navigator.userAgent + "</p>";
+        txt += "<p>用户代理语言: " + navigator.systemLanguage + "</p>";
+        document.getElementById("example").innerHTML = txt;
+
+    </script>
+
+</body>
+
+</html>

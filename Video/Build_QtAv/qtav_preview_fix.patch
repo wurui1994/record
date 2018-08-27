@@ -1,0 +1,344 @@
+diff --git a/.qmake.conf b/.qmake.conf
+index d3b8d95c..a2d85bf0 100644
+--- a/.qmake.conf
++++ b/.qmake.conf
+@@ -12,3 +12,7 @@ macx:isEqual(QT_MAJOR_VERSION,5):greaterThan(QT_MINOR_VERSION, 3): CONFIG *= c++
+ android: CONFIG*=c++11
+ QMAKE_MACOSX_DEPLOYMENT_TARGET = 10.8
+ QMAKE_IOS_DEPLOYMENT_TARGET = 6.0
++
++PATH += $$PWD/build/bin
++INCLUDEPATH += $$PWD/build/include
++LIBS += -L$$PWD/build/lib
+\ No newline at end of file
+diff --git a/examples/common/Config.cpp b/examples/common/Config.cpp
+index 12509d54..645deb0c 100644
+--- a/examples/common/Config.cpp
++++ b/examples/common/Config.cpp
+@@ -343,8 +343,8 @@ void Config::reload()
+     settings.endGroup();
+     settings.beginGroup(QString::fromLatin1("preview"));
+     setPreviewEnabled(settings.value(QString::fromLatin1("enabled"), true).toBool());
+-    setPreviewWidth(settings.value(QString::fromLatin1("width"), 160).toInt());
+-    setPreviewHeight(settings.value(QString::fromLatin1("height"), 90).toInt());
++    setPreviewWidth(settings.value(QString::fromLatin1("width"), 240).toInt());
++    setPreviewHeight(settings.value(QString::fromLatin1("height"), 135).toInt());
+     settings.endGroup();
+     settings.beginGroup(QString::fromLatin1("avformat"));
+     setAvformatOptionsEnabled(settings.value(QString::fromLatin1("enable"), false).toBool());
+diff --git a/examples/common/common.cpp b/examples/common/common.cpp
+index cd031dce..765ce28c 100644
+--- a/examples/common/common.cpp
++++ b/examples/common/common.cpp
+@@ -100,7 +100,7 @@ QtMsgHandler qInstallMessageHandler(QtMessageHandler h) {
+ #endif
+ void Logger(QtMsgType type, const QMessageLogContext &, const QString& qmsg)
+ {
+-    const QByteArray msgArray = qmsg.toUtf8();
++    /*const QByteArray msgArray = qmsg.toUtf8();
+     const char* msg = msgArray.constData();
+      switch (type) {
+      case QtDebugMsg:
+@@ -121,8 +121,8 @@ void Logger(QtMsgType type, const QMessageLogContext &, const QString& qmsg)
+          abort();
+      }
+      fflush(0);
+-     fileLogger()->write(msgArray);
+-     fileLogger()->write(QByteArray("\n"));
++     fileLogger()->write(msgArray);*/
++     //fileLogger()->write(QByteArray("\n"));
+      //fileLogger()->flush(); // crash in qt5.7
+ }
+ 
+diff --git a/examples/player/MainWindow.cpp b/examples/player/MainWindow.cpp
+index 60114030..fd9009d1 100644
+--- a/examples/player/MainWindow.cpp
++++ b/examples/player/MainWindow.cpp
+@@ -120,6 +120,8 @@ MainWindow::MainWindow(QWidget *parent) :
+     setWindowIcon(QIcon(QString::fromLatin1(":/QtAV.svg")));
+     mpOSD = new OSDFilter(this);
+     mpSubtitle = new SubtitleFilter(this);
++	mpSubtitle->setFont(QFont("Consolas,Cambria,Segoe UI,Aria,Microsoft YaHei", 20));
++	mpSubtitle->setRect(QRectF(0, 0, 1.0, 0.95));
+     mpChannelAction = 0;
+     mpChannelMenu = 0;
+     mpAudioTrackAction = 0;
+@@ -135,6 +137,7 @@ MainWindow::MainWindow(QWidget *parent) :
+ 
+ MainWindow::~MainWindow()
+ {
++    delete m_ef;
+     if (m_preview) {
+         m_preview->close();
+         delete m_preview;
+@@ -161,13 +164,14 @@ void MainWindow::initPlayer()
+         QMessageBox::critical(0, QString::fromLatin1("QtAV"), tr("Video renderer is ") + tr("not availabe on your platform!"));
+     }
+     setRenderer(vo);
++	vo->setOutAspectRatioMode(VideoRenderer::RendererAspectRatio);
+     //mpSubtitle->installTo(mpPlayer); //filter on frame
+     mpSubtitle->setPlayer(mpPlayer);
+     //mpPlayer->setAudioOutput(AudioOutputFactory::create(AudioOutputId_OpenAL));
+-    EventFilter *ef = new EventFilter(mpPlayer);
+-    qApp->installEventFilter(ef);
+-    connect(ef, SIGNAL(helpRequested()), SLOT(help()));
+-    connect(ef, SIGNAL(showNextOSD()), SLOT(showNextOSD()));
++    m_ef = new EventFilter(mpPlayer);
++    qApp->installEventFilter(m_ef);
++    connect(m_ef, SIGNAL(helpRequested()), SLOT(help()));
++    connect(m_ef, SIGNAL(showNextOSD()), SLOT(showNextOSD()));
+     onCaptureConfigChanged();
+     onAVFilterVideoConfigChanged();
+     onAVFilterAudioConfigChanged();
+@@ -421,10 +425,10 @@ void MainWindow::setupUi()
+     pWA = new QWidgetAction(0);
+     pWA->setDefaultWidget(wgt);
+     subMenu->addAction(pWA); //must add action after the widget action is ready. is it a Qt bug?
+-    box->addItem(QString::fromLatin1("FFmpeg"), QString::fromLatin1("FFmpeg"));
+-    box->addItem(QString::fromLatin1("LibASS"), QString::fromLatin1("LibASS"));
++	box->addItem(QString::fromLatin1("FFmpeg"), QString::fromLatin1("FFmpeg"));
++	box->addItem(QString::fromLatin1("LibASS"), QString::fromLatin1("LibASS"));
+     connect(box, SIGNAL(activated(QString)), SLOT(setSubtitleEngine(QString)));
+-    mpSubtitle->setEngines(QStringList() << box->itemData(box->currentIndex()).toString());
++    //mpSubtitle->setEngines(QStringList() << box->itemData(box->currentIndex()).toString());
+     box->setToolTip(tr("FFmpeg supports more subtitles but only render plain text") + QString::fromLatin1("\n") + tr("LibASS supports ass styles"));
+ 
+     wgt = new QWidget();
+@@ -470,9 +474,9 @@ void MainWindow::setupUi()
+     subMenu = new QMenu(tr("Aspect ratio"), mpMenu);
+     mpMenu->addMenu(subMenu);
+     connect(subMenu, SIGNAL(triggered(QAction*)), SLOT(switchAspectRatio(QAction*)));
+-    mpARAction = subMenu->addAction(tr("Video"));
+-    mpARAction->setData(0);
+-    subMenu->addAction(tr("Window"))->setData(-1);
++	subMenu->addAction(tr("Video"))->setData(0);
++	mpARAction = subMenu->addAction(tr("Window"));
++	mpARAction->setData(-1);
+     subMenu->addAction(QString::fromLatin1("4:3"))->setData(4.0/3.0);
+     subMenu->addAction(QString::fromLatin1("16:9"))->setData(16.0/9.0);
+     subMenu->addAction(tr("Custom"))->setData(-2);
+@@ -1286,6 +1290,7 @@ void MainWindow::onPlayListClick(const QString &key, const QString &value)
+ 
+ void MainWindow::tryHideControlBar()
+ {
++#if 0
+     if (mShowControl > 0) {
+         return;
+     }
+@@ -1294,6 +1299,7 @@ void MainWindow::tryHideControlBar()
+     mpControl->hide();
+     mpTimeSlider->hide();
+     workaroundRendererSize();
++#endif
+ }
+ 
+ void MainWindow::tryShowControlBar()
+@@ -1322,6 +1328,7 @@ void MainWindow::onTimeSliderHover(int pos, int value)
+         return;
+     if (!m_preview)
+         m_preview = new VideoPreviewWidget();
++	m_preview->getVideoOutput()->setOutAspectRatioMode(VideoRenderer::RendererAspectRatio);
+     m_preview->setFile(mpPlayer->file());
+     m_preview->setTimestamp(value);
+     m_preview->preview();
+@@ -1330,7 +1337,7 @@ void MainWindow::onTimeSliderHover(int pos, int value)
+     m_preview->setWindowFlags(Qt::Tool |Qt::FramelessWindowHint|Qt::WindowStaysOnTopHint);
+     m_preview->resize(w, h);
+     m_preview->move(gpos - QPoint(w/2, h));
+-    m_preview->show();
++    //m_preview->show();
+ }
+ 
+ void MainWindow::onTimeSliderLeave()
+@@ -1343,6 +1350,7 @@ void MainWindow::onTimeSliderLeave()
+     }
+     if (m_preview->isVisible())
+     {
++		m_preview->hide();
+         m_preview->close();
+     }
+     delete m_preview;
+@@ -1646,3 +1654,5 @@ void MainWindow::workaroundRendererSize()
+     mpRenderer->widget()->resize(QSize(s.width()+1, s.height()+1));
+     mpRenderer->widget()->resize(s);
+ }
++
++
+diff --git a/examples/player/MainWindow.h b/examples/player/MainWindow.h
+index d08adf56..d2fe512d 100644
+--- a/examples/player/MainWindow.h
++++ b/examples/player/MainWindow.h
+@@ -59,6 +59,7 @@ class StatisticsView;
+ class OSDFilter;
+ class AVFilterSubtitle;
+ class Preview;
++class EventFilter;
+ class MainWindow : public QWidget
+ {
+     Q_OBJECT
+@@ -215,6 +216,7 @@ private:
+     QtAV::VideoPreviewWidget *m_preview;
+     QtAV::DynamicShaderObject *m_shader;
+     QtAV::GLSLFilter *m_glsl;
++    EventFilter* m_ef;
+ };
+ 
+ 
+diff --git a/examples/player/main.cpp b/examples/player/main.cpp
+index 73187f56..7fcb25ba 100644
+--- a/examples/player/main.cpp
++++ b/examples/player/main.cpp
+@@ -51,7 +51,7 @@ VideoRendererId rendererId_from_opt_name(const QString& name) {
+             return vid_map[i].id;
+     }
+ #ifndef QT_NO_OPENGL
+-#if defined(Q_OS_ANDROID) || defined(Q_OS_IOS)
++#if defined(Q_OS_ANDROID) || defined(Q_OS_IOS) || defined(WIN32)
+     return VideoRendererId_OpenGLWidget; // qglwidget is not suitable for android
+ #endif
+     return VideoRendererId_GLWidget2;
+@@ -61,6 +61,9 @@ VideoRendererId rendererId_from_opt_name(const QString& name) {
+ 
+ int main(int argc, char *argv[])
+ {
++#if (QT_VERSION >= QT_VERSION_CHECK(5, 6, 0))
++	QCoreApplication::setAttribute(Qt::AA_EnableHighDpiScaling);
++#endif
+     qDebug() << aboutQtAV_PlainText();
+     Config::setName(QString::fromLatin1("Player"));
+     QOptions options = get_common_options();
+@@ -69,7 +72,7 @@ int main(int argc, char *argv[])
+             ("vd-list", QString::fromLatin1("List video decoders and their properties"))
+             ("-vo",
+ #ifndef QT_NO_OPENGL
+-#if defined(Q_OS_ANDROID) || defined(Q_OS_IOS)
++#if defined(Q_OS_ANDROID) || defined(Q_OS_IOS) || defined(WIN32)
+              QString::fromLatin1("opengl")
+ #else
+              QString::fromLatin1("gl")
+@@ -118,7 +121,7 @@ int main(int argc, char *argv[])
+     MainWindow window;
+     window.setProperty("rendererId", rendererId_from_opt_name(vo.toLower()));
+     window.show();
+-    window.setWindowTitle(QString::fromLatin1("QtAV %1 wbsecg1@gmail.com").arg(QtAV_Version_String_Long()));
++    //window.setWindowTitle(QString::fromLatin1("QtAV %1 wbsecg1@gmail.com").arg(QtAV_Version_String_Long()));
+     AppEventFilter ae(&window);
+     qApp->installEventFilter(&ae);
+ 
+diff --git a/src/Frame.cpp b/src/Frame.cpp
+index 2f04fd5c..ce313a31 100644
+--- a/src/Frame.cpp
++++ b/src/Frame.cpp
+@@ -80,7 +80,7 @@ uchar* Frame::bits(int plane)
+ const uchar* Frame::constBits(int plane) const
+ {
+     if (plane < 0 || plane >= planeCount()) {
+-        qWarning("Invalid plane! Valid range is [0, %d)", planeCount());
++        //qWarning("Invalid plane! Valid range is [0, %d)", planeCount());
+         return 0;
+     }
+     return d_func()->planes[plane];
+diff --git a/src/QtAV_Global.cpp b/src/QtAV_Global.cpp
+index 56d66b9b..33c93367 100644
+--- a/src/QtAV_Global.cpp
++++ b/src/QtAV_Global.cpp
+@@ -188,18 +188,7 @@ QString aboutQtAV_PlainText()
+ 
+ QString aboutQtAV_HTML()
+ {
+-    static QString about = QString::fromLatin1("<img src='qrc:/QtAV.svg'><h3>QtAV " QTAV_VERSION_STR_LONG "</h3>\n"
+-            "<p>%1</p><p>%2</p><p>%3 </p>"
+-            "<p>Copyright (C) 2012-2017 Wang Bin (aka. Lucas Wang) <a href='mailto:wbsecg1@gmail.com'>wbsecg1@gmail.com</a></p>\n"
+-            "<p>%4: <a href='http://qtav.org/donate.html'>http://qtav.org/donate.html</a></p>\n"
+-            "<p>%5: <a href='https://github.com/wang-bin/QtAV'>https://github.com/wang-bin/QtAV</a></p>\n"
+-            "<p>%6: <a href='http://qtav.org'>http://qtav.org</a></p>"
+-           ).arg(QObject::tr("Multimedia framework base on Qt and FFmpeg.\n"))
+-            .arg(QObject::tr("Distributed under the terms of LGPLv2.1 or later.\n"))
+-            .arg(QObject::tr("Shanghai University->S3 Graphics->Deepin->PPTV, Shanghai, China"))
+-            .arg(QObject::tr("Donate"))
+-            .arg(QObject::tr("Source"))
+-            .arg(QObject::tr("Home page"));
++    static QString about = QString::fromLatin1("<h3>QtAV " QTAV_VERSION_STR_LONG "</h3>");
+     return about;
+ }
+ 
+diff --git a/src/subtitle/SubtitleProcessorLibASS.cpp b/src/subtitle/SubtitleProcessorLibASS.cpp
+index 5eb69394..cc877525 100644
+--- a/src/subtitle/SubtitleProcessorLibASS.cpp
++++ b/src/subtitle/SubtitleProcessorLibASS.cpp
+@@ -337,8 +337,8 @@ SubImageSet SubtitleProcessorLibASS::getSubImages(qreal pts, QRect *boundingRect
+         }
+     }
+     }
+-    if (m_update_cache)
+-        updateFontCache();
++    //if (m_update_cache)
++    //    updateFontCache();
+ 
+     QMutexLocker lock(&m_mutex);
+     Q_UNUSED(lock);
+@@ -459,6 +459,8 @@ bool SubtitleProcessorLibASS::initRenderer()
+         qWarning("ass_renderer_init failed!");
+         return false;
+     }
++	ass_set_fonts(m_renderer, NULL, "sans-serif",
++		1, NULL, 0);
+ #if LIBASS_VERSION >= 0x01000000
+     ass_set_shaper(m_renderer, ASS_SHAPING_SIMPLE);
+ #endif
+@@ -638,7 +640,7 @@ void SubtitleProcessorLibASS::updateFontCacheAsync()
+         void run() {
+             if (!sp)
+                 return;
+-            sp->updateFontCache();
++            //sp->updateFontCache();
+         }
+     };
+     FontCacheUpdater updater(this);
+diff --git a/tools/ci/win/build.bat b/tools/ci/win/build.bat
+index 8bd9da6e..db2cacae 100644
+--- a/tools/ci/win/build.bat
++++ b/tools/ci/win/build.bat
+@@ -5,8 +5,9 @@ if "%cc%" == "MinGW" (
+   mingw32-make -j%NUMBER_OF_PROCESSORS%
+ ) else (
+   if "%mode%" == "debug" (
+-    qmake %APPVEYOR_BUILD_FOLDER% -r -tp vc "CONFIG+=debug"
+-    msbuild /p:Configuration=DEBUG
++    qmake %APPVEYOR_BUILD_FOLDER% "CONFIG+=debug"
++    REM msbuild /p:Configuration=DEBUG
++	jom debug
+   ) else (
+     qmake %APPVEYOR_BUILD_FOLDER%
+     where jom
+diff --git a/widgets/QtAVWidgets/VideoPreviewWidget.h b/widgets/QtAVWidgets/VideoPreviewWidget.h
+index f0a72837..61fd4f6c 100644
+--- a/widgets/QtAVWidgets/VideoPreviewWidget.h
++++ b/widgets/QtAVWidgets/VideoPreviewWidget.h
+@@ -53,6 +53,8 @@ public:
+     /// (caller must ensure to call displayFrame()/displayFrame(frame) for this if false).
+     /// set to false only if you want to do your own frame caching magic with preview frames.
+     void setAutoDisplayFrame(bool b=true);
++	VideoFrameExtractor* getVideoFrameExtractor() { return m_extractor; }
++	VideoOutput* getVideoOutput() { return m_out; }
+ public Q_SLOTS: // these were previously private but made public to allow calling code to cache some preview frames and directly display frames to this class
+     void displayFrame(const QtAV::VideoFrame& frame); //parameter VideoFrame
+     void displayNoFrame();
+diff --git a/widgets/VideoPreviewWidget.cpp b/widgets/VideoPreviewWidget.cpp
+index 5b0b722d..b6830cc6 100644
+--- a/widgets/VideoPreviewWidget.cpp
++++ b/widgets/VideoPreviewWidget.cpp
+@@ -121,11 +121,13 @@ void VideoPreviewWidget::displayFrame(const QtAV::VideoFrame &frame)
+         return;
+     }
+     m_out->receive(f);
++	show();
+     Q_EMIT gotFrame(f);
+ }
+ 
+ void VideoPreviewWidget::displayNoFrame()
+ {
++	hide();
+     m_out->receive(VideoFrame());
+ }
+ 

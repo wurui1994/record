@@ -1,0 +1,1 @@
+root -e '.L /usr/lib/libSDL2.so' -e '.L /usr/lib/libGL.so' -e '.L /usr/lib/libGLEW.so' -e 'int argc=0;char **argv=NULL' -e '.x main.c(argc,argv)' -q -l -b

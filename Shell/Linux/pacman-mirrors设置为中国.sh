@@ -1,0 +1,1 @@
+pacman-mirrors -c China

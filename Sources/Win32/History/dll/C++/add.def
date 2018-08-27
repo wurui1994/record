@@ -1,0 +1,4 @@
+LIBRARY add.dll
+EXPORTS
+_ZN4test3addEii
+_ZN4test3subEii

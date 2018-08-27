@@ -1,0 +1,1 @@
+"C:\Program Files (x86)\Microsoft Help Viewer\v2.3\HlpViewer.exe" /catalogName VisualStudio15 /helpQuery method=f1&query=msdnstart /locale zh-CN /sku 1800 /launchingApp Microsoft,VisualStudio,15.0

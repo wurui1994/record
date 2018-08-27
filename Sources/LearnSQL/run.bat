@@ -1,0 +1,2 @@
+"D:/Software/MSYS2/mingw32/bin\pg_ctl" -D "D:/Software/MSYS2/mingw32/data" -l logfile start
+REM "D:/Software/MSYS2/mingw32/bin\pg_ctl" -D "D:/Software/MSYS2/home/wurui/PostgreSQL/data" -l logfile start

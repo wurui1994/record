@@ -1,0 +1,3 @@
+文件ITKModuleRemote.cmake加入
+# Function to fetch remote modules.
+set(GIT_EXECUTABLE "D:\\Software\\vcpkg\\downloads\\MinGit-2.15.0-32-bit\\cmd\\git.exe")

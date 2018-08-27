@@ -1,0 +1,111 @@
+# Maintainer: Alexey Pavlov <alexpux@gmail.com>
+# Contributor: James Ross-Gowan <rossymiles@gmail.com>
+
+_realname=mpv
+pkgbase="mingw-w64-${_realname}"
+pkgname="${MINGW_PACKAGE_PREFIX}-${_realname}"
+pkgver=0.29.0
+pkgrel=1
+pkgdesc="Video player based on MPlayer/mplayer2 (mingw-w64)"
+url="https://mpv.io/"
+arch=('any')
+license=('GPL')
+depends=("${MINGW_PACKAGE_PREFIX}-angleproject-git"
+         "${MINGW_PACKAGE_PREFIX}-ffmpeg"
+         "${MINGW_PACKAGE_PREFIX}-lcms2"
+         "${MINGW_PACKAGE_PREFIX}-libarchive"
+         "${MINGW_PACKAGE_PREFIX}-libass"
+         "${MINGW_PACKAGE_PREFIX}-libbluray"
+         "${MINGW_PACKAGE_PREFIX}-libcaca"
+         "${MINGW_PACKAGE_PREFIX}-libcdio"
+         "${MINGW_PACKAGE_PREFIX}-libcdio-paranoia"
+         "${MINGW_PACKAGE_PREFIX}-libdvdnav"
+         "${MINGW_PACKAGE_PREFIX}-libdvdread"
+         "${MINGW_PACKAGE_PREFIX}-libjpeg-turbo"
+         "${MINGW_PACKAGE_PREFIX}-lua51"
+         "${MINGW_PACKAGE_PREFIX}-rubberband"
+         "${MINGW_PACKAGE_PREFIX}-uchardet"
+         "winpty")
+makedepends=("${MINGW_PACKAGE_PREFIX}-gcc"
+             "${MINGW_PACKAGE_PREFIX}-python3-docutils"
+             "perl"
+             "pkg-config"
+             "python")
+source=(${_realname}-${pkgver}.tar.gz::https://github.com/mpv-player/${_realname}/archive/v${pkgver}.tar.gz
+        001-ffmpeg-abi.patch)
+sha256sums=('SKIP'
+            'SKIP')
+
+# strip doesn't work well with the mpv.com wrapper, so strip manually instead
+options=(!strip !emptydirs)
+
+prepare() {
+  cd ${_realname}-${pkgver}
+  patch -p1 -i ${srcdir}/001-ffmpeg-abi.patch
+
+  [[ -x ./waf ]] || /usr/bin/python3 ./bootstrap.py
+  sed -i 's:bin/env python$:bin/env python3:' waf
+}
+
+build() {
+  # http://nightlies.videolan.org/build/contribs/vlc-contrib-i686-w64-mingw32-latest.tar.bz2
+  # delete libav*a and libav*dll.a,replace ffmpeg[av*.lib]and 
+  # libass[ass.lib] if can't work well,
+  # use vlc\contrib\i686-w64-mingw32\lib\libass.a [and libharfbuzz.a]
+  # remove libiconv.dll.a, libpthread.dll.a and libwinpthread.dll.a
+  cd "${srcdir}/${_realname}-${pkgver}"
+
+  DEST_OS=win32 \
+  TARGET=${MINGW_CHOST} \
+  PKG_CONFIG=/usr/bin/pkg-config \
+  CC=gcc PERL=/usr/bin/perl \
+  AR=${MINGW_PREFIX}/bin/ar \
+  WINDRES=${MINGW_PREFIX}/bin/windres \
+  RST2MAN=${MINGW_PREFIX}/bin/rst2man3 \
+  /usr/bin/python3 ./waf configure LDFLAGS="-static" \
+    --prefix=${MINGW_PREFIX} \
+    --check-c-compiler=gcc \
+    --enable-libmpv-shared \
+	--enable-static-build \
+    --enable-caca \
+    --enable-cdda \
+    --enable-dvdnav \
+    --enable-dvdread \
+    --enable-egl-angle \
+	--disable-vulkan \
+    --disable-egl-angle-lib \
+    --enable-jpeg \
+    --enable-lcms2 \
+    --enable-libarchive \
+    --enable-libass \
+    --disable-libbluray \
+    --enable-lua \
+    --disable-rubberband \
+    --enable-uchardet \
+    --out="${srcdir}/build-${MINGW_CHOST}"
+
+  /usr/bin/python3 ./waf build
+}
+
+package() {
+  cd "${srcdir}/${_realname}-${pkgver}"
+  export PYTHON=${MINGW_PREFIX}/bin/python3
+  /usr/bin/python3 ./waf install --destdir="${pkgdir}"
+
+  # Strip binaries manually
+  ${MINGW_PREFIX}/bin/strip "${STRIP_BINARIES}" "${pkgdir}${MINGW_PREFIX}/bin/mpv.exe"
+  ${MINGW_PREFIX}/bin/strip "${STRIP_BINARIES}" "${pkgdir}${MINGW_PREFIX}/bin/mpv.com"
+  ${MINGW_PREFIX}/bin/strip "${STRIP_SHARED}" "${pkgdir}${MINGW_PREFIX}/bin/mpv-1.dll"
+
+  # Move encoding-profiles.conf to share/doc alongside the example .conf files.
+  # mpv doesn't search /etc for configuration on MinGW.
+  mv "${pkgdir}${MINGW_PREFIX}/etc/mpv/"*.conf "${pkgdir}${MINGW_PREFIX}/share/doc/mpv/"
+
+  # mpv needs winpty for key bindings to work on the terminal
+  mv "${pkgdir}${MINGW_PREFIX}/bin/mpv.exe" "${pkgdir}${MINGW_PREFIX}/bin/mpv_exe"
+  _exename=mpv
+  echo '#!/usr/bin/env bash' > "${pkgdir}${MINGW_PREFIX}/bin/${_exename}"
+  echo 'export _started_from_console=yes' >> "${pkgdir}${MINGW_PREFIX}/bin/${_exename}"
+  echo '/usr/bin/winpty "$( dirname ${BASH_SOURCE[0]} )/'${_exename}'.exe" "$@"' >> "${pkgdir}${MINGW_PREFIX}/bin/${_exename}"
+  mv "${pkgdir}${MINGW_PREFIX}/bin/mpv_exe" "${pkgdir}${MINGW_PREFIX}/bin/mpv.exe"
+}

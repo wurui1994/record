@@ -1,0 +1,5 @@
+To run this program,you just need change to the program directory,then:
+$ make clean
+$ make
+$ ./spider url1 url2 ...        (for example: ./spider www.sogou.com/ www.cnblogs.com/cate/c/ www.hust.edu.cn/)
+If any bug found,please report to zhchya@gmail.com.

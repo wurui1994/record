@@ -1,0 +1,24 @@
+{
+    "files.associations": {
+        "stdio.h": "c",
+        "typeinfo": "cpp",
+        "avcodec.h": "c",
+        "cairo.h": "c",
+        "esutil.h": "c",
+        "gl2.h": "c",
+        "cimport.h": "c",
+        "glext.h": "c",
+        "sdl.h": "c",
+        "xiosbase": "c",
+        "xlocale": "c",
+        "ratio": "c",
+        "stat.h": "c",
+        "locale.h": "c",
+        "algorithm": "c",
+        "chrono": "c",
+        "limits": "c",
+        "*.rh": "c"
+    },
+    "C_Cpp.intelliSenseEngineFallback": "Enabled",
+    "python.pythonPath": "D:\\Program\\Miniconda3\\python.exe"
+}

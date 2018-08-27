@@ -1,0 +1,70 @@
+diff --git a/examples/common/common.cpp b/examples/common/common.cpp
+index cd031dce..765ce28c 100644
+--- a/examples/common/common.cpp
++++ b/examples/common/common.cpp
+@@ -100,7 +100,7 @@ QtMsgHandler qInstallMessageHandler(QtMessageHandler h) {
+ #endif
+ void Logger(QtMsgType type, const QMessageLogContext &, const QString& qmsg)
+ {
+-    const QByteArray msgArray = qmsg.toUtf8();
++    /*const QByteArray msgArray = qmsg.toUtf8();
+     const char* msg = msgArray.constData();
+      switch (type) {
+      case QtDebugMsg:
+@@ -121,8 +121,8 @@ void Logger(QtMsgType type, const QMessageLogContext &, const QString& qmsg)
+          abort();
+      }
+      fflush(0);
+-     fileLogger()->write(msgArray);
+-     fileLogger()->write(QByteArray("\n"));
++     fileLogger()->write(msgArray);*/
++     //fileLogger()->write(QByteArray("\n"));
+      //fileLogger()->flush(); // crash in qt5.7
+ }
+ 
+diff --git a/examples/player/MainWindow.cpp b/examples/player/MainWindow.cpp
+index 60114030..eba8c4bd 100644
+--- a/examples/player/MainWindow.cpp
++++ b/examples/player/MainWindow.cpp
+@@ -421,10 +421,10 @@ void MainWindow::setupUi()
+     pWA = new QWidgetAction(0);
+     pWA->setDefaultWidget(wgt);
+     subMenu->addAction(pWA); //must add action after the widget action is ready. is it a Qt bug?
++	box->addItem(QString::fromLatin1("LibASS"), QString::fromLatin1("LibASS"));
+     box->addItem(QString::fromLatin1("FFmpeg"), QString::fromLatin1("FFmpeg"));
+-    box->addItem(QString::fromLatin1("LibASS"), QString::fromLatin1("LibASS"));
+     connect(box, SIGNAL(activated(QString)), SLOT(setSubtitleEngine(QString)));
+-    mpSubtitle->setEngines(QStringList() << box->itemData(box->currentIndex()).toString());
++    //mpSubtitle->setEngines(QStringList() << box->itemData(box->currentIndex()).toString());
+     box->setToolTip(tr("FFmpeg supports more subtitles but only render plain text") + QString::fromLatin1("\n") + tr("LibASS supports ass styles"));
+ 
+     wgt = new QWidget();
+diff --git a/src/Frame.cpp b/src/Frame.cpp
+index 2f04fd5c..ce313a31 100644
+--- a/src/Frame.cpp
++++ b/src/Frame.cpp
+@@ -80,7 +80,7 @@ uchar* Frame::bits(int plane)
+ const uchar* Frame::constBits(int plane) const
+ {
+     if (plane < 0 || plane >= planeCount()) {
+-        qWarning("Invalid plane! Valid range is [0, %d)", planeCount());
++        //qWarning("Invalid plane! Valid range is [0, %d)", planeCount());
+         return 0;
+     }
+     return d_func()->planes[plane];
+diff --git a/tools/ci/win/build.bat b/tools/ci/win/build.bat
+index 8bd9da6e..db2cacae 100644
+--- a/tools/ci/win/build.bat
++++ b/tools/ci/win/build.bat
+@@ -5,8 +5,9 @@ if "%cc%" == "MinGW" (
+   mingw32-make -j%NUMBER_OF_PROCESSORS%
+ ) else (
+   if "%mode%" == "debug" (
+-    qmake %APPVEYOR_BUILD_FOLDER% -r -tp vc "CONFIG+=debug"
+-    msbuild /p:Configuration=DEBUG
++    qmake %APPVEYOR_BUILD_FOLDER% "CONFIG+=debug"
++    REM msbuild /p:Configuration=DEBUG
++	jom debug
+   ) else (
+     qmake %APPVEYOR_BUILD_FOLDER%
+     where jom

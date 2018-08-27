@@ -1,0 +1,3 @@
+LIBRARY add
+EXPORTS
+add @ 1

@@ -1,0 +1,21 @@
+0.打补丁qtav_ass_font_setting.patch
+
+1.https://ffmpeg.zeranoe.com/builds/win32 下载最新dev shared 
+从.def重新生成.lib: for %f in (*.def) do lib /def:%f
+加入ass库的头和库文件,加入缺少的头文件avfiltergraph.h。
+
+2.mkdir build
+将ffmpeg的include、bin和lib拷贝到build
+文件.qmake.conf加入:
+PATH += $$PWD/build/bin
+INCLUDEPATH += $$PWD/build/include
+LIBS += -L$$PWD/build/lib
+
+git submodule update --init --recursive
+
+call "C:\Program Files (x86)\Microsoft Visual Studio 14.0\VC\vcvarsall.bat"
+qmake ..\QtAv.pro -r -spec win32-msvc -tp vc
+msbuild /m /p:platform=win32
+msbuild /m /p:platform=win32 /p:configuration=release
+
+3.修改sdk_install.bat

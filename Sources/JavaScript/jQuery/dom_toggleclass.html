@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<script src="https://cdn.bootcss.com/jquery/1.10.2/jquery.min.js">
+</script>
+<script>
+$(document).ready(function(){
+  $("button").click(function(){
+    $("h1,h2,p").toggleClass("blue");
+  });
+});
+</script>
+<style type="text/css">
+.blue
+{
+color:blue;
+}
+</style>
+</head>
+<body>
+
+<h1 class="blue">标题 1</h1>
+<h2 class="blue">标题 2</h2>
+<p class="blue">这是一个段落。</p>
+<p>这是另外一个段落。</p>
+<br>
+<button>切换 class</button>
+</body>
+</html>

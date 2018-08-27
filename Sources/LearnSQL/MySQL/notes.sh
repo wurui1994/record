@@ -1,0 +1,1 @@
+grant all on to *.* 'root'@'服务器的ip地址'  identified by '密码';

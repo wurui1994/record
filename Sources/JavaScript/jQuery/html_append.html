@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>菜鸟教程(runoob.com)</title>
+<meta charset="utf-8">
+<script src="https://cdn.bootcss.com/jquery/1.10.2/jquery.min.js">
+</script>
+<script>
+function appendText(){
+	var txt1="<p>HTML文本。</p>";              // 使用 HTML 标签创建文本
+	var txt2=$("<p></p>").text("jQuery文本。");  // 使用 jQuery 创建文本
+	var txt3=document.createElement("p");
+	txt3.innerHTML="DOM文本。";               // 使用 DOM 创建文本 text with DOM
+	$("body").append(txt1,txt2,txt3);        // 追加新元素
+}
+</script>
+</head>
+<body>
+
+<p>这是一个段落。</p>
+<button onclick="appendText()">追加文本</button>
+
+</body>
+</html>

@@ -1,0 +1,60 @@
+ examples/examples.pri                            | 4 ++--
+ examples/luxo/luxo.pro                           | 2 +-
+ examples/multiSelect/multiSelect.pro             | 2 +-
+ examples/screenCoordSystem/screenCoordSystem.pro | 2 +-
+ 4 files changed, 5 insertions(+), 5 deletions(-)
+
+diff --git a/examples/examples.pri b/examples/examples.pri
+index a64bdc3..15e06bc 100644
+--- a/examples/examples.pri
++++ b/examples/examples.pri
+@@ -5,8 +5,8 @@ CONFIG += qt opengl warn_on thread rtti console embed_manifest_exe no_keywords
+ # Set path to include and lib files (see doc/compilation.html for details):
+ # Uncomment and tune these paths according to your configuration.
+ 
+-#INCLUDEPATH *= C:/Users/debunne/Documents/libQGLViewer-VERSION
+-#LIBS *= -LC:/Users/debunne/Documents/libQGLViewer-VERSION/QGLViewer -lQGLViewer2
++INCLUDEPATH += $$PWD/../QGLViewer
++LIBS += -L$$PWD/../QGLViewer -lQGLViewer2
+ 
+ # --------------------------------------------------------------------------------------
+ 
+diff --git a/examples/luxo/luxo.pro b/examples/luxo/luxo.pro
+index 03d4700..ead4804 100644
+--- a/examples/luxo/luxo.pro
++++ b/examples/luxo/luxo.pro
+@@ -19,7 +19,7 @@ SOURCES  = luxo.cpp main.cpp
+ 
+ # Since we use gluCylinder
+ !macx|darwin-g++ {
+-    QMAKE_LIBS_OPENGL *= -lGLU
++#    QMAKE_LIBS_OPENGL *= -lGLU
+ }
+ 
+ include( ../examples.pri )
+diff --git a/examples/multiSelect/multiSelect.pro b/examples/multiSelect/multiSelect.pro
+index 11fd2b4..f5a9874 100644
+--- a/examples/multiSelect/multiSelect.pro
++++ b/examples/multiSelect/multiSelect.pro
+@@ -19,7 +19,7 @@ SOURCES  = multiSelect.cpp manipulatedFrameSetConstraint.cpp object.cpp main.cpp
+ 
+ # Since we use gluCylinder
+ !macx|darwin-g++ {
+-	QMAKE_LIBS_OPENGL *= -lGLU
++#	QMAKE_LIBS_OPENGL *= -lGLU
+ }
+ 
+ include( ../examples.pri )
+diff --git a/examples/screenCoordSystem/screenCoordSystem.pro b/examples/screenCoordSystem/screenCoordSystem.pro
+index b10dd57..45f6156 100644
+--- a/examples/screenCoordSystem/screenCoordSystem.pro
++++ b/examples/screenCoordSystem/screenCoordSystem.pro
+@@ -17,7 +17,7 @@ SOURCES  = screenCoordSystem.cpp main.cpp
+ 
+ # Since we use gluCylinder
+ !macx|darwin-g++ {
+-	QMAKE_LIBS_OPENGL *= -lGLU
++#	QMAKE_LIBS_OPENGL *= -lGLU
+ }
+ 
+ include( ../examples.pri )

@@ -1,0 +1,6 @@
+git clone https://github.com/conradsnicta/armadillo-code
+#修改CMakeLists.txt为中set(ARMA_USE_EXTERN_CXX11_RNG true)为false
+./configure
+make install
+root -e ".L /usr/lib/libarmadillo.so" -e "int argc=0;char**argv=NULL" -e ".x main.cpp(argc,argv)" -q -l -b
+#main带参数处理起来要复杂一点
