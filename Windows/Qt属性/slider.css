@@ -1,0 +1,21 @@
+/* Circle handle */
+/* Slider Layout: Expanding */
+/* V groove_width + abs(margin_left + margin_right) = handle_height = 2*border_radius */
+/* H groove_height + abs(margin_top + margin_bottom) = handle_width = 2*border_radius */
+/*先确定groove,然后确定handle,半径为handle的一半,abs(margin)=(handle-groove)/2,且margin为负值*/
+QSlider::groove {
+    background: #00B1EA;
+    width: 4px;/* groove_width */
+    border-radius: 2px;
+}
+QSlider::sub-page {
+    background: #FF7F9CA5;
+    border-radius: 2px;
+}
+QSlider::handle {
+    background: red;
+    height: 8px;
+    border-radius: 4px;
+    margin: 0 -2px 0 -2px;
+    /*top right bottom left*/
+}
