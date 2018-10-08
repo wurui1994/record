@@ -2,3 +2,6 @@ Overlay transparent Qt widget need opengl-cb mode [or libmpv mode for mpv >= 0.2
 	mpv_set_option_string(mpv, "vo", "opengl-cb");
 	// mpv >= 0.29
 	mpv_set_option_string(mpv, "vo", "libmpv");
+	
+Icon invalid:"etc/mpv-icon.ico"
+Edit Icon: Use ResourceHacker delete manifest
