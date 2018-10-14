@@ -74,3 +74,9 @@ Server = https://mirrors.tuna.tsinghua.edu.cn/archlinuxcn/$arch
 [arch4edu]
 SigLevel = Never
 Server = http://mirrors.tuna.tsinghua.edu.cn/arch4edu/$arch
+
+9.重新安装系统之后:
+  1.确保开启开发者模式和WSL功能
+  2.使用lxss.reg设置注册表项Lxss
+  HKEY_CURRENT_USER\Software\Microsoft\Windows\CurrentVersion\Lxss
+  主要是设置"BasePath",顺便改一下"DistributionName"

@@ -30,7 +30,6 @@ RST2MAN=${MINGW_PREFIX}/bin/rst2man3 \
 --enable-uchardet \
 --enable-egl-angle \
 --enable-libarchive \
---disable-aom \
 --disable-vulkan \
 --disable-libbluray \
 --disable-rubberband \

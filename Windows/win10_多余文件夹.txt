@@ -1,4 +1,4 @@
-输出HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\MyComputer\NameSpace下的项
+删除HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\MyComputer\NameSpace下的项
 
 删除C:\Users\wurui\AppData\Roaming\Microsoft\Windows\Libraries
 
