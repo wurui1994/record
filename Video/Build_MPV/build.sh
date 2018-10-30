@@ -1,10 +1,35 @@
 # http://nightlies.videolan.org/build/contribs/vlc-contrib-i686-w64-mingw32-latest.tar.bz2
-# delete libav*a and libav*dll.a,replace ffmpeg[av*.lib]and 
-# libass[ass.lib] if can't work well,
-# use vlc\contrib\i686-w64-mingw32\lib\libass.a [and libharfbuzz.a]
+
+# remove libav*a and libav*dll.a
 # remove libiconv.dll.a, libpthread.dll.a and libwinpthread.dll.a
-# modify libav*.pc libass.pc
+
+# replace these libs:
+# ffmpeg[av*.lib] and libass[ass.lib] as well as libass's dependencies,
+# [libharfbuzz.a libfreetype.a libfribidi.a]
+# use vlc\contrib\i686-w64-mingw32\lib\libass.a
+
+# modify libav*.pc libass.pc [Libs.private:]
+
+# ./waf configure 
+# Comment out this line [wscript] 'deps': 'ffmpeg || libav' 
+# ./waf configure
+# Option: comment out function `print_libav_versions` in player/main.c
+
+# https://mirrors.tuna.tsinghua.edu.cn/help/msys2/
+# autorebase.bat
+# pacman -Syyu
+# pacman -S mingw-w64-i686-toolchain
+# makepkg-mingw -sLf
+# cd src/mpv*/
+# /d/GitHub/Record/Video/Build_MPV
+
 rm /mingw32/lib/*.dll.a
+rm /mingw32/i686-w64-mingw32/lib/*.dll.a
+
+# ./bootstrap.py
+# git clone https://github.com/mpv-player/mpv
+# cd mpv
+
 
 DEST_OS=win32 \
 TARGET=${MINGW_CHOST} \
@@ -30,6 +55,7 @@ RST2MAN=${MINGW_PREFIX}/bin/rst2man3 \
 --enable-uchardet \
 --enable-egl-angle \
 --enable-libarchive \
+--disable-aom \
 --disable-vulkan \
 --disable-libbluray \
 --disable-rubberband \
