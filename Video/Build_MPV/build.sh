@@ -1,4 +1,5 @@
 # http://nightlies.videolan.org/build/contribs/vlc-contrib-i686-w64-mingw32-latest.tar.bz2
+# bsdtar -xvf vlc-contrib-i686-w64-mingw32-latest.tar.bz2 i686-w64-mingw32/lib/libharfbuzz.a i686-w64-mingw32/lib/libfreetype.a i686-w64-mingw32/lib/libfribidi.a i686-w64-mingw32/lib/libass.a
 
 # remove libav*a and libav*dll.a
 # remove libiconv.dll.a, libpthread.dll.a and libwinpthread.dll.a
@@ -25,6 +26,7 @@
 
 rm /mingw32/lib/*.dll.a
 rm /mingw32/i686-w64-mingw32/lib/*.dll.a
+# rm /mingw32/i686-w64-mingw32/lib/*pthread*.dll.a
 
 # ./bootstrap.py
 # git clone https://github.com/mpv-player/mpv
@@ -66,3 +68,8 @@ RST2MAN=${MINGW_PREFIX}/bin/rst2man3 \
 ./waf build
 
 ./waf install --destdir=$(pwd)/package
+
+pushd .
+cd $(pwd)/package/mingw32/bin
+strip *.com *.exe *.dll
+popd
