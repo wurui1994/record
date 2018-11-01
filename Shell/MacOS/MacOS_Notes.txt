@@ -35,3 +35,9 @@ https://developer.apple.com/certificationauthority/AppleWWDRCA.cer
 1.Apple Worldwide Developer Relations Certification Authority
 2.Developer ID Certification Authority
 3.Developer ID Application: Wuhan Universal Translation and Interpretation Technology Co., Ltd. (L57H8ZJ2RB)
+
+使用VMware虚拟机搭建的MacOSX，在10.10以上可能会出现无法扩充磁盘大小的问题。
+https://www.cnblogs.com/fujinliang/p/6797547.html
+diskutil resizeVolume disk1s1 100GB
+For APFS:
+diskutil apfs resizeContainer disk1 80GB
