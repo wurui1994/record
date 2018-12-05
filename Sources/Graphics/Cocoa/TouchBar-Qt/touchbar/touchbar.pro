@@ -8,10 +8,10 @@ TEMPLATE = app
 CONFIG += c++11
 
 SOURCES += \
-    touchbar_mac.mm \
-    main.cpp
+    main.cpp \
+    qmactouchbar.mm
 
 HEADERS += \
-    touchbar_mac.h
+    qmactouchbar.h
 
 LIBS += -framework AppKit

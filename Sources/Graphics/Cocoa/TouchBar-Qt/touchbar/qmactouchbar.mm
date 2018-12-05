@@ -1,29 +1,5 @@
-/****************************************************************************
-**
-** Copyright (C) 2017 The Qt Company Ltd.
-** Contact: https://www.qt.io/licensing/
-**
-** This file is part of Qt Creator.
-**
-** Commercial License Usage
-** Licensees holding valid commercial Qt licenses may use this file in
-** accordance with the commercial license agreement provided with the
-** Software or, alternatively, in accordance with the terms contained in
-** a written agreement between you and The Qt Company. For licensing terms
-** and conditions see https://www.qt.io/terms-conditions. For further
-** information use the contact form at https://www.qt.io/contact-us.
-**
-** GNU General Public License Usage
-** Alternatively, this file may be used under the terms of the GNU
-** General Public License version 3 as published by the Free Software
-** Foundation with exceptions as appearing in the file LICENSE.GPL3-EXCEPT
-** included in the packaging of this file. Please review the following
-** information to ensure the GNU General Public License requirements will
-** be met: https://www.gnu.org/licenses/gpl-3.0.html.
-**
-****************************************************************************/
 
-#include "touchbar_mac.h"
+#include "qmactouchbar.h"
 
 #include <QtWidgets>
 #import <AppKit/AppKit.h>
@@ -96,7 +72,10 @@
 
     // Create custom button item
     NSString *identifer = command->id().toNSString();
+
+#if 0
     NSCustomTouchBarItem *item = [[[NSCustomTouchBarItem alloc] initWithIdentifier:identifer] autorelease];
+
     NSButton *button = [[NSButton buttonWithTitle:title.toNSString() target:self
                         action:@selector(itemAction:)] autorelease];
 //    button.enabled = command->isActive();
@@ -108,6 +87,58 @@
     [items setObject:item forKey:identifer];
     [order setObject:[NSNumber numberWithInt:command->macTouchBarOrder()] forKey:identifer];
     [commands setObject:[[QObjectPointer alloc]initWithQObject:command] forKey:[NSValue valueWithPointer:button]];
+#else
+    if(command->controlType() == Command::Button)
+    {
+        NSCustomTouchBarItem *item = nil;
+        item = [[[NSCustomTouchBarItem alloc] initWithIdentifier:identifer] autorelease];
+        //
+        NSButton *button = [[NSButton buttonWithTitle:title.toNSString() target:self
+                            action:@selector(itemAction:)] autorelease];
+        //
+        // button.image = [NSImage imageNamed:NSImageNameTouchBarDownloadTemplate];
+        button.title = title.toNSString();
+        button.imagePosition =  NSImageLeft;
+        //
+        item.view = button;
+
+
+        [item retain];
+        [item.view retain];
+
+        [items setObject:item forKey:identifer];
+        [order setObject:[NSNumber numberWithInt:command->macTouchBarOrder()] forKey:identifer];
+        [commands setObject:[[QObjectPointer alloc]initWithQObject:command] forKey:[NSValue valueWithPointer:button]];
+    }
+    else
+    {
+        NSTouchBarItem *item = nil;
+        if(command->controlType() == Command::ColorPickerColor)
+        {
+            item = [NSColorPickerTouchBarItem colorPickerWithIdentifier:identifer];
+        }
+        else if(command->controlType() == Command::ColorPickerText)
+        {
+            item = [NSColorPickerTouchBarItem textColorPickerWithIdentifier:identifer];
+        }
+        else if(command->controlType() == Command::ColorPickerStroke)
+        {
+            item = [NSColorPickerTouchBarItem strokeColorPickerWithIdentifier:identifer];
+        }
+//        else if(command->controlType() == Command::CandidateList)
+//        {
+//            item = [NSCandidateListTouchBarItem strokeColorPickerWithIdentifier:identifer];
+//        }
+        else if(command->controlType() == Command::SharingService)
+        {
+            item = [[NSSharingServicePickerTouchBarItem alloc] initWithIdentifier:identifer];
+        }
+        //
+        [item retain];
+        [items setObject:item forKey:identifer];
+        [order setObject:[NSNumber numberWithInt:command->macTouchBarOrder()] forKey:identifer];
+    }
+#endif
 }
 
 - (void)itemAction:(id)sender
@@ -147,6 +178,8 @@
     touchBar.defaultItemIdentifiers = [order keysSortedByValueUsingComparator:^NSComparisonResult(id a, id b) {
         return [a compare:b];
     }];
+
+//    [touchBar.defaultItemIdentifiers addObject:NSTouchBarItemIdentifierOtherItemsProxy];
 
     return touchBar;
 }
@@ -192,13 +225,16 @@
 
 static DynamicTouchBarProvider *touchBarProvider = nil;
 
-Command::Command(QObject* parent,QString id, int order, QString title, QAction *action)
+Command::Command(QObject* parent,QString id, int order,
+                 QString title, QAction *action, ControlType controlType)
     :QObject(parent)
 {
     m_id = id;
     m_macTouchBarOrder = order;
     m_touchBarTitle = title;
     m_action = action;
+    //
+    m_controlType = controlType;
 }
 
 Command::~Command()
@@ -226,15 +262,20 @@ int Command::macTouchBarOrder()
     return m_macTouchBarOrder;
 }
 
+Command::ControlType Command::controlType()
+{
+    return m_controlType;
+}
 
-MacTouchBar::MacTouchBar()
+
+QMacTouchBar::QMacTouchBar()
 {
     // ### This is really a singleton class
     touchBarProvider = [[DynamicTouchBarProvider alloc] init];
     [touchBarProvider installAsDelegateForApplication:[NSApplication sharedApplication]];
 }
 
-MacTouchBar::MacTouchBar(QWidget* parent)
+QMacTouchBar::QMacTouchBar(QWidget* parent)
 {
     // ### This is really a singleton class
     touchBarProvider = [[DynamicTouchBarProvider alloc] init];
@@ -243,17 +284,17 @@ MacTouchBar::MacTouchBar(QWidget* parent)
 }
 
 
-MacTouchBar::~MacTouchBar()
+QMacTouchBar::~QMacTouchBar()
 {
     [touchBarProvider release];
 }
 
-void MacTouchBar::addItem(Command *command)
+void QMacTouchBar::addItem(Command *command)
 {
     [touchBarProvider addItem:command];
 }
 
-void MacTouchBar::clear()
+void QMacTouchBar::clear()
 {
     [touchBarProvider clearItems];
     touchBarProvider.touchBar = nil;
