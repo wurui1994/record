@@ -1,27 +1,3 @@
-
-<!-- <script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=default"></script> -->
-
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.9.0-alpha1/katex.min.css" >
-<script src="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.9.0-alpha1/katex.min.js"></script>
-
-<script src="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.9.0-alpha1/contrib/auto-render.min.js" ></script>
-<script>
-document.addEventListener("DOMContentLoaded", function() {
-    renderMathInElement(document.body,{
-        delimiters: [
-            {left: "$$", right: "$$", display: true},
-            {left: "\\[", right: "\\]", display: true},
-            {left: "$", right: "$", display: false},
-            {left: "\\(", right: "\\)", display: false}
-        ],
-        macros: {
-            "\\RR": "\\mathbb{R}"
-        }
-    });
-});
-</script>
-
-
 # *Part1.There are some equations and some websites.*
 >
 <center>
@@ -48,7 +24,6 @@ $$\left( \sum_{k=1}^n a_k b_k \right)^2 \leq \left( \sum_{k=1}^n a_k^2 \right) \
 $$\frac{1}{\Bigl(\sqrt{\phi \sqrt{5}}-\phi\Bigr) e^{\frac25 \pi}} = 1+\frac{e^{-2\pi}} {1+\frac{e^{-4\pi}} {1+\frac{e^{-6\pi}} {1+\frac{e^{-8\pi}} {1+\cdots} } } }$$
 
 ## 1.6 Lorenz Equations
-<div>
 $$
 \begin{aligned}
 \dot{x} & = \sigma(y-x) \\
@@ -56,10 +31,8 @@ $$
 \dot{z} & = -\beta z + xy
 \end{aligned}
 $$
-</div>
 
 ## 1.7 Maxwell's Equations
-<div>
 $$
 \begin{aligned}
 \nabla \times \vec{\mathbf{B}} -\, \frac1c\, \frac{\partial\vec{\mathbf{E}}}{\partial t} & = \frac{4\pi}{c}\vec{\mathbf{j}} \\   
@@ -67,11 +40,9 @@ $$
 \nabla \times \vec{\mathbf{E}}\, +\, \frac1c\, \frac{\partial\vec{\mathbf{B}}}{\partial t} & = \vec{\mathbf{0}} \\
 \nabla \cdot \vec{\mathbf{B}} & = 0 \end{aligned}
 $$
-</div>
 
 >These equations are quite cramped. We can add vertical spacing using (for example) [1em] after each line break (\\). as you can see here:
 
-<div>
 $$
 \begin{aligned}
 \nabla \times \vec{\mathbf{B}} -\, \frac1c\, \frac{\partial\vec{\mathbf{E}}}{\partial t} & = \frac{4\pi}{c}\vec{\mathbf{j}} \\[1em]   
@@ -79,7 +50,6 @@ $$
 \nabla \times \vec{\mathbf{E}}\, +\, \frac1c\, \frac{\partial\vec{\mathbf{B}}}{\partial t} & = \vec{\mathbf{0}} \\[1em]
 \nabla \cdot \vec{\mathbf{B}} & = 0 \end{aligned}
 $$
-</div>
 
 ## 1.8 Some Websites
 
@@ -175,11 +145,11 @@ Suspendisse id sem consectetuer libero luctus adipiscing.
 This is [an example](http://example.com/ "Title") inline link.
 [This link](http://example.net/) has no title attribute.
 
-
-
 # *Part5.This is example for the picture*
 >
 <center>
 <img src="test.jpg" width="640" height="480" />
 </center>
+
+*Reference* `vscode plugin`: [Markdown All in One](https://github.com/neilsustc/vscode-markdown)
 
