@@ -1,4 +1,5 @@
 #include <QtWidgets>
+#include "qmactouchbar.h"
 
 int main(int argc, char **argv)
 {
