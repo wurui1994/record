@@ -1,8 +1,8 @@
 # seq 4|parallel -n0 -j4 -u "curl -I www.baidu.com"
 #
-for f in {1..37}
+for f in {1..50}
 do
-url="http://www.tutu12345.cc/a/cn/xiuren/list_6_$f.html"
+url="https://www.tutu555.net/a/cn/xiuren/list_6_$f.html"
 echo $url
 curl -s $url  | xmllint --format --html --xpath '/html/body/div[2]/div[4]/ul/li/a/@href' - 2>/dev/null | sed -e 's/href=\"//g' -e 's/\"/\n/g' | tr -d ' ' | grep http>> list.txt
 done
