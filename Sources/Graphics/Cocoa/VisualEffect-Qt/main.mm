@@ -14,11 +14,11 @@ void setVisualEffect(QWidget* parent)
 	NSWindow *nswindow = [nsview window];
 
 	nswindow.appearance = [NSAppearance appearanceNamed:NSAppearanceNameVibrantDark];
-	nswindow.titlebarAppearsTransparent = true;
+//	nswindow.titlebarAppearsTransparent = true;
 
-	nswindow.styleMask |= NSFullSizeContentViewWindowMask |
-						 NSClosableWindowMask |
-						 NSResizableWindowMask;
+//	nswindow.styleMask |= NSFullSizeContentViewWindowMask |
+//						 NSClosableWindowMask |
+//						 NSResizableWindowMask;
 
 	nswindow.movableByWindowBackground = true;
 
@@ -36,6 +36,9 @@ void setVisualEffect(QWidget* parent)
 
 	nswindow.contentView = vibrant;
 	[vibrant addSubview:qtView];
+	
+	//
+	[nswindow setLevel:kCGScreenSaverWindowLevel - 1];
 }
 
 int main(int argc, char **argv)
