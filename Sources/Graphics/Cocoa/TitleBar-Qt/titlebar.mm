@@ -34,7 +34,7 @@
     NSView *view = [[NSView alloc] initWithFrame:NSMakeRect(0, 0, 0, 16 + 16)];//16
     _dummyTitlebarAccessoryViewController = [NSTitlebarAccessoryViewController new];
     _dummyTitlebarAccessoryViewController.view = view;
-    _dummyTitlebarAccessoryViewController.fullScreenMinHeight = 38;
+    _dummyTitlebarAccessoryViewController.fullScreenMinHeight = 0;
     [window addTitlebarAccessoryViewController:_dummyTitlebarAccessoryViewController];
 
     NSView * titlebarview = [[window standardWindowButton:NSWindowCloseButton] superview];
@@ -172,4 +172,27 @@ void customWindowTitleBar(QWidget *w,QWidget *c)
     }
     [delegate setWindow:nswindow];
     [delegate autorelease];
+}
+
+void replaceSubView(QWidget *w)
+{
+    NSView *aView = (NSView *)w->winId();
+
+    NSVisualEffectView *newView = [[NSVisualEffectView alloc] initWithFrame:aView.frame];
+    [newView setFrame:aView.frame];
+    [newView setAutoresizesSubviews:aView.autoresizesSubviews];
+    [newView setAutoresizingMask:NSViewWidthSizable|NSViewHeightSizable];
+    [aView.subviews.copy enumerateObjectsUsingBlock:^(NSView *subview, NSUInteger idx, BOOL *stop)
+    {
+        NSRect frame = subview.frame;
+        if (subview.constraints.count>0)
+        {
+            // Note: so far, constraint based contentView subviews are not supported yet
+            NSLog(@"WARNING: does not work yet with NSView instances, that use auto-layout.");
+        }
+        [subview removeFromSuperview];
+        [newView addSubview:subview];
+        [subview setFrame:frame];
+    }];
+    [aView.superview addSubview:newView positioned:NSWindowBelow relativeTo:aView];
 }
