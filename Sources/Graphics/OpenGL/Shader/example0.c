@@ -5,6 +5,8 @@
 #define width 640
 #define height 480
 //
+#define USE_BUFFER 0
+//
 void Run(void);
 void glutCenterWindow(void);
 //
@@ -37,20 +39,20 @@ void Run(void)
 	glClearColor(1.0, 1.0, 1.0, 1.0);
 	glClear(GL_COLOR_BUFFER_BIT);
 
-	GLuint vs = glCreateShader(GL_VERTEX_SHADER);
+	// GLuint vs = glCreateShader(GL_VERTEX_SHADER);
 	GLuint fs = glCreateShader(GL_FRAGMENT_SHADER);
 	//
-	const GLchar *vs_s = "attribute vec4 p;void main(){gl_Position=p;}";
+	// const GLchar *vs_s = "attribute vec4 p;void main(){gl_Position=p;}";
 	const GLchar *fs_s = "void main(){gl_FragColor=vec4(1.0,0.0,0.0,1.0);}";
 	//
-	glShaderSource(vs, 1, &vs_s, NULL);
+	// glShaderSource(vs, 1, &vs_s, NULL);
 	glShaderSource(fs, 1, &fs_s, NULL);
 	//
-	glCompileShader(vs);
+	// glCompileShader(vs);
 	glCompileShader(fs);
 	//
 	GLuint program = glCreateProgram();
-	glAttachShader(program, vs);
+	// glAttachShader(program, vs);
 	glAttachShader(program, fs);
 
 	glLinkProgram(program);
@@ -66,6 +68,7 @@ void Run(void)
 		0.45f, 0.5f, 0.0f   // top
 	};
 
+#if USE_BUFFER
 	unsigned int VBO, VAO;
 	glGenVertexArrays(1, &VAO);
 	glGenBuffers(1, &VBO);
@@ -74,9 +77,12 @@ void Run(void)
 	glBindBuffer(GL_ARRAY_BUFFER, VBO);
 
 	glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW);
-
-	//
-	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), (void *)0);
+    
+    glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), (void *)0);
+#else
+    //
+	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), (void *)vertices);
+#endif
 	glEnableVertexAttribArray(0);
 
 	glDrawArrays(GL_TRIANGLES, 0, 6);
