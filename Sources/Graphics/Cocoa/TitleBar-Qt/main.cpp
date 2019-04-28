@@ -44,17 +44,19 @@ int main(int argc, char* argv[])
     widget2.setAttribute(Qt::WA_TranslucentBackground);
     widget2.setAttribute(Qt::WA_NoBackground);
 
-    QObject::connect(button3, &QPushButton::clicked,[](bool){
+    QObject::connect(button3, &QPushButton::clicked,[&](bool){
         qDebug() << "Hello2";
+        setTitlebarBackgrounColor(&window,Qt::transparent);
     });
 
-    QObject::connect(button4, &QPushButton::clicked,[](){
+    QObject::connect(button4, &QPushButton::clicked,[&](){
         qDebug() << "World2";
+        setTitlebarBackgrounColor(&window,Qt::cyan);
     });
 
     window.setCentralWidget(&widget2);
 
-    replaceSubView(&widget2);
+    setWidgetVisualEffect(&widget2);
 
     // 3.消除分割线
     window.setUnifiedTitleAndToolBarOnMac(true);

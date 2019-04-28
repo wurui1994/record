@@ -22,13 +22,14 @@
 - (void) setWindow:(NSWindow*) window_in
 {
     window = window_in;
-
+#if 0
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(window_resize:)
       name:NSWindowDidResizeNotification object:window];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(enter_fullscreen:)
       name:NSWindowDidEnterFullScreenNotification object:window];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(exit_fullscreen:)
       name:NSWindowDidExitFullScreenNotification object:window];
+#endif
 
     //addTitlebarAccessoryViewController
     NSView *view = [[NSView alloc] initWithFrame:NSMakeRect(0, 0, 0, 16 + 16)];//16
@@ -74,6 +75,7 @@
     }
 
     [newView setAutoresizesSubviews:aView.autoresizesSubviews];
+#if 0
     [aView.subviews.copy enumerateObjectsUsingBlock:^(NSView *subview, NSUInteger idx, BOOL *stop)
     {
         NSRect frame = subview.frame;
@@ -92,6 +94,8 @@
 
     [aView.superview replaceSubview:aView with:newView];
     //   [aView.superview addSubview:newView];
+#endif
+    [aView.superview addSubview:newView positioned:NSWindowBelow relativeTo:aView];
 }
 
 - (void) updateSubview: (NSView *) aView withView: (NSView *) newView
@@ -174,7 +178,24 @@ void customWindowTitleBar(QWidget *w,QWidget *c)
     [delegate autorelease];
 }
 
-void replaceSubView(QWidget *w)
+void setTitlebarBackgrounColor(QWidget *w, QColor color)
+{
+    if (!w)
+    {
+        return;
+    }
+
+    NSView *nsview = (NSView *)w->winId();
+    NSWindow *nswindow = [nsview window];
+
+    NSView* titlebarView = [[nswindow standardWindowButton:NSWindowCloseButton] superview];
+
+    NSColor *nsColor = [NSColor colorWithSRGBRed:
+            color.redF() green:color.greenF() blue:color.blueF() alpha:color.alphaF()];
+    titlebarView.layer.backgroundColor = [nsColor CGColor];
+}
+
+void setWidgetVisualEffect(QWidget *w)
 {
     NSView *aView = (NSView *)w->winId();
 
@@ -182,17 +203,5 @@ void replaceSubView(QWidget *w)
     [newView setFrame:aView.frame];
     [newView setAutoresizesSubviews:aView.autoresizesSubviews];
     [newView setAutoresizingMask:NSViewWidthSizable|NSViewHeightSizable];
-    [aView.subviews.copy enumerateObjectsUsingBlock:^(NSView *subview, NSUInteger idx, BOOL *stop)
-    {
-        NSRect frame = subview.frame;
-        if (subview.constraints.count>0)
-        {
-            // Note: so far, constraint based contentView subviews are not supported yet
-            NSLog(@"WARNING: does not work yet with NSView instances, that use auto-layout.");
-        }
-        [subview removeFromSuperview];
-        [newView addSubview:subview];
-        [subview setFrame:frame];
-    }];
     [aView.superview addSubview:newView positioned:NSWindowBelow relativeTo:aView];
 }
