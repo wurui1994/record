@@ -20,5 +20,4 @@
         "*.rh": "c"
     },
     "C_Cpp.intelliSenseEngineFallback": "Enabled",
-    "python.pythonPath": "D:\\Program\\Miniconda3\\python.exe"
 }
