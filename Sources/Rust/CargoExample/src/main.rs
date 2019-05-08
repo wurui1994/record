@@ -1,18 +1,21 @@
-extern crate hyper;
-extern crate hyper_native_tls;
+#![deny(warnings)]
 
-use hyper::Client;
-use hyper::net::HttpsConnector;
-use hyper_native_tls::NativeTlsClient;
-use std::io::Read;
+//! `cargo run --example simple`
 
+
+extern crate env_logger;
+extern crate reqwest;
 fn main() {
-    let ssl = NativeTlsClient::new().unwrap();
-    let connector = HttpsConnector::new(ssl);
-    let client = Client::with_connector(connector);
 
-    let mut resp = client.get("https://www.baidu.com").send().unwrap();
-    let mut body = vec![];
-    resp.read_to_end(&mut body).unwrap();
-    println!("{}", String::from_utf8_lossy(&body));
+    println!("GET https://www.baidu.com/");
+
+    let mut res = reqwest::get("https://www.baidu.com/").unwrap();
+
+    println!("Status: {}", res.status());
+    println!("Headers:\n{:?}", res.headers());
+
+    // copy the response body directly to stdout
+    std::io::copy(&mut res, &mut std::io::stdout()).unwrap();
+
+    println!("\n\nDone.");
 }

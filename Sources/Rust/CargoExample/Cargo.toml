@@ -3,5 +3,10 @@ name="hello"
 version="0.0.0"
 
 [dependencies]
-hyper="*"
-hyper-native-tls="0.3.0"
+reqwest="*"
+futures="*"
+tokio="*"
+serde="*"
+serde_json="*"
+serde_derive="*"
+env_logger="*"
