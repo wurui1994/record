@@ -1,12 +1,6 @@
-#![deny(warnings)]
-
-//! `cargo run --example simple`
-
-
-extern crate env_logger;
 extern crate reqwest;
-fn main() {
 
+fn main() {
     println!("GET https://www.baidu.com/");
 
     let mut res = reqwest::get("https://www.baidu.com/").unwrap();
