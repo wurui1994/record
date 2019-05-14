@@ -8,6 +8,6 @@ go run test.go
 pip install sanic
 python test.py
 
-# `apid` tool: https://github.com/apigee/apib 
-apid -c1 -d10 http://localhost:8000/
-apid -c100 -d10 http://localhost:8000/
+# `apib` tool: https://github.com/apigee/apib 
+apib -c1 -d10 http://127.0.0.1:8000/
+apib -c100 -d10 http://127.0.0.1:8000/
