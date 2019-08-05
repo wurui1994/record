@@ -43,6 +43,108 @@
 
 @end
 
+static NSTouchBarItemIdentifier TextItemIdentifier = @"com.myapp.TextItemIdentifier";
+
+@interface ScrubberDelegate : NSResponder <NSScrubberDelegate, NSScrubberDataSource>
+{
+    QList<QString> scrubberTextList;
+    QList<QImage> scrubberTextImage;
+    QSize scrubberSize;
+    NSString* textItemIdentifier;
+    Command* command;
+}
+@end
+@implementation ScrubberDelegate
+
+- (void)setCommand:(Command*) cmd{
+    command = cmd;
+}
+
+- (void)setTextList:(QList<QString>) TextList{
+    scrubberTextList = TextList;
+}
+
+- (void)setImageList:(QList<QImage>) ImageList{
+    scrubberTextImage = ImageList;
+}
+
+- (void)setSize:(QSize) size{
+    scrubberSize = size;
+}
+
+- (void)scrubber:(NSScrubber *)scrubber didSelectItemAtIndex:(NSInteger)selectedIndex {
+//    qDebug() << selectedIndex;
+    if (command)
+    {
+        command->setScrubberResultIndex(selectedIndex);
+    }
+}
+
+//
+-(void)setTextItemIdentifier:(NSString*)itemIdentifier
+{
+    textItemIdentifier = itemIdentifier;
+}
+
+- (NSInteger)numberOfItemsForScrubber:(NSScrubber *)scrubber {
+    if (scrubberTextList.size() > 0)
+    {
+        return scrubberTextList.size();
+    }
+    else
+    {
+        return scrubberTextImage.size();
+    }
+}
+
+NSImage* NSImageFromQPixmap(QImage pixmap)
+{
+    NSImage* image =  nil;
+
+    // Write image into a R/W buffer from raw pixmap, then save the image.
+    QBuffer notificationBuffer;
+    if (!pixmap.isNull() && notificationBuffer.open(QIODevice::ReadWrite))
+    {
+        QImageWriter writer(&notificationBuffer, "PNG");
+        if (writer.write(pixmap))
+        {
+            NSData* macImgData = [NSData dataWithBytes:notificationBuffer.buffer().data()
+                    length:notificationBuffer.buffer().size()];
+            image =  [[NSImage alloc] initWithData:macImgData];
+        }
+    }
+    return image;
+}
+
+- (NSScrubberItemView *)scrubber:(NSScrubber *)scrubber viewForItemAtIndex:(NSInteger)index {
+    if (scrubberTextList.size() > 0)
+    {
+
+        NSScrubberTextItemView *view = [scrubber makeItemWithIdentifier:textItemIdentifier owner:nil];
+
+        view.textField.stringValue = scrubberTextList.at(index).toNSString();
+
+        return view;
+    }
+    else if(scrubberTextImage.size() > 0)
+    {
+        NSScrubberImageItemView *view = [scrubber makeItemWithIdentifier:textItemIdentifier owner:nil];
+
+        view.imageView.image = [NSImage imageNamed:NSImageNameTouchBarAddDetailTemplate];//NSImageFromQPixmap(scrubberTextImage.at(index));
+
+        return view;
+    }
+    else {
+        return nil;
+    }
+}
+
+- (NSSize)scrubber:(NSScrubber *)scrubber layout:(NSScrubberFlowLayout *)layout sizeForItemAtIndex:(NSInteger)index {
+    return NSMakeSize(scrubberSize.width(), scrubberSize.height());
+}
+
+@end
+
 @interface DynamicTouchBarProvider : NSResponder <NSTouchBarDelegate, NSApplicationDelegate, NSWindowDelegate>
 @property (strong) NSMutableDictionary *items;
 @property (strong) NSMutableDictionary *order;
@@ -63,9 +165,9 @@
     return self;
 }
 
+
 - (void)addItem:(Command *)command
 {
-
     const QString title = command->touchBarTitle();
     if (title.isEmpty())
         return;
@@ -73,21 +175,6 @@
     // Create custom button item
     NSString *identifer = command->id().toNSString();
 
-#if 0
-    NSCustomTouchBarItem *item = [[[NSCustomTouchBarItem alloc] initWithIdentifier:identifer] autorelease];
-
-    NSButton *button = [[NSButton buttonWithTitle:title.toNSString() target:self
-                        action:@selector(itemAction:)] autorelease];
-//    button.enabled = command->isActive();
-    item.view = button;
-
-    [item retain];
-    [item.view retain];
-
-    [items setObject:item forKey:identifer];
-    [order setObject:[NSNumber numberWithInt:command->macTouchBarOrder()] forKey:identifer];
-    [commands setObject:[[QObjectPointer alloc]initWithQObject:command] forKey:[NSValue valueWithPointer:button]];
-#else
     if(command->controlType() == Command::Button)
     {
         NSCustomTouchBarItem *item = nil;
@@ -110,6 +197,47 @@
         [order setObject:[NSNumber numberWithInt:command->macTouchBarOrder()] forKey:identifer];
         [commands setObject:[[QObjectPointer alloc]initWithQObject:command] forKey:[NSValue valueWithPointer:button]];
     }
+    else if(command->controlType() == Command::Scrubber)
+    {
+        NSString* textId = QString(command->id() + "_NSScrubberTextItemView").toNSString();
+
+        ScrubberDelegate *scrubberDelegate = [[ScrubberDelegate alloc] init];
+        [scrubberDelegate setCommand:command];
+        [scrubberDelegate setTextList:command->scrubberTextList()];
+        [scrubberDelegate setImageList:command->scrubberImageList()];
+        [scrubberDelegate setSize:command->scrubberSize()];
+        [scrubberDelegate setTextItemIdentifier:textId];
+
+        NSScrubber *scrubber = [[[NSScrubber alloc] initWithFrame:NSZeroRect] autorelease];
+        scrubber.selectionBackgroundStyle = [NSScrubberSelectionStyle outlineOverlayStyle];
+        // scrubber.scrubberLayout = [[NSScrubberProportionalLayout alloc] init];
+        scrubber.mode = NSScrubberModeFixed;
+        scrubber.delegate = scrubberDelegate;
+        scrubber.dataSource = scrubberDelegate;
+        scrubber.floatsSelectionViews = false;
+        scrubber.showsArrowButtons = YES;
+        scrubber.continuous = false;
+        scrubber.selectedIndex = 0;
+        scrubber.showsAdditionalContentIndicators = true;
+         scrubber.itemAlignment = NSScrubberAlignmentCenter;
+
+        if(command->scrubberTextList().size() > 0)
+        {
+            [scrubber registerClass:[NSScrubberTextItemView class] forItemIdentifier:textId];
+        }
+        else
+        {
+            [scrubber registerClass:[NSScrubberImageItemView class] forItemIdentifier:textId];
+        }
+
+        NSCustomTouchBarItem *item = [[NSCustomTouchBarItem alloc] initWithIdentifier:identifer];
+
+        item.view = scrubber;
+        //
+        [item retain];
+        [items setObject:item forKey:identifer];
+        [order setObject:[NSNumber numberWithInt:command->macTouchBarOrder()] forKey:identifer];
+    }
     else
     {
         NSTouchBarItem *item = nil;
@@ -125,20 +253,16 @@
         {
             item = [NSColorPickerTouchBarItem strokeColorPickerWithIdentifier:identifer];
         }
-//        else if(command->controlType() == Command::CandidateList)
-//        {
-//            item = [NSCandidateListTouchBarItem strokeColorPickerWithIdentifier:identifer];
-//        }
         else if(command->controlType() == Command::SharingService)
         {
             item = [[NSSharingServicePickerTouchBarItem alloc] initWithIdentifier:identifer];
         }
+
         //
         [item retain];
         [items setObject:item forKey:identifer];
         [order setObject:[NSNumber numberWithInt:command->macTouchBarOrder()] forKey:identifer];
     }
-#endif
 }
 
 - (void)itemAction:(id)sender
@@ -175,11 +299,11 @@
     touchBar.delegate = self;
 
     // Add ordered items array
-    touchBar.defaultItemIdentifiers = [order keysSortedByValueUsingComparator:^NSComparisonResult(id a, id b) {
-        return [a compare:b];
+    NSArray* itemsArray = [order keysSortedByValueUsingComparator:^NSComparisonResult(id a, id b) {
+            return [a compare:b];
     }];
 
-//    [touchBar.defaultItemIdentifiers addObject:NSTouchBarItemIdentifierOtherItemsProxy];
+    touchBar.defaultItemIdentifiers = itemsArray;
 
     return touchBar;
 }
@@ -226,13 +350,14 @@
 static DynamicTouchBarProvider *touchBarProvider = nil;
 
 Command::Command(QObject* parent,QString id, int order,
-                 QString title, QAction *action, ControlType controlType)
-    :QObject(parent)
+                 QString title, ControlType controlType)
+    : QObject(parent)
+    , m_scrubberResultIndex(-1)
+    , m_action(new QAction(this))
 {
     m_id = id;
     m_macTouchBarOrder = order;
     m_touchBarTitle = title;
-    m_action = action;
     //
     m_controlType = controlType;
 }
@@ -265,6 +390,55 @@ int Command::macTouchBarOrder()
 Command::ControlType Command::controlType()
 {
     return m_controlType;
+}
+
+void Command::setScrubberSize(const QSize &size)
+{
+    m_scrubberSize.setWidth(size.width());
+    m_scrubberSize.setHeight(size.height());
+}
+
+void Command::setScrubberTextList(const QList<QString> &stringList)
+{
+    m_scrubberText = stringList;
+    m_scrubberHasText = stringList.size() > 0;
+}
+
+void Command::setScrubberImageList(const QList<QImage> &imageList)
+{
+    m_scrubberImage = imageList;
+    m_scrubberHasImage = imageList.size() > 0;
+}
+
+void Command::setScrubberResultIndex(int index)
+{
+    m_scrubberResultIndex = index;
+    QAction *action = this->action();
+    if (!action)
+        return;
+    if (!action->isEnabled())
+        return;
+    action->activate(QAction::Trigger);
+}
+
+QList<QString> Command::scrubberTextList()
+{
+    return m_scrubberText;
+}
+
+QList<QImage> Command::scrubberImageList()
+{
+    return m_scrubberImage;
+}
+
+QSize Command::scrubberSize()
+{
+    return m_scrubberSize;
+}
+
+int Command::scrubberResultIndex()
+{
+    return m_scrubberResultIndex;
 }
 
 
