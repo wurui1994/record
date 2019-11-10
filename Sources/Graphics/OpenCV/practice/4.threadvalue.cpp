@@ -30,7 +30,7 @@ static void on_trackbar(int, void *)
 	vector<Vec4i> hierarchy;
 
 	//查找轮廓
-	findContours(bw, contours, hierarchy, CV_RETR_CCOMP, CV_CHAIN_APPROX_SIMPLE);
+	findContours(bw, contours, hierarchy, RETR_CCOMP, CHAIN_APPROX_SIMPLE);
 	//初始化dst
 	Mat dst = Mat::zeros(img.size(), CV_8UC3);
 	//开始处理
@@ -42,7 +42,7 @@ static void on_trackbar(int, void *)
 		{
 			Scalar color((rand() & 255), (rand() & 255), (rand() & 255));
 			//绘制填充轮廓
-			drawContours(dst, contours, idx, color, CV_FILLED, 8, hierarchy);
+			drawContours(dst, contours, idx, color, FILLED, 8, hierarchy);
 		}
 	}
 	//显示窗口

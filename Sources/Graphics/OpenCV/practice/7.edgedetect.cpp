@@ -73,11 +73,11 @@ int main(int argc, char **argv)
 	g_dstImage.create(g_srcImage.size(), g_srcImage.type());
 
 	// 将原图像转换为灰度图像
-	cvtColor(g_srcImage, g_srcGrayImage, CV_BGR2GRAY);
+	cvtColor(g_srcImage, g_srcGrayImage, COLOR_BGR2GRAY);
 
 	// 创建显示窗口
-	namedWindow("【效果图】Canny边缘检测", CV_WINDOW_AUTOSIZE);
-	namedWindow("【效果图】Sobel边缘检测", CV_WINDOW_AUTOSIZE);
+	namedWindow("【效果图】Canny边缘检测", WINDOW_AUTOSIZE);
+	namedWindow("【效果图】Sobel边缘检测", WINDOW_AUTOSIZE);
 
 	// 创建trackbar
 	createTrackbar("参数值：", "【效果图】Canny边缘检测", &g_cannyLowThreshold, 120, on_Canny);

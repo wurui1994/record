@@ -8,7 +8,7 @@ int main()
 {
 	Mat img;
 	vector<Mat> channels;
-	img = imread("test.jpg");
+	img = imread("../test.jpg");
 	split(img, channels);
 	//channels.at(0)=0;
 	channels.at(1) = 0;

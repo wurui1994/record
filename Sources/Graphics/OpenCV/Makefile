@@ -1,8 +1,8 @@
-all:main.exe run clean
-main.exe:main.o
-	$(CXX) -o $@ $< `pkg-config --libs opencv`
+all:main run clean
+main:main.cpp
+	clang++ -w -std=c++11 `pkg-config --cflags --libs opencv4` $< -o $@  
 main.o:main.cpp
 run:
-	./main.exe
+	./main
 clean:
-	rm *.o *.exe
+	rm main
