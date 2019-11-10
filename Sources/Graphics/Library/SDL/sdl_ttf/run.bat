@@ -1,1 +1,0 @@
-tcc -lSDL -lSDL_ttf -run main.c
