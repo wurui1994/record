@@ -3,6 +3,8 @@
 #include <string.h>
 #include "ui.h"
 
+#pragma comment(lib,"ui")
+
 static int onClosing(uiWindow *w, void *data)
 {
 	uiQuit();

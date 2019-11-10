@@ -2,6 +2,7 @@
 #include <stdio.h> //hello world 工程默认的，如果你建立的是空工程就不需要这句
 #include <gmp.h>//记得引入GMP.H的头文件
 // #pragma comment(lib,"mpir")
+#pragma comment(lib,"gmp")
 int main(int argc, char* argv[])
 {
 	mpz_t t; //mpz_t 为GMP内置大数类型

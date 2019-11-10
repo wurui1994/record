@@ -1,6 +1,8 @@
 #include <stdio.h>
 #include <uv.h>
 
+#pragma comment(lib, "uv")
+
 int main()
 {
 	uv_cpu_info_t *info = NULL;

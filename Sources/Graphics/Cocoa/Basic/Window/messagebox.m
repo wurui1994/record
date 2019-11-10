@@ -3,11 +3,10 @@
 #import <AppKit/AppKit.h>
 int main()
 {
-    NSAlert *alert = [[NSAlert alloc] init];
+    NSAlert* alert = [[NSAlert alloc] init];
     [alert setMessageText:@"Goodbye, World!"];
     [alert runModal];
 }
-
 
 // To show a modal alert (iOS):
 

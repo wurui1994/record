@@ -4,7 +4,7 @@
 #include <time.h>
 #include "ui.h"
 
-// #pragma comment(lib,"libui")
+#pragma comment(lib,"ui")
 
 uiDateTimePicker *dtboth, *dtdate, *dttime;
 

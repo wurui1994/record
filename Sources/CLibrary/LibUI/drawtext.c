@@ -1,155 +1,60 @@
-// 10 march 2018
 #include <stdio.h>
+#include <stdlib.h>
 #include <string.h>
+#include <time.h>
 #include "ui.h"
 
-uiWindow *mainwin;
-uiArea *area;
-uiAreaHandler handler;
-uiFontButton *fontButton;
-uiCombobox *alignment;
+#pragma comment(lib,"ui")
 
-uiAttributedString *attrstr;
+uiDateTimePicker *dtboth, *dtdate, *dttime;
 
-static void appendWithAttribute(const char *what, uiAttribute *attr, uiAttribute *attr2)
+const char *timeFormat(uiDateTimePicker *d)
 {
-	size_t start, end;
+	const char *fmt;
 
-	start = uiAttributedStringLen(attrstr);
-	end = start + strlen(what);
-	uiAttributedStringAppendUnattributed(attrstr, what);
-	uiAttributedStringSetAttribute(attrstr, attr, start, end);
-	if (attr2 != NULL)
-		uiAttributedStringSetAttribute(attrstr, attr2, start, end);
+	if (d == dtboth)
+		fmt = "%c";
+	else if (d == dtdate)
+		fmt = "%x";
+	else if (d == dttime)
+		fmt = "%X";
+	else
+		fmt = "";
+	return fmt;
 }
 
-static void makeAttributedString(void)
+void onChanged(uiDateTimePicker *d, void *data)
 {
-	uiAttribute *attr, *attr2;
-	uiOpenTypeFeatures *otf;
+	struct tm time;
+	char buf[64];
 
-	attrstr = uiNewAttributedString(
-		"Drawing strings with libui is done with the uiAttributedString and uiDrawTextLayout objects.\n"
-		"uiAttributedString lets you have a variety of attributes: ");
-
-	attr = uiNewFamilyAttribute("Courier New");
-	appendWithAttribute("font family", attr, NULL);
-	uiAttributedStringAppendUnattributed(attrstr, ", ");
-
-	attr = uiNewSizeAttribute(18);
-	appendWithAttribute("font size", attr, NULL);
-	uiAttributedStringAppendUnattributed(attrstr, ", ");
-
-	attr = uiNewWeightAttribute(uiTextWeightBold);
-	appendWithAttribute("font weight", attr, NULL);
-	uiAttributedStringAppendUnattributed(attrstr, ", ");
-
-	attr = uiNewItalicAttribute(uiTextItalicItalic);
-	appendWithAttribute("font italicness", attr, NULL);
-	uiAttributedStringAppendUnattributed(attrstr, ", ");
-
-	attr = uiNewStretchAttribute(uiTextStretchCondensed);
-	appendWithAttribute("font stretch", attr, NULL);
-	uiAttributedStringAppendUnattributed(attrstr, ", ");
-
-	attr = uiNewColorAttribute(0.75, 0.25, 0.5, 0.75);
-	appendWithAttribute("text color", attr, NULL);
-	uiAttributedStringAppendUnattributed(attrstr, ", ");
-
-	attr = uiNewBackgroundAttribute(0.5, 0.5, 0.25, 0.5);
-	appendWithAttribute("text background color", attr, NULL);
-	uiAttributedStringAppendUnattributed(attrstr, ", ");
-
-
-	attr = uiNewUnderlineAttribute(uiUnderlineSingle);
-	appendWithAttribute("underline style", attr, NULL);
-	uiAttributedStringAppendUnattributed(attrstr, ", ");
-
-	uiAttributedStringAppendUnattributed(attrstr, "and ");
-	attr = uiNewUnderlineAttribute(uiUnderlineDouble);
-	attr2 = uiNewUnderlineColorAttribute(uiUnderlineColorCustom, 1.0, 0.0, 0.5, 1.0);
-	appendWithAttribute("underline color", attr, attr2);
-	uiAttributedStringAppendUnattributed(attrstr, ". ");
-
-	uiAttributedStringAppendUnattributed(attrstr, "Furthermore, there are attributes allowing for ");
-	attr = uiNewUnderlineAttribute(uiUnderlineSuggestion);
-	attr2 = uiNewUnderlineColorAttribute(uiUnderlineColorSpelling, 0, 0, 0, 0);
-	appendWithAttribute("special underlines for indicating spelling errors", attr, attr2);
-	uiAttributedStringAppendUnattributed(attrstr, " (and other types of errors) ");
-
-	uiAttributedStringAppendUnattributed(attrstr, "and control over OpenType features such as ligatures (for instance, ");
-	otf = uiNewOpenTypeFeatures();
-	uiOpenTypeFeaturesAdd(otf, 'l', 'i', 'g', 'a', 0);
-	attr = uiNewFeaturesAttribute(otf);
-	appendWithAttribute("afford", attr, NULL);
-	uiAttributedStringAppendUnattributed(attrstr, " vs. ");
-	uiOpenTypeFeaturesAdd(otf, 'l', 'i', 'g', 'a', 1);
-	attr = uiNewFeaturesAttribute(otf);
-	appendWithAttribute("afford", attr, NULL);
-	uiFreeOpenTypeFeatures(otf);
-	uiAttributedStringAppendUnattributed(attrstr, ").\n");
-
-	uiAttributedStringAppendUnattributed(attrstr, "Use the controls opposite to the text to control properties of the text.");
+	uiDateTimePickerTime(d, &time);
+	strftime(buf, sizeof (buf), timeFormat(d), &time);
+	uiLabelSetText(uiLabel(data), buf);
 }
 
-static void handlerDraw(uiAreaHandler *a, uiArea *area, uiAreaDrawParams *p)
+void onClicked(uiButton *b, void *data)
 {
-	uiDrawTextLayout *textLayout;
-	uiFontDescriptor defaultFont;
-	uiDrawTextLayoutParams params;
+	intptr_t now;
+	time_t t;
+	struct tm tmbuf;
 
-	params.String = attrstr;
-	uiFontButtonFont(fontButton, &defaultFont);
-	params.DefaultFont = &defaultFont;
-	params.Width = p->AreaWidth;
-	params.Align = (uiDrawTextAlign) uiComboboxSelected(alignment);
-	textLayout = uiDrawNewTextLayout(&params);
-	uiDrawText(p->Context, textLayout, 0, 0);
-	uiDrawFreeTextLayout(textLayout);
-	uiFreeFontButtonFont(&defaultFont);
+	now = (intptr_t) data;
+	t = 0;
+	if (now)
+		t = time(NULL);
+	tmbuf = *localtime(&t);
+
+	if (now) {
+		uiDateTimePickerSetTime(dtdate, &tmbuf);
+		uiDateTimePickerSetTime(dttime, &tmbuf);
+	} else
+		uiDateTimePickerSetTime(dtboth, &tmbuf);
 }
 
-static void handlerMouseEvent(uiAreaHandler *a, uiArea *area, uiAreaMouseEvent *e)
+int onClosing(uiWindow *w, void *data)
 {
-	// do nothing
-}
-
-static void handlerMouseCrossed(uiAreaHandler *ah, uiArea *a, int left)
-{
-	// do nothing
-}
-
-static void handlerDragBroken(uiAreaHandler *ah, uiArea *a)
-{
-	// do nothing
-}
-
-static int handlerKeyEvent(uiAreaHandler *ah, uiArea *a, uiAreaKeyEvent *e)
-{
-	// reject all keys
-	return 0;
-}
-
-static void onFontChanged(uiFontButton *b, void *data)
-{
-	uiAreaQueueRedrawAll(area);
-}
-
-static void onComboboxSelected(uiCombobox *b, void *data)
-{
-	uiAreaQueueRedrawAll(area);
-}
-
-static int onClosing(uiWindow *w, void *data)
-{
-	uiControlDestroy(uiControl(mainwin));
 	uiQuit();
-	return 0;
-}
-
-static int shouldQuit(void *data)
-{
-	uiControlDestroy(uiControl(mainwin));
 	return 1;
 }
 
@@ -157,14 +62,10 @@ int main(void)
 {
 	uiInitOptions o;
 	const char *err;
-	uiBox *hbox, *vbox;
-	uiForm *form;
-
-	handler.Draw = handlerDraw;
-	handler.MouseEvent = handlerMouseEvent;
-	handler.MouseCrossed = handlerMouseCrossed;
-	handler.DragBroken = handlerDragBroken;
-	handler.KeyEvent = handlerKeyEvent;
+	uiWindow *w;
+	uiGrid *g;
+	uiLabel *l;
+	uiButton *b;
 
 	memset(&o, 0, sizeof (uiInitOptions));
 	err = uiInit(&o);
@@ -174,46 +75,56 @@ int main(void)
 		return 1;
 	}
 
-	uiOnShouldQuit(shouldQuit, NULL);
+	w = uiNewWindow("Date / Time", 320, 240, 0);
+	uiWindowSetMargined(w, 1);
 
-	makeAttributedString();
+	g = uiNewGrid();
+	uiGridSetPadded(g, 1);
+	uiWindowSetChild(w, uiControl(g));
 
-	mainwin = uiNewWindow("libui Text-Drawing Example", 640, 480, 1);
-	uiWindowSetMargined(mainwin, 1);
-	uiWindowOnClosing(mainwin, onClosing, NULL);
+	dtboth = uiNewDateTimePicker();
+	dtdate = uiNewDatePicker();
+	dttime = uiNewTimePicker();
 
-	hbox = uiNewHorizontalBox();
-	uiBoxSetPadded(hbox, 1);
-	uiWindowSetChild(mainwin, uiControl(hbox));
+	uiGridAppend(g, uiControl(dtboth),
+		0, 0, 2, 1,
+		1, uiAlignFill, 0, uiAlignFill);
+	uiGridAppend(g, uiControl(dtdate),
+		0, 1, 1, 1,
+		1, uiAlignFill, 0, uiAlignFill);
+	uiGridAppend(g, uiControl(dttime),
+		1, 1, 1, 1,
+		1, uiAlignFill, 0, uiAlignFill);
 
-	vbox = uiNewVerticalBox();
-	uiBoxSetPadded(vbox, 1);
-	uiBoxAppend(hbox, uiControl(vbox), 0);
+	l = uiNewLabel("");
+	uiGridAppend(g, uiControl(l),
+		0, 2, 2, 1,
+		1, uiAlignCenter, 0, uiAlignFill);
+	uiDateTimePickerOnChanged(dtboth, onChanged, l);
+	l = uiNewLabel("");
+	uiGridAppend(g, uiControl(l),
+		0, 3, 1, 1,
+		1, uiAlignCenter, 0, uiAlignFill);
+	uiDateTimePickerOnChanged(dtdate, onChanged, l);
+	l = uiNewLabel("");
+	uiGridAppend(g, uiControl(l),
+		1, 3, 1, 1,
+		1, uiAlignCenter, 0, uiAlignFill);
+	uiDateTimePickerOnChanged(dttime, onChanged, l);
 
-	fontButton = uiNewFontButton();
-	uiFontButtonOnChanged(fontButton, onFontChanged, NULL);
-	uiBoxAppend(vbox, uiControl(fontButton), 0);
+	b = uiNewButton("Now");
+	uiButtonOnClicked(b, onClicked, (void *) 1);
+	uiGridAppend(g, uiControl(b),
+		0, 4, 1, 1,
+		1, uiAlignFill, 1, uiAlignEnd);
+	b = uiNewButton("Unix epoch");
+	uiButtonOnClicked(b, onClicked, (void *) 0);
+	uiGridAppend(g, uiControl(b),
+		1, 4, 1, 1,
+		1, uiAlignFill, 1, uiAlignEnd);
 
-	form = uiNewForm();
-	uiFormSetPadded(form, 1);
-	// TODO on OS X if this is set to 1 then the window can't resize; does the form not have the concept of stretchy trailing space?
-	uiBoxAppend(vbox, uiControl(form), 0);
-
-	alignment = uiNewCombobox();
-	// note that the items match with the values of the uiDrawTextAlign values
-	uiComboboxAppend(alignment, "Left");
-	uiComboboxAppend(alignment, "Center");
-	uiComboboxAppend(alignment, "Right");
-	uiComboboxSetSelected(alignment, 0);		// start with left alignment
-	uiComboboxOnSelected(alignment, onComboboxSelected, NULL);
-	uiFormAppend(form, "Alignment", uiControl(alignment), 0);
-
-	area = uiNewArea(&handler);
-	uiBoxAppend(hbox, uiControl(area), 1);
-
-	uiControlShow(uiControl(mainwin));
+	uiWindowOnClosing(w, onClosing, NULL);
+	uiControlShow(uiControl(w));
 	uiMain();
-	uiFreeAttributedString(attrstr);
-	uiUninit();
 	return 0;
 }

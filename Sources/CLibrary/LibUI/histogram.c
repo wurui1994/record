@@ -5,6 +5,8 @@
 #include <time.h>
 #include "ui.h"
 
+#pragma comment(lib,"ui")
+
 uiWindow *mainwin;
 uiArea *histogram;
 uiAreaHandler handler;

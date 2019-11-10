@@ -3,6 +3,8 @@
 #include <time.h>
 #include "ui.h"
 
+#pragma comment(lib,"ui")
+
 uiMultilineEntry *e;
 
 int sayTime(void *data)

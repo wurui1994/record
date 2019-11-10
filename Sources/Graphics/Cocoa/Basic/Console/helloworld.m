@@ -1,7 +1,7 @@
 // http://rosettacode.org/wiki/Hello_world/Text#Objective-C
 
 // #import <Foundation/Foundation.h>
- 
+
 // int main() {
 //     @autoreleasepool {
 //         NSLog(@"Hello, World!");
@@ -10,7 +10,7 @@
 // }
 
 // #import <Foundation/Foundation.h>
- 
+
 // int main() {
 //     @autoreleasepool {
 //         NSString *message = @"Hello, World!\n";
@@ -19,12 +19,12 @@
 // }
 
 #import <Foundation/Foundation.h>
- 
-int main() {
+
+int main()
+{
     @autoreleasepool {
-        NSFileHandle *standardOutput = [NSFileHandle fileHandleWithStandardOutput];
-        NSString *message = @"Hello, World!\n";
+        NSFileHandle* standardOutput = [NSFileHandle fileHandleWithStandardOutput];
+        NSString* message = @"Hello, World!\n";
         [standardOutput writeData:[message dataUsingEncoding:NSUTF8StringEncoding]];
     }
 }
- 

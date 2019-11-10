@@ -1,52 +1,42 @@
 // ref:http://rosettacode.org/wiki/Window_creation#Objective-C
 // clang example.mm -fobjc-arc -framework AppKit -lstdc++
 
-#include <Foundation/Foundation.h>
 #include <AppKit/AppKit.h>
- 
-@interface Win : NSWindow
-{
+#include <Foundation/Foundation.h>
+
+@interface Win : NSWindow {
 }
-- (void)applicationDidFinishLaunching: (NSNotification *)notification;
-- (BOOL)applicationShouldTerminateAfterLastWindowClosed: (NSNotification *)notification;
+- (void)applicationDidFinishLaunching:(NSNotification *)notification;
+- (BOOL)applicationShouldTerminateAfterLastWindowClosed:(NSNotification *)notification;
 @end
- 
- 
+
 @implementation Win : NSWindow
--(instancetype) init
-{
-  if ((self = [super 
-    initWithContentRect: NSMakeRect(0, 0, 800, 600)
-    styleMask: (NSTitledWindowMask | NSClosableWindowMask)
-    backing: NSBackingStoreBuffered
-    defer: NO])) {
- 
-    [self setTitle: @"A Window"];
+- (instancetype)init {
+  if ((self = [super initWithContentRect:NSMakeRect(0, 0, 800, 600)
+                               styleMask:(NSTitledWindowMask | NSClosableWindowMask)
+                                 backing:NSBackingStoreBuffered
+                                   defer:NO])) {
+    [self setTitle:@"A Window"];
     [self center];
   }
   return self;
 }
- 
-- (void)applicationDidFinishLaunching: (NSNotification *)notification
-{
-  [self orderFront: self];
+
+- (void)applicationDidFinishLaunching:(NSNotification *)notification {
+  [self orderFront:self];
 }
- 
-- (BOOL)applicationShouldTerminateAfterLastWindowClosed: (NSNotification *)notification
-{
+
+- (BOOL)applicationShouldTerminateAfterLastWindowClosed:(NSNotification *)notification {
   return YES;
 }
 @end
- 
-int main()
-{
+
+int main() {
   @autoreleasepool {
- 
     [NSApplication sharedApplication];
     Win *mywin = [[Win alloc] init];
-    [NSApp setDelegate: mywin];
-    [NSApp runModalForWindow: mywin];
- 
+    [NSApp setDelegate:mywin];
+    [NSApp runModalForWindow:mywin];
   }
   return EXIT_SUCCESS;
 }

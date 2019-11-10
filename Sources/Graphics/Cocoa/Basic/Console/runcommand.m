@@ -3,21 +3,21 @@
 void runls()
 {
     [[NSTask launchedTaskWithLaunchPath:@"/bin/ls"
-        arguments:@[]] waitUntilExit];
+                              arguments:@[]] waitUntilExit];
 }
- 
-void runSystemCommand(NSString *cmd)
+
+void runSystemCommand(NSString* cmd)
 {
     [[NSTask launchedTaskWithLaunchPath:@"/bin/sh"
-        arguments:@[@"-c", cmd]]
+                              arguments:@[ @"-c", cmd ]]
         waitUntilExit];
 }
- 
-int main(int argc, const char **argv)
+
+int main(int argc, const char** argv)
 {
     @autoreleasepool {
- 
-      runSystemCommand(@"ls");
+
+        runSystemCommand(@"ls");
     }
     return 0;
 }

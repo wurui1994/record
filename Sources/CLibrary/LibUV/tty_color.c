@@ -1,8 +1,10 @@
 #define _CRT_SECURE_NO_WARNINGS
 #include <stdio.h>
 #include <string.h>
-//#include <unistd.h>
 #include <uv.h>
+
+#pragma comment(lib, "uv")
+
 uv_loop_t *loop;
 uv_tty_t tty;
 uv_timer_t tick;
