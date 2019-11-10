@@ -1,4 +1,4 @@
 (begin 
-	(display "Hello world!")  ; Êä³ö"Hello world!"
+	(display "Hello world!")  ; è¾“å‡º"Hello world!"
 	(newline)
-)				; »»ĞĞ
+)				; æ¢è¡Œ

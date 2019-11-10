@@ -1,5 +1,6 @@
 #!/bin/bash
-function func(){
+function func()
+{
 	#echo $1
 	path=`ls $1`
 	for f in $path

@@ -1,15 +1,18 @@
-#define BUFFSIZE 8192
+// tcc -run mycat.c < mycat.c > test.txt
 
-int
-main(void)
+#include <stdio.h>
+#include <stdlib.h>
+#include <unistd.h>
+
+int main(void)
 {
 	int n;
-	char buf[BUFFSIZE];
-	while( (n = read(STDIN_FILENO,buf,BUFFSIZE)) > 0)
-		if (write(STDOUT_FILENO,buf,n)!=n)
-			err_sys("write error");
-	if(n<0)
-		err_sys("read error");
+	char buf[BUFSIZ];
+	while ((n = read(0, buf, BUFSIZ)) > 0)
+		if (write(1, buf, n) != n)
+			fprintf(stderr, "write error");
+	if (n < 0)
+		fprintf(stderr, "read error");
 
 	exit(0);
 }

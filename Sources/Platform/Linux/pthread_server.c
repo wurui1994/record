@@ -2,6 +2,7 @@
 *文件名：pthread_server.c
 *文件描述：创建子线程来接收客户端的数据
 ***************************************************/
+
 #include <sys/types.h>
 #include <sys/socket.h>
 #include <stdio.h>
@@ -10,7 +11,9 @@
 #include <unistd.h>
 #include <stdlib.h>
 #include <pthread.h>
+
 void *rec_data(void *fd);
+
 int main(intargc, char *argv[])
 {
 	int server_sockfd;
@@ -50,6 +53,7 @@ int main(intargc, char *argv[])
 	shutdown(*client_sockfd, 2);
 	shutdown(server_sockfd, 2);
 }
+
 /*****************************************
 *函数名称：rec_data
 *功能描述：接受客户端的数据
