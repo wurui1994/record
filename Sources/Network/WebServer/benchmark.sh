@@ -17,3 +17,4 @@ wrk http://127.0.0.1:8000/
 
 # `bombardier` tool: https://github.com/codesenberg/bombardier
 bombardier http://127.0.0.1:8000/
+bombardier http://127.0.0.1:8000/ -d3s -c100

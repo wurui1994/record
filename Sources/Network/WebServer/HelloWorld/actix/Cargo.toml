@@ -5,3 +5,5 @@ edition = "2018"
 
 [dependencies]
 actix-web = "*"
+actix-rt = "*"
+num_cpus = "*"

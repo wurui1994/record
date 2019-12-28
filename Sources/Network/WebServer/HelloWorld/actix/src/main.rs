@@ -1,21 +1,23 @@
-use actix_web::{middleware, web, App, HttpRequest, HttpServer};
+// use actix_web::{get, middleware, App, HttpServer};
+use actix_web::{get, App, HttpServer};
 
-fn index(req: HttpRequest) -> &'static str {
-    // println!("REQ: {:?}", req);
-    "Hello world!"
+#[get("/")]
+async fn no_params() -> &'static str {
+    "Hello world!\r\n"
 }
 
-fn main() -> std::io::Result<()> {
-    // std::env::set_var("RUST_LOG", "actix_web=info");
-    // env_logger::init();
-
+#[actix_rt::main]
+async fn main() -> std::io::Result<()> {
+	// println!{"{} {}", num_cpus::get(), num_cpus::get_physical()}
     HttpServer::new(|| {
         App::new()
-            // enable logger
+            // .wrap(middleware::DefaultHeaders::new().header("X-Version", "0.2"))
+            // .wrap(middleware::Compress::default())
             // .wrap(middleware::Logger::default())
-            .service(web::resource("/index.html").to(|| "Hello world!"))
-            .service(web::resource("/").to(index))
+            .service(no_params)
     })
     .bind("127.0.0.1:8000")?
+    .workers(num_cpus::get_physical())
     .run()
+    .await
 }
