@@ -1,6 +1,9 @@
 import re
 import math
-import time
+try:
+    from time import clock
+except ImportError:
+    from time import perf_counter as clock
 
 pattern = re.compile(r'[^-\w\t\u4e00-\u9fa5]') 
 
@@ -36,9 +39,9 @@ if __name__ == '__main__':
     # 2.计算每个单词在句子列表中出现的次数
     wordset = worddict.keys()  # 去重，获取单词集合
 
-    st = time.clock()
+    st = clock()
     words_in_sentences = count_word_in_sentences2(sentences)
-    et = time.clock()
+    et = clock()
     print(et - st)
     
     print(len(wordset),len(sentences))

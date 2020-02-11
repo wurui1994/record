@@ -3,7 +3,10 @@
 # 40000*40000 MemoryError!!!
 from numpy import dot, float32, dtype
 from numpy.random import rand
-from time import clock
+try:
+    from time import clock
+except ImportError:
+    from time import perf_counter as clock
 st = clock()
 f = dot(rand(5000, 5000).astype(float32), rand(5000, 5000).astype(float32))
 et = clock()
