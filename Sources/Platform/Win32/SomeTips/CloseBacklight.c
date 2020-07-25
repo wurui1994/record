@@ -5,8 +5,6 @@ int APIENTRY WinMain(HINSTANCE hInstance,
                      LPSTR     lpCmdLine,  
                      int        nCmdShow)  
 {  
-    SendMessage(FindWindow(0,0),WM_SYSCOMMAND,SC_MONITORPOWER,2);  
-    //Sleep(5000);  
-    //SendMessage(FindWindow(0,0),WM_SYSCOMMAND,SC_MONITORPOWER,-1);  
+    PostMessage(HWND_BROADCAST,WM_SYSCOMMAND,SC_MONITORPOWER,2);  
     return 0;  
 }  
