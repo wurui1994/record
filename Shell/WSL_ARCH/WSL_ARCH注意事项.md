@@ -1,41 +1,49 @@
-Reference:
-1.https://wiki.archlinux.org/index.php/Install_on_WSL_(%E7%AE%80%E4%BD%93%E4%B8%AD%E6%96%87)
-2.https://mirrors.tuna.tsinghua.edu.cn/archlinux/iso/latest/
+# Reference:
+1.https://wiki.archlinux.org/index.php/Install_on_WSL_(%E7%AE%80%E4%BD%93%E4%B8%AD%E6%96%87)  
+2.https://mirrors.tuna.tsinghua.edu.cn/archlinux/iso/latest/  
 3.https://github.com/bilguun0203/WSL-ArchLinux
 
-Steps:
-00.解压archlinux-bootstrap时在root目录,外面可能会出问题。
+# Steps:
+## 00.解压archlinux-bootstrap时在root目录,外面可能会出问题。
 目录替换: bin etc lib lib64 sbin usr var
 
-0.文件/etc/resolv.conf:
+## 0.文件/etc/resolv.conf:
+```
 nameserver 46.253.48.14
 nameserver 8.8.8.8
 nameserver 46.253.48.14
+```
 
-1.安装软件：
-sed-4.4-1-x86_64.pkg.tar.xz
+## 1.安装软件：
+```sh
+sed-4.4-1-x86_64.pkg.tar.xz  
 fakeroot-tcp-1.21-2-x86_64.pkg.tar.xz
 # glibc-wsl-2.26-4-x86_64.pkg.tar.xz
-
 pacman-key --init
 pacman-key --populate archlinux
+```
 
-2.文件/etc/locale.gen:
+## 2.文件/etc/locale.gen:
 取消注释：
+```
 es_US.UTF-8 UTF-8  
 zh_CN.UTF-8 UTF-8 
-然后输入:locale-gen
+```
+然后输入:`locale-gen`
 
-3.文件/etc/bash.bashrc[或~/.bashrc]:
+## 3.文件/etc/bash.bashrc[或~/.bashrc]:
+```sh
 force_color_prompt=yes
 PS1='[\[\033[01;35m\]\u\[\033[01;00m\]@\[\033[01;32m\]\h \[\033[01;36m\]\W\[\033[00m\]]\$ '
 
 export LANG="zh_CN.UTF-8"
 export LC_ALL="zh_CN.UTF-8"
 export DISPLAY=:0
+```
 
-4.文件/usr/bin/makepkg 
-#加入asroot
+## 4.文件/usr/bin/makepkg 
+```sh
+# 加入asroot
 splitpkg_overrides=('pkgdesc' 'arch' 'url' 'license' 'groups' 'depends'
                     'optdepends' 'provides' 'conflicts' 'replaces' 'backup'
                     'options' 'install' 'changelog' 'asroot')
@@ -51,32 +59,42 @@ else
 		exit 1 # TODO: error code
 	fi
 fi
-5.文件/etc/yaourtrc
-AURURL="https://aur.tuna.tsinghua.edu.cn"
+```
 
-6.安装Cling和Root
+## 5.文件/etc/yaourtrc
+```sh
+AURURL="https://aur.tuna.tsinghua.edu.cn"
+```
+
+## 6.安装Cling和Root
+```
 cling-git-r4078.00a59858-1-x86_64.pkg.tar.gz
 cling-jupyter-git-r4078.00a59858-1-x86_64.pkg.tar.gz
 root-6.10.06-1-x86_64.pkg.tar.gz
+```
 yaourt补全依赖项
 
-7.声音pulseaudio:
+## 7.声音pulseaudio:
+```sh
 bash -c "wget http://bosmans.ch/pulseaudio/pulseaudio-1.1.zip"
 bash -c "unzip pulseaudio-1.1.zip -d pulseaudio"
 bash -c "echo export PULSE_SERVER=tcp:localhost >> ~/.bashrc"
 echo load-module module-native-protocol-tcp auth-ip-acl=127.0.0.1 auth-anonymous=1 >> pulseaudio\etc\pulse\default.pa
 start pulseaudio\bin\pulseaudio.exe -D --exit-idle-time=-1
+```
 
-8.服务器Server:
+## 8.服务器Server:
+```
 [archlinuxcn]
 Server = https://mirrors.tuna.tsinghua.edu.cn/archlinuxcn/$arch
 
 [arch4edu]
 SigLevel = Never
 Server = http://mirrors.tuna.tsinghua.edu.cn/arch4edu/$arch
+```
 
-9.重新安装系统之后:
-  1.确保开启开发者模式和WSL功能
-  2.使用lxss.reg设置注册表项Lxss
-  HKEY_CURRENT_USER\Software\Microsoft\Windows\CurrentVersion\Lxss
+## 9.重新安装系统之后:
+  1.确保开启开发者模式和WSL功能  
+  2.使用lxss.reg设置注册表项Lxss  
+  `HKEY_CURRENT_USER\Software\Microsoft\Windows\CurrentVersion\Lxss`  
   主要是设置"BasePath",顺便改一下"DistributionName"
