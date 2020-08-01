@@ -12,7 +12,7 @@ int main()
 	{
 		for (d = 0, k = n; k > 1; k--)
 		{
-			printf("%d ", f[k]);
+			// printf("%d ", f[k]);
 			d += f[k] * a;
 			f[k] = d % (2 * k - 1);
 			d = d / (2 * k - 1) * (k - 1); //n/(2n+1);

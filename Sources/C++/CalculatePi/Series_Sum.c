@@ -1,8 +1,9 @@
+// 级数求和
 #include <stdio.h>
 #include <math.h>
 #define N 100 //精度控制
 //e num=1;den=k;
-//pi num=k;den=2*k+1;
+//pi/2 num=k;den=2*k+1;
 #define num(k) (1)
 #define den(k) (k)
 int a = 10, k, n = N * 10 / 3, d, e, f[N * 10 / 3];

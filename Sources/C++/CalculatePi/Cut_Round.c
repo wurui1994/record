@@ -1,5 +1,7 @@
+// 割圆术
 #include <stdio.h>
 #include <math.h>
+
 int main()
 {
 	long int n;		/* 定义内接正多边形的边数 */

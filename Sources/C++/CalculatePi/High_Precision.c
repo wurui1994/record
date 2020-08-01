@@ -1,12 +1,18 @@
-
-
-//计算圆周率的C++程序(30000位)
+/* Ref:https://blog.csdn.net/qin_zhangyongheng/article/details/8033942
+** 用c++高精度的计算π的值，可精确到n位
+** π/2=1+1/3+1/3*2/5+1/3*2/5*3/7...+1*2*3*...n/3*5*...*(2n+1)
+** =1+1/3(1+2/5(1+...+(n-1)/(2n-1)(1+n/(2n+1))...);
+*/
+// 计算圆周率的C++程序(30000位)
 
 #include <stdlib.h>
+#include <stdio.h>
 #include <math.h>
 #include <memory.h>
+#include <time.h>
+
 #define N 10000
-//using namespace std;
+
 void mult(int *a, int b, int *s)
 {
 	for (int i = N, c = 0; i >= 0; i--)
@@ -58,7 +64,6 @@ void print(int *pi)
 	}
 };
 
-//int main(int argc, char *argv[])
 void test()
 {
 	int lpi[N + 1], lls[N + 1], lsl[N + 1], lp[N + 1];
@@ -85,11 +90,9 @@ void test()
 	mult(p, 2, pi);
 	print(pi);
 	printf("\n\nSUCCESS!\n");
-	//return EXIT_SUCCESS;
 }
 
-#include <time.h>
-int calctime(void (*fun)(void))
+void calctime(void (*fun)(void))
 {
 	clock_t st, et;
 	st = clock();

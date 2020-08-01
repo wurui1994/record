@@ -1,3 +1,4 @@
+// 马青公式
 /*一个计算π的c程序
 ======================================
 
@@ -20,7 +21,8 @@
 /* The last few digits may be wrong.......... */
 
 #include <stdio.h>
-#include <malloc.h>
+#include <stdlib.h>
+#include <time.h>
 
 #define BASE 10000
 int nblock;
@@ -86,7 +88,7 @@ void mult(int *result, int factor)
 	}
 }
 
-void div(int *result, int denom)
+void divide(int *result, int denom)
 {
 	int i, carry = 0;
 
@@ -130,20 +132,20 @@ void arctan(int *result, int *w1, int *w2, int denom, int onestep)
 	int k = 1;
 
 	set(result, 1);
-	div(result, denom);
+	divide(result, denom);
 	copy(w1, result);
 
 	do
 	{
 		if (onestep)
-			div(w1, denom2);
+			divide(w1, denom2);
 		else
 		{
-			div(w1, denom);
-			div(w1, denom);
+			divide(w1, denom);
+			divide(w1, denom);
 		}
 		copy(w2, w1);
-		div(w2, 2 * k + 1);
+		divide(w2, 2 * k + 1);
 		if (k % 2)
 			sub(result, w2);
 		else
@@ -184,8 +186,8 @@ void test()
 	mult(tot, 4);
 	print(tot);
 }
-#include <time.h>
-int calctime(void (*fun)(void))
+
+void calctime(void (*fun)(void))
 {
 	clock_t st, et;
 	st = clock();

@@ -1,8 +1,9 @@
-
-//圆周率pi的计算（精确到小数点后1000位）
+// BBP公式
+// 圆周率pi的计算（精确到小数点后1000位）
 
 #include <math.h>
 #include <stdio.h>
+#include <time.h>
 
 double bbp(int n, int k, int l)
 {
@@ -42,6 +43,7 @@ void pi(int m, int n, int p[])
 		a = a - (int)a;
 	}
 }
+
 void div(int p[])
 {
 	int i, j = 0;
@@ -107,8 +109,8 @@ void test()
 	}
 	printf("\n");
 }
-#include <time.h>
-int calctime(void (*fun)(void))
+
+void calctime(void (*fun)(void))
 {
 	clock_t st, et;
 	st = clock();
