@@ -1,4 +1,10 @@
-#include <Windows.h>
+/* 
+macOS: 
+  brew install glew
+  clang `pkg-config --libs glew` -framework GLUT -framework OpenGL example1.c -o example1
+  # clang `pkg-config --libs glew glut` -framework OpenGL example1.c -o example1
+  ./example1
+*/
 #include <GL/glew.h>
 #include <GL/glut.h>
 #include <time.h>

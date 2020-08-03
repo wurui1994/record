@@ -1,2 +1,2 @@
-import igraph.test
-igraph.test.test()
+import igraph
+print(igraph.__version__)

@@ -1,3 +1,9 @@
+/* 
+macOS: 
+  brew install glfw glew
+  clang `pkg-config --libs glfw3 glew` -framework OpenGL main.c -o main
+  ./main
+*/
 // GLEW
 //#define GLEW_STATIC
 #include <GL/glew.h>

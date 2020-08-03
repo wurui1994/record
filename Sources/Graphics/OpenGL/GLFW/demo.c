@@ -1,3 +1,9 @@
+/* 
+macOS: 
+  brew install glfw
+  clang `pkg-config --libs glfw3` -framework OpenGL demo.c -o demo
+  ./demo
+*/
 #include <GLFW/glfw3.h>
 
 // #pragma comment(lib,"glfw3")

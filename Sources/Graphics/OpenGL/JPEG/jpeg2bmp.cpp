@@ -4,7 +4,7 @@
 extern "C" {
 #include "jpeglib.h"
 };
-#pragma comment(lib, "jpeg.lib")
+#pragma comment(lib, "jpeg")
 using namespace std;
 
 #pragma pack(2) //两字节对齐，否则bmp_fileheader会占16Byte

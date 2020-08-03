@@ -4,6 +4,7 @@
 #include <stdlib.h>
 
 #pragma comment(lib,"gsl")
+
 int main(int argc, char** argv)
 {
     gsl_complex a,b;

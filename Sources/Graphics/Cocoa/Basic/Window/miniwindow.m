@@ -16,7 +16,7 @@
 int main(int argc, char const* argv[])
 {
     [NSApplication sharedApplication];
-    NSWindow* window = [[NSWindow alloc] initWithContentRect:(NSMakeRect(0, 0, 640, 480)) styleMask:(NSTitledWindowMask)backing:(NSBackingStoreBuffered)defer:(true)];
+    NSWindow* window = [[NSWindow alloc] initWithContentRect:(NSMakeRect(0, 0, 640, 480)) styleMask:(NSWindowStyleMaskTitled)backing:(NSBackingStoreBuffered)defer:(true)];
     //
     NSView* view = [[NSView alloc] initWithFrame:NSMakeRect(100, 100, 100, 100)];
     [view setWantsLayer:YES];
@@ -26,7 +26,7 @@ int main(int argc, char const* argv[])
 
     NSRect frame = NSMakeRect(10, 40, 90, 40);
     NSButton* pushButton = [[NSButton alloc] initWithFrame:frame];
-    pushButton.bezelStyle = NSRoundedBezelStyle;
+    pushButton.bezelStyle = NSBezelStyleRounded;
 
     [window.contentView addSubview:pushButton];
     window.styleMask |= NSWindowStyleMaskTitled | NSWindowStyleMaskClosable | NSWindowStyleMaskMiniaturizable;

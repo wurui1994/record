@@ -3,6 +3,8 @@
 #include <stdlib.h>
 #include <cjson/cJSON.h>
 
+#pragma comment(lib, "cjson")
+
 int main(void) 
 {
 	cJSON *body = cJSON_CreateObject();

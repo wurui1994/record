@@ -59,7 +59,7 @@ void DrawWithShader(float vertices[], int number)
     glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 6 * sizeof(float), (void *)(3 * sizeof(float)));
     glEnableVertexAttribArray(1);
     
-    // glBindVertexArray(VAO);
+    glBindVertexArray(VAO);
     glDrawArrays(GL_TRIANGLES, 0, 3);
 }
 //
@@ -85,7 +85,7 @@ void Render(void)
         -0.5f, 0.5f, 0.0f, 1.0f, 0.0f, 0.0f   // top
     };
     DrawWithShader(verticesOne, sizeof(verticesOne));
-    DrawWithShader(verticesTwo, sizeof(verticesTwo));
+    // DrawWithShader(verticesTwo, sizeof(verticesTwo));
     int et = clock();
     // printf("Cost time = %fsecs.\n", 1.0 * (et - st) / CLOCKS_PER_SEC);
     glutSwapBuffers();
@@ -102,6 +102,6 @@ int main(int argc, char *argv[])
     if (glewInit() != GLEW_OK)
         return -1;
     glutDisplayFunc(Render);
-    glutIdleFunc(Render);
+    // glutIdleFunc(Render);
     glutMainLoop();
 }

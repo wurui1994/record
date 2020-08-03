@@ -1,4 +1,5 @@
-//tcc -lgsl -lglut -lGL -run gsl_opengl.c
+// tcc -lgsl -lglut -lGL -run gsl_opengl.c
+// clang -lgsl -framework GLUT -framework OpenGL gsl_opengl.c
 #include <gsl/gsl_qrng.h>
 #include <GL/glut.h>
 

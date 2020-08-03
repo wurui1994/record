@@ -14,7 +14,7 @@
 
 - (void)applicationWillFinishLaunching:(NSNotification*)note
 {
-    self.window = [[NSWindow alloc] initWithContentRect:(NSMakeRect(0, 0, 640, 480)) styleMask:(NSTitledWindowMask)backing:(NSBackingStoreBuffered)defer:(true)];
+    self.window = [[NSWindow alloc] initWithContentRect:(NSMakeRect(0, 0, 640, 480)) styleMask:(NSWindowStyleMaskTitled)backing:(NSBackingStoreBuffered)defer:(true)];
     //
     window.styleMask |= NSWindowStyleMaskTitled | NSWindowStyleMaskClosable | NSWindowStyleMaskMiniaturizable;
     //
@@ -28,7 +28,7 @@
 
     NSRect frame = NSMakeRect(10, 40, 90, 40);
     NSButton* pushButton = [[NSButton alloc] initWithFrame:frame];
-    pushButton.bezelStyle = NSRoundedBezelStyle;
+    pushButton.bezelStyle = NSBezelStyleRounded;
 
     [self.window.contentView addSubview:pushButton];
 

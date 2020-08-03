@@ -47,7 +47,7 @@ struct yf
 int main()
 {
 	int n = 0;
-	struct yf a[1000] = {
+	struct yf a[] = {
 		{z3, 125}, {z3, 50}, {z4, 100}, {z3, 50}, {z2, 50}, //5
 		{z2, 125},
 		{z2, 50},
