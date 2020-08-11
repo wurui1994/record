@@ -19,4 +19,12 @@ self.displayStringLimit = 100
 ```
 
 # vscode设置:
-lldb设置好后安装codelldb, task manager (optional)
+- lldb设置好后安装codelldb, task manager (optional)
+- vscode-cpptools设置`setupCommands`
+```json
+"setupCommands": [
+{
+    "description": "Load .lldbinit",
+    "text": "command source ~/.lldbinit"
+}
+```
