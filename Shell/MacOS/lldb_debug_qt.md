@@ -23,8 +23,9 @@ self.displayStringLimit = 100
 - vscode-cpptools设置`setupCommands`
 ```json
 "setupCommands": [
-{
-    "description": "Load .lldbinit",
-    "text": "command source ~/.lldbinit"
-}
+    {
+        "description": "Load .lldbinit",
+        "text": "command source ~/.lldbinit"
+    }
+]
 ```
