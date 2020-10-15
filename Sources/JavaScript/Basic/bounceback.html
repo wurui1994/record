@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+    <meta charset="UTF-8"/>
+    <meta name="Keywords" content=""/>
+    <meta name="Description" content=""/>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1"/>
+    <meta name="viewport" content="width=device-width,initial-scale=1,user-scalable=no"/>
+    <meta name="apple-mobile-web-app-capable" content="yes"/>
+    <meta content="telephone=no" name="format-detection"/>
+    <meta content="email=no" name="format-detection"/>
+    <title>Document</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+        }
+
+        div {
+            position: relative;
+            width: 200px;
+            height: 300px;
+            margin: 3em auto;
+            border: 1px solid #CCC;
+            overflow: hidden;
+            -webkit-user-select: none;
+            user-select: none;
+        }
+
+        ol {
+            width: 100%;
+        }
+
+        ol > li {
+            height: 30px;
+        }
+    </style>
+</head>
+
+<body>
+<div>
+    <ol>
+        <li></li>
+        <li></li>
+        <li></li>
+        <li></li>
+        <li></li>
+        <li></li>
+        <li></li>
+        <li></li>
+        <li></li>
+        <li></li>
+        <li></li>
+        <li></li>
+        <li></li>
+        <li></li>
+        <li></li>
+        <li></li>
+        <li></li>
+        <li></li>
+        <li></li>
+        <li></li>
+        <li></li>
+        <li></li>
+        <li></li>
+        <li></li>
+        <li></li>
+        <li></li>
+        <li></li>
+        <li></li>
+        <li></li>
+        <li></li>
+        <li></li>
+        <li></li>
+        <li></li>
+        <li></li>
+        <li></li>
+        <li></li>
+        <li></li>
+        <li></li>
+        <li></li>
+        <li></li>
+    </ol>
+</div>
+<script>
+    function myScroll(ctx) {
+        var ol = ctx.firstElementChild || ctx.firstChild,
+                offset = 50,//最大溢出值
+                cur = 0,//列表滑动位置
+                isDown = false,
+                vy = 0,//滑动的力度
+                fl = 150,//弹力,值越大,到度或到顶后,可以继续拉的越远
+                isInTransition = false;//是否在滚动中
+
+        ctx.addEventListener("mousedown", function (e) {
+            if (isInTransition)return;//如果在滚动中，则中止执行
+            clearTimeout(this._timer);//清除定时器
+            vy = 0;
+            this._oy = e.clientY - cur;//计算鼠标按下位置与列表当前位置的差值,列表位置初始值为0
+            this._cy = e.clientY;//鼠标按下的位置
+            this._oh = this.scrollHeight;//列表的高度
+            this._ch = this.clientHeight;//容器的高度
+            this._startTime = e.timeStamp;//鼠标按下时的时间戳
+            isDown = true;//鼠标是否有按下，主要防止用户是从容器外开始滑动的
+
+        });
+
+        ctx.addEventListener("mousemove", function (e) {
+            if (isDown) {//如果鼠标是从容器里开始滑动的
+                if (e.timeStamp - this._startTime > 40) {//如果是慢速滑动，就不会产生力度，列表是跟着鼠标移动的
+                    this._startTime = e.timeStamp;//慢速滑动不产生力度，所以需要实时更新时间戳
+                    cur = e.clientY - this._oy;//列表位置应为 鼠标当前位置减去鼠标按下时与列表位置的差值,如:列表初始位置为0,鼠标在 5的位置按,那么差值为 5,此处假如鼠标从5滑动到了4,向上滑,cur = 4-5 =-1  ,假如鼠标从5滑动到了6,向下滑,cur= 6 - 5 = 1
+
+
+                    if (cur > 0) {//如果列表位置大于0,既鼠标向下滑动并到顶时
+                        cur *= fl / (fl + cur);//列表位置带入弹力模拟,公式只能死记硬背了,公式为:位置 *=弹力/(弹力+位置)
+                    }else if (cur < this._ch - this._oh) {//如果列表位置小于 容器高度减列表高度(因为需要负数,所以反过来减),既向上滑动到最底部时。
+                        //当列表滑动到最底部时,cur的值其实是等于 容器高度减列表高度的,假设窗口高度为10,列表为30,那此时cur为 10 - 30 = -20,但这里的判断是小于,所以当cur<-20时才会触发,如 -21;
+                        cur += this._oh - this._ch;//列表位置加等于 列表高度减容器高度(这是与上面不同,这里是正减,得到了一个正数) ,这里 cur 为负数,加上一个正数,延用上面的假设,此时 cur = -21 + (30-10=20) = -1 ,所以这里算的是溢出数
+
+//                        console.log(cur);
+                        cur = cur * fl / (fl - cur) - this._oh + this._ch;//然后给溢出数带入弹力,延用上面的假设,这里为   cur = -1 * 150 /(150 - -1 = 151)~= -0.99 再减去 30  等于 -30.99  再加上容器高度 -30.99+10=-20.99  ,这也是公式,要死记。。
+                    }
+                    setPos(cur);//移动列表
+                }
+                vy = e.clientY - this._cy;//记录本次移动后,与前一次鼠标位置的滑动的距离,快速滑动时才有效,慢速滑动时差值为 1 或 0,vy可以理解为滑动的力度
+
+//                console.log(vy);
+                this._cy = e.clientY;//更新前一次位置为现在的位置,以备下一次比较
+            }
+
+        }, false);
+
+        ctx.addEventListener("mouseleave", mleave, false);
+
+        ctx.addEventListener("mouseup", mleave, false);
+
+        function setPos(y) {//传们列表y轴位置,移动列表
+            ol.style.transform = "translateY(" + y + "px) translateZ(0)";
+        }
+
+        function ease(target) {
+            isInTransition = true;
+            ctx._timer = setInterval(function () {//回弹算法为  当前位置 减 目标位置 取2个百分点 递减
+                cur -= (cur - target) * 0.2;
+                if (Math.abs(cur - target) < 1) {//减到 当前位置 与 目标位置相差小于1 之后直接归位
+                    cur = target;
+                    clearInterval(ctx._timer);
+                    isInTransition = false;
+                }
+                setPos(cur);
+            }, 20);
+        }
+
+        function mleave(e) {
+            if (isDown) {
+                isDown = false;
+                console.log(vy);
+                var t = this,
+                        friction = ((vy >> 31) * 2 + 1) * 0.5,//根据力度套用公式计算出惯性大小,公式要记住
+                        oh = this.scrollHeight - this.clientHeight;
+                this._timer = setInterval(function () {//
+                    vy -= friction;//力度按 惯性的大小递减
+                    cur += vy;//转换为额外的滑动距离
+                    setPos(cur);//滑动列表
+
+                    if (-cur - oh > offset) {//如果列表底部超出了
+                        clearTimeout(t._timer);
+                        ease(-oh);//回弹
+                        return;
+                    }
+                    if (cur > offset) {//如果列表顶部超出了
+                        clearTimeout(t._timer);
+                        ease(0);//回弹
+                        return;
+                    }
+                    if (Math.abs(vy) < 1) {//如果力度减小到小于1了,再做超出回弹
+                        clearTimeout(t._timer);
+                        if (cur > 0) {
+                            ease(0);
+                            return;
+                        }
+                        if (-cur > oh) {
+                            ease(-oh);
+                            return;
+                        }
+                    }
+                }, 20);
+            }
+        }
+    }
+
+    myScroll(document.querySelector("div"));
+</script>
+</body>
+
+</html>
