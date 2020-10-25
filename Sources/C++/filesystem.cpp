@@ -1,15 +1,15 @@
-// g++ pwd.cpp -lstdc++fs
+// g++ filesystem.cpp -lstdc++fs
+// clang++ filesystem.cpp -std=c++2a
 #ifdef WIN32
 #define _CRT_SECURE_NO_WARNINGS 1
 #endif
 #include <iostream>
 #include <fstream>
 #include <chrono>
-#include <experimental/filesystem>
+#include <filesystem>
 
-using namespace std::experimental::filesystem::v1;
-
-namespace fs = std::experimental::filesystem;
+using namespace std::filesystem;
+namespace fs = std::filesystem;
 
 void demo_perms(fs::perms p)
 {
@@ -40,7 +40,7 @@ int main(int argc, char*argv[])
 	fs::path p2 = argv[0];
 	std::cout << "Current path is " << fs::current_path() << '\n'
 		<< "Absolute path for " << p2.filename() << " is " << fs::absolute(p2) << '\n'
-		<< "System complete path for " << p2.filename() << " is " << fs::system_complete(p2) << '\n';
+		<< "System complete path for " << p2.filename() << " is " << fs::canonical(p2) << '\n';
 
 	std::cout << "The current path " << p2 << " decomposes into:\n"
 		<< "root name " << p2.root_name() << '\n'
@@ -53,7 +53,7 @@ int main(int argc, char*argv[])
 
 	std::cout << "List parent path:" << std::endl;
 	for (fs::directory_entry const& p : fs::directory_iterator(p2.parent_path()))
-		std::cout << p << '\n';
+		std::cout << p.path() << '\n';
 
 	fs::create_directories("sandbox/dir/subdir");
 	std::ofstream("sandbox/file1.txt").put('a');
@@ -72,14 +72,13 @@ int main(int argc, char*argv[])
 	fs::rename("copy", "sandbox/copy");
 	std::cout << "Recursive List Directory:" << std::endl;
 	for (auto& p : fs::recursive_directory_iterator("sandbox"))
-		std::cout << p << '\n';
+		std::cout << p.path() << '\n';
 	// sandbox/copy 保有上述文件和子目录的副本
 	fs::remove_all("sandbox");
 
 	//setlocale(LC_ALL, "");
-	auto ftime = fs::last_write_time(argv[0]);
-
-	std::time_t cftime = decltype(ftime)::clock::to_time_t(ftime); // 假定 system_clock
-																   //std::cout << "File write time is " << std::asctime(std::localtime(&cftime)) << '\n';
+	fs::file_time_type ftime = fs::last_write_time(argv[0]);
+	std::time_t cftime = fs::file_time_type::clock::to_time_t(ftime); // 假定 system_clock
+	//std::cout << "File write time is " << std::asctime(std::localtime(&cftime)) << '\n';
 	std::cout << "File write time is " << std::ctime(&cftime) << '\n';
 }
