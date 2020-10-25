@@ -7,6 +7,7 @@ echo "command script import '/Applications/Qt Creator.app/Contents/Resources/deb
 ```py
 # defaults write com.apple.dt.lldb DefaultPythonVersion 2
 # /Applications/Xcode.app/Contents/Developer/usr/bin/pip install pygdbmi
+# xcrun python3 -m pip install pygdbmi --user [For XCode12]
 if sys.version_info >= (3, 0):
     binaryvalue = bytes.fromhex(summaryValue)
     return binaryvalue.decode(encoding)
