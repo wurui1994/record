@@ -1,3 +1,5 @@
 .DS_Store
 .vscode
+*.pro.user
 **/target/
+**/build-*/
