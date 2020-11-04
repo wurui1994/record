@@ -46,7 +46,7 @@ This is [an example](http://example.com/ "Title") inline link.
 <center>
 
 >
-###         黄浦江上的的卢浦大桥
+###         一张图片
 >
 ><img src="test.jpg" width="350" height="234" />
 </center>

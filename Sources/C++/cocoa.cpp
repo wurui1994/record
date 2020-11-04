@@ -9,9 +9,10 @@
  * that will output 'test1' binary.
  */
 
-
+#define OBJC_OLD_DISPATCH_PROTOTYPES 1
 #include <CoreFoundation/CoreFoundation.h>
 #include <objc/objc.h>
+#include <objc/runtime.h>
 #include <objc/objc-runtime.h>
 #include <iostream>
 

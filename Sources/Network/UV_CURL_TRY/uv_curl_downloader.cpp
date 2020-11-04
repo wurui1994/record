@@ -16,14 +16,14 @@ int active = 0;
 
 using namespace std;
 
-
 vector<string> vec;
 
 uv_loop_t *loop;
 CURLM *curl_handle;
 uv_timer_t timeout;
 
-typedef struct curl_context_s {
+typedef struct curl_context_s
+{
 	uv_poll_t poll_handle;
 	curl_socket_t sockfd;
 } curl_context_t;
@@ -31,11 +31,11 @@ typedef struct curl_context_s {
 #include <sys/stat.h>
 int exist(const char *name)
 {
-  struct stat   buffer;
-  return (stat (name, &buffer) == 0);
+	struct stat buffer;
+	return (stat(name, &buffer) == 0);
 }
 
-static curl_context_t* create_curl_context(curl_socket_t sockfd)
+static curl_context_t *create_curl_context(curl_socket_t sockfd)
 {
 	curl_context_t *context;
 
@@ -69,10 +69,12 @@ static void add_download(const char *url, int num)
 	char filename[BUFSIZ];
 	snprintf(filename, BUFSIZ, "%d.data", num);
 
-	if(exist(filename)) return;
-    
+	if (exist(filename))
+		return;
+
 	file = fopen(filename, "wb");
-	if (!file) {
+	if (!file)
+	{
 		fprintf(stderr, "Error opening %s\n", filename);
 		return;
 	}
@@ -94,10 +96,12 @@ static void check_multi_info(void)
 	CURLMsg *message;
 	int pending;
 	CURL *easy_handle;
-	FILE* file;
+	FILE *file;
 
-	while ((message = curl_multi_info_read(curl_handle, &pending))) {
-		switch (message->msg) {
+	while ((message = curl_multi_info_read(curl_handle, &pending)))
+	{
+		switch (message->msg)
+		{
 		case CURLMSG_DONE:
 			/* Do not use message data after calling curl_multi_remove_handle() and
 			curl_easy_cleanup(). As per curl_multi_info_read() docs:
@@ -112,10 +116,11 @@ static void check_multi_info(void)
 
 			curl_multi_remove_handle(curl_handle, easy_handle);
 			curl_easy_cleanup(easy_handle);
-			if (file) {
+			if (file)
+			{
 				fclose(file);
 				active--;
-				if (offset < vec.size() && active<MAX_HANDLE)
+				if (offset < vec.size() && active < MAX_HANDLE)
 				{
 					add_download(vec[offset].c_str(), offset);
 					offset++;
@@ -145,7 +150,7 @@ static void curl_perform(uv_poll_t *req, int status, int events)
 	context = (curl_context_t *)req->data;
 
 	curl_multi_socket_action(curl_handle, context->sockfd, flags,
-		&running_handles);
+							 &running_handles);
 
 	check_multi_info();
 }
@@ -154,16 +159,18 @@ static void on_timeout(uv_timer_t *req)
 {
 	int running_handles;
 	curl_multi_socket_action(curl_handle, CURL_SOCKET_TIMEOUT, 0,
-		&running_handles);
+							 &running_handles);
 	check_multi_info();
 }
 
 static int start_timeout(CURLM *multi, long timeout_ms, void *userp)
 {
-	if (timeout_ms < 0 && offset == vec.size()) {
+	if (timeout_ms < 0 && offset == vec.size())
+	{
 		uv_timer_stop(&timeout);
 	}
-	else {
+	else
+	{
 		if (timeout_ms == 0)
 			timeout_ms = 1; /* 0 means directly call socket_action, but we'll do it
 							in a bit */
@@ -173,17 +180,17 @@ static int start_timeout(CURLM *multi, long timeout_ms, void *userp)
 }
 
 static int handle_socket(CURL *easy, curl_socket_t s, int action, void *userp,
-	void *socketp)
+						 void *socketp)
 {
 	curl_context_t *curl_context;
 	int events = 0;
 
-	switch (action) {
+	switch (action)
+	{
 	case CURL_POLL_IN:
 	case CURL_POLL_OUT:
 	case CURL_POLL_INOUT:
-		curl_context = socketp ?
-			(curl_context_t *)socketp : create_curl_context(s);
+		curl_context = socketp ? (curl_context_t *)socketp : create_curl_context(s);
 
 		curl_multi_assign(curl_handle, s, (void *)curl_context);
 
@@ -195,9 +202,10 @@ static int handle_socket(CURL *easy, curl_socket_t s, int action, void *userp,
 		uv_poll_start(&curl_context->poll_handle, events, curl_perform);
 		break;
 	case CURL_POLL_REMOVE:
-		if (socketp) {
-			uv_poll_stop(&((curl_context_t*)socketp)->poll_handle);
-			destroy_curl_context((curl_context_t*)socketp);
+		if (socketp)
+		{
+			uv_poll_stop(&((curl_context_t *)socketp)->poll_handle);
+			destroy_curl_context((curl_context_t *)socketp);
 			curl_multi_assign(curl_handle, s, NULL);
 		}
 		break;
@@ -207,7 +215,6 @@ static int handle_socket(CURL *easy, curl_socket_t s, int action, void *userp,
 
 	return 0;
 }
-
 
 int main(int argc, char **argv)
 {
@@ -231,7 +238,8 @@ int main(int argc, char **argv)
 label:
 	loop = uv_default_loop();
 
-	if (curl_global_init(CURL_GLOBAL_ALL)) {
+	if (curl_global_init(CURL_GLOBAL_ALL))
+	{
 		fprintf(stderr, "Could not init curl\n");
 		return 1;
 	}
@@ -246,7 +254,7 @@ label:
 	{
 		MAX_HANDLE = vec.size();
 	}
-	for (int i = 0; i<MAX_HANDLE; i++)
+	for (int i = 0; i < MAX_HANDLE; i++)
 	{
 		add_download(vec[base + i].c_str(), base + i);
 		offset++;
@@ -260,7 +268,8 @@ label:
 	curl_multi_cleanup(curl_handle);
 
 	//如果没有下完,回到开头继续下载
-	if(offset < vec.size()) goto label;
+	if (offset < vec.size())
+		goto label;
 
 	return 0;
 }

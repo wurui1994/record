@@ -10,7 +10,7 @@ echo "command script import '/Applications/Qt Creator.app/Contents/Resources/deb
 # xcrun python3 -m pip install pygdbmi --user [For XCode12]
 if sys.version_info >= (3, 0):
     binaryvalue = bytes.fromhex(summaryValue)
-    return binaryvalue.decode(encoding)
+    return "\"%s\"" % binaryvalue.decode(encoding)
 else:
     binaryvalue = summaryValue.decode('hex')
     # LLDB expects UTF-8
