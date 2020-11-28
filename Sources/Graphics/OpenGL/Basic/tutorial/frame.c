@@ -3,7 +3,12 @@
 #define false 0
 #define true (!false)
 typedef int bool;
+#ifdef __APPLE__
+#define GL_SILENCE_DEPRECATION 1
+#include <GLUT/glut.h>
+#else
 #include <GL/glut.h>
+#endif
 
 void display();
 void keyboard(unsigned char key, int x, int y);

@@ -5,8 +5,15 @@ macOS:
   # clang `pkg-config --libs glew glut` -framework OpenGL example0.c -o example0
   ./example0
 */
+#ifdef __APPLE__
+#define GL_SILENCE_DEPRECATION 1
+#endif
 #include <GL/glew.h>
+#ifdef __APPLE__
+#include <GLUT/glut.h>
+#else
 #include <GL/glut.h>
+#endif
 //
 #define width 640
 #define height 480

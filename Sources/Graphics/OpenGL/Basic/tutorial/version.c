@@ -1,6 +1,10 @@
-#include <Windows.h>
 #include <stdio.h>
+#ifdef __APPLE__
+#define GL_SILENCE_DEPRECATION 1
+#include <GLUT/glut.h>
+#else
 #include <GL/glut.h>
+#endif
 int main(int argc, char **argv)
 {
 	glutInit(&argc, argv);

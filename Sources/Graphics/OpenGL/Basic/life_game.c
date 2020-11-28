@@ -3,7 +3,15 @@
 #include <stdio.h>
 #include <stdlib.h>
 // #include <windows.h>
+#ifdef __APPLE__
+#include <unistd.h>
+#endif
+#ifdef __APPLE__
+#define GL_SILENCE_DEPRECATION 1
+#include <GLUT/glut.h>
+#else
 #include <GL/glut.h>
+#endif
 #define random (rand() / (RAND_MAX + 1.0))
 #define M 1024
 #define N 1024
@@ -78,7 +86,11 @@ void display(void)
 				square(i, j);
 		}
 	}
+#ifdef __APPLE__
+	usleep(100*1000);
+#else
 	Sleep(100);
+#endif
 	glutSwapBuffers();
 	//glFlush();
 }

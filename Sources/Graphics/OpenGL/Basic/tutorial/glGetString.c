@@ -1,4 +1,9 @@
+#ifdef __APPLE__
+#define GL_SILENCE_DEPRECATION 1
+#include <GLUT/glut.h>
+#else
 #include <GL/glut.h>
+#endif
 #include <stdio.h>
 /*装驱动前输出:
 Microsoft Corporation

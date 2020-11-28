@@ -1,4 +1,15 @@
-#include <gl/glut.h>
+#ifdef __APPLE__
+#define GL_SILENCE_DEPRECATION 1
+#include <GLUT/glut.h>
+#else
+#include <GL/glut.h>
+#endif
+
+#include <stdlib.h>
+
+#define BOOL int
+#define TRUE 1
+#define FALSE 0
 
 BOOL fullscreen = FALSE;
 BOOL mouseDown = FALSE;
@@ -164,7 +175,7 @@ int main(int argc, char *argv[])
 
     glutInitDisplayMode(GLUT_RGB | GLUT_DOUBLE);
 
-    glutCreateWindow("13 - Solid Shapes");
+    glutCreateWindow("Cube");
 
     glutDisplayFunc(display);
     glutKeyboardFunc(keyboard);

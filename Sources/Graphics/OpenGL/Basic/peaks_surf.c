@@ -5,10 +5,11 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-#if defined(__APPLE__)
+#ifdef __APPLE__
+#define GL_SILENCE_DEPRECATION 1
 #include <GLUT/glut.h>
 #else
-#include <gl/glut.h>
+#include <GL/glut.h>
 #endif
 
 #define true 1

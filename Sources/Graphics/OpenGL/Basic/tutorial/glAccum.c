@@ -1,4 +1,9 @@
+#ifdef __APPLE__
+#define GL_SILENCE_DEPRECATION 1
+#include <GLUT/glut.h>
+#else
 #include <GL/glut.h>
+#endif
 #include <math.h>
 
 GLfloat fLightPos[4] = {-100.0f, 100.0f, 50.0f, 1.0f};

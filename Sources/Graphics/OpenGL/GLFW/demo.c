@@ -4,6 +4,9 @@ macOS:
   clang `pkg-config --libs glfw3` -framework OpenGL demo.c -o demo
   ./demo
 */
+#ifdef __APPLE__
+#define GL_SILENCE_DEPRECATION 1
+#endif
 #include <GLFW/glfw3.h>
 
 // #pragma comment(lib,"glfw3")

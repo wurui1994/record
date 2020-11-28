@@ -1,5 +1,14 @@
 // #include <Windows.h>
+// macOS: clang -framework OpenGL -framework GLUT
+// Linux: gcc -lGL -lGLU -lglut
+// Windows: cl -lopengl32 -lglu32 -lfreeglut
+// tcc -lopengl32 -lglu32 -lfreeglut [PATH/CPATH/LIBRARY_PATH vcpkg]
+#ifdef __APPLE__
+#define GL_SILENCE_DEPRECATION 1
+#include <GLUT/glut.h>
+#else
 #include <GL/glut.h>
+#endif
 //
 #define width 640
 #define height 480

@@ -1,4 +1,9 @@
+#ifdef __APPLE__
+#define GL_SILENCE_DEPRECATION 1
+#include <GLUT/glut.h>
+#else
 #include <GL/glut.h>
+#endif
 void render(void)
 {
 	glClear(GL_COLOR_BUFFER_BIT);

@@ -1,7 +1,12 @@
+#ifdef __APPLE__
+#define GL_SILENCE_DEPRECATION 1
+#include <GLUT/glut.h>
+#else
 #include <GL/glut.h>
+#endif
 void display(void)
 {
-	glClear(0);
+	glClear(GL_COLOR_BUFFER_BIT);
 	glColor3f(0,1,1);
 	//glColor3i(0,(1<<31)-1,(1<<31)-1);
 	//glColor3s(0,(1<<15)-1,(1<<15)-1);

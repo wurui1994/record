@@ -1,9 +1,12 @@
 /* 
 macOS: 
   brew install glfw glew
-  clang `pkg-config --libs glfw3 glew` -framework OpenGL main.c -o main
-  ./main
+  clang `pkg-config --libs glfw3 glew` -framework OpenGL triangle.c -o triangle
+  ./triangle
 */
+#ifdef __APPLE__
+#define GL_SILENCE_DEPRECATION 1
+#endif
 #include <GLFW/glfw3.h>
 
 // #pragma comment(lib,"glfw3")
@@ -35,6 +38,10 @@ int main(void)
     /* Loop until the user closes the window */
     while (!glfwWindowShouldClose(window))
     {
+        // Clear the colorbuffer
+        glClearColor(0.2f, 0.3f, 0.3f, 1.0f);
+		glClear(GL_COLOR_BUFFER_BIT);
+
         /* Draw a triangle */
         glBegin(GL_TRIANGLES);
 

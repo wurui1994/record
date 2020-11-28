@@ -5,11 +5,14 @@
 #include <string>
 #include <vector>
 #include <ctime>
+
 using namespace std;
 using namespace Gdiplus;
 #pragma comment(lib, "gdiplus")
+
 vector<string> vec;
 int num = 0;
+
 int GetEncoderClsid(const WCHAR *format, CLSID *pClsid)
 {
 	UINT num = 0;  // number of image encoders
@@ -60,7 +63,6 @@ wstring StringToWstring(string str)
 
 void draw_image(const char *file)
 {
-
 	int width, height;
 	size_t len = strlen(file) + 1;
 	size_t converted = 0;
@@ -112,7 +114,6 @@ void initiate()
 }
 int main()
 {
-
 	//GdiPlus初始化
 	ULONG_PTR gdipludToken;
 	GdiplusStartupInput gdiplusInput;

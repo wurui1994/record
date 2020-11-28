@@ -2,8 +2,12 @@
 #include <time.h>
 #include <stdio.h>
 #include <stdlib.h>
-#include <Windows.h>
+#ifdef __APPLE__
+#define GL_SILENCE_DEPRECATION 1
+#include <GLUT/glut.h>
+#else
 #include <GL/glut.h>
+#endif
 #define random (rand() / (RAND_MAX + 1.0))
 static float xrot = 0.0;
 static float yrot = 0.0;
