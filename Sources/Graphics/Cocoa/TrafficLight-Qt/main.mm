@@ -5,7 +5,7 @@ void adjustWindowButtons(QWidget *w)
 {
     NSView *view = (NSView *)w->winId();
 
-    KWindowButtonView* buttonView = [[KWindowButtonView alloc] initWithFrame:NSMakeRect(0,0,74,30)];
+    KWindowButtonView* buttonView = [[KWindowButtonView alloc] initWithFrame:NSMakeRect(12,14,54,16)];
     [view addSubview:buttonView];
     [buttonView updateWindowRadiusButton];
     [buttonView autorelease];

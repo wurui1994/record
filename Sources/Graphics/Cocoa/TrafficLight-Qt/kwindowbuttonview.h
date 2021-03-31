@@ -7,7 +7,6 @@
 @property (nonatomic, strong, readonly) NSButton *miniButton;
 @property (nonatomic, strong, readonly) NSButton *maxButton;
 
-- (void)resetButtonPosition;
 - (void)updateWindowRadiusButton;
 - (void)adjustWindowState;
 

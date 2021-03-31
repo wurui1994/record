@@ -115,38 +115,6 @@
 
 #pragma mark - Public Methods
 
-- (void)resetButtonPosition {
-    
-    if (self.maxButton.hidden) {
-        if (self.miniButton.hidden) {
-            
-        } else {
-            if (self.closeButton.hidden) {
-                self.miniButton.frame = NSMakeRect(12, 0, self.miniButton.bounds.size.width, self.miniButton.bounds.size.height);
-            } else {
-                self.miniButton.frame = NSMakeRect(32, 0, self.miniButton.bounds.size.width, self.miniButton.bounds.size.height);
-            }
-        }
-    } else {
-        if (self.miniButton.hidden) {
-            if (self.closeButton.hidden) {
-                self.maxButton.frame = NSMakeRect(12, 0, self.maxButton.bounds.size.width, self.maxButton.bounds.size.height);
-            } else {
-                self.maxButton.frame = NSMakeRect(32, 0, self.maxButton.bounds.size.width, self.maxButton.bounds.size.height);
-            }
-        } else {
-            if (self.closeButton.hidden) {
-                self.miniButton.frame = NSMakeRect(12, 0, self.miniButton.bounds.size.width, self.miniButton.bounds.size.height);
-                self.maxButton.frame = NSMakeRect(32, 0, self.maxButton.bounds.size.width, self.maxButton.bounds.size.height);
-            } else {
-                self.closeButton.frame = NSMakeRect(12, 0, self.closeButton.bounds.size.width, self.closeButton.bounds.size.height);
-                self.miniButton.frame = NSMakeRect(32, 0, self.miniButton.bounds.size.width, self.miniButton.bounds.size.height);
-                self.maxButton.frame = NSMakeRect(52, 0, self.maxButton.bounds.size.width, self.maxButton.bounds.size.height);
-            }
-        }
-    }
-}
-
 - (void)adjustWindowState
 {
     // movable and resizable
@@ -161,19 +129,22 @@
 - (void)commonInitialize {
     
     self.closeButton = [NSWindow standardWindowButton:NSWindowCloseButton forStyleMask:3];
-    self.closeButton.frame = NSMakeRect(12, 0, self.closeButton.bounds.size.width, self.closeButton.bounds.size.height);
+    self.closeButton.frame = NSMakeRect(0, 0, self.closeButton.bounds.size.width, self.closeButton.bounds.size.height);
     
     self.miniButton = [NSWindow standardWindowButton:NSWindowMiniaturizeButton forStyleMask:3];
-    self.miniButton.frame = NSMakeRect(32, 0, self.miniButton.bounds.size.width, self.miniButton.bounds.size.height);
+    self.miniButton.frame = NSMakeRect(20, 0, self.miniButton.bounds.size.width, self.miniButton.bounds.size.height);
     
     self.maxButton = [NSWindow standardWindowButton:NSWindowZoomButton forStyleMask:3];
-    self.maxButton.frame = NSMakeRect(52, 0, self.maxButton.bounds.size.width, self.maxButton.bounds.size.height);
+    self.maxButton.frame = NSMakeRect(40, 0, self.maxButton.bounds.size.width, self.maxButton.bounds.size.height);
     
     [self addSubview:self.closeButton];
     [self addSubview:self.miniButton];
     [self addSubview:self.maxButton];
     
     [self addNotifications];
+
+//    self.wantsLayer = YES;
+//    self.layer.backgroundColor = [NSColor cyanColor].CGColor;
 }
 
 - (void)addNotifications {

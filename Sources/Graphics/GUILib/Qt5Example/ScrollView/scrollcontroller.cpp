@@ -1,11 +1,6 @@
 
 #include "scrollcontroller.h"
 
-#include "scrollview.h"
-
-#include <QTime>
-#include <QDebug>
-
 ScrollController::ScrollController(QObject *parent)
     : QObject(parent)
     , wheelEnabled(true)
@@ -330,11 +325,12 @@ bool ScrollController::eventFilter(QObject *o, QEvent *e)
 {
     if (m_view == o)
     {
-        if (processEvent(e))
-        {
-            e->accept();
-            return true;
-        }
+        // if (processEvent(e))
+        // {
+        //     e->accept();
+        //     return true;
+        // }
+        processEvent(e);
     }
     return QObject::eventFilter(o, e);
 }

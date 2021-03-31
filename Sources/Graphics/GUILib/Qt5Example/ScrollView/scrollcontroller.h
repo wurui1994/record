@@ -2,8 +2,9 @@
 #define SCROLLCONTROLLER_H
 
 #include <QWheelEvent>
-
-class ScrollView;
+#include <QTime>
+#include <QDebug>
+#include <QWidget>
 
 class ScrollController : public QObject
 {

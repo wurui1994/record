@@ -13,7 +13,6 @@ ScrollView::~ScrollView()
 {
 }
 
-
 void ScrollView::paintEvent(QPaintEvent *event)
 {
     Q_UNUSED(event)
