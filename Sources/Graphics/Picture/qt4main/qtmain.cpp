@@ -40,8 +40,8 @@ PaintedWidget::PaintedWidget()
 	this->startTimer(0);
 	this->setWindowTitle(tr("Paint Demo"));
 }
-void PaintedWidget::timerEvent(QTimerEvent *event) {
-	
+void PaintedWidget::timerEvent(QTimerEvent *event) 
+{
 	//this->repaint();
 	this->update();
 }
@@ -53,7 +53,6 @@ void PaintedWidget::paintEvent(QPaintEvent *event)
 	QPixmap pixmap(vec[num++].c_str());
 	painter.drawPixmap(QPoint(0, 0), pixmap);
 }
-
 
 int main(int argc, char *argv[])
 {

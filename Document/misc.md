@@ -2,3 +2,6 @@
 * [黑苹果教程](https://zhuanlan.zhihu.com/p/79714868)
 * [黑苹果镜像](https://zhih.me/hackintosh/#/OS-images)
 * [macOS-Security-and-Privacy-Guide](https://github.com/drduh/macOS-Security-and-Privacy-Guide/blob/master/README-cn.md)
+* [文字渲染一探](https://www.e-learn.cn/topic/3748790)
+* [Inigo Quilez的shadertoy](https://www.shadertoy.com/user/iq)
+* [Inigo Quilez的网站](https://www.iquilezles.org/)
