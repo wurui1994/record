@@ -1,6 +1,5 @@
 import sys
-from PyQt5 import QtGui, QtCore, QtWidgets
-
+from PyQt6 import QtGui, QtCore, QtWidgets
 
 class TreeModel(QtCore.QAbstractItemModel):
     def __init__(self):
@@ -28,20 +27,20 @@ class TreeModel(QtCore.QAbstractItemModel):
             return None
 
     def supportedDropActions(self):
-        return QtCore.Qt.CopyAction | QtCore.Qt.MoveAction
+        return QtCore.Qt.DropAction.CopyAction | QtCore.Qt.DropAction.MoveAction
 
     def flags(self, index):
         if not index.isValid():
-            return QtCore.Qt.ItemIsEnabled
-        return QtCore.Qt.ItemIsEnabled | QtCore.Qt.ItemIsSelectable | \
-            QtCore.Qt.ItemIsDragEnabled | QtCore.Qt.ItemIsDropEnabled
+            return QtCore.Qt.ItemFlag.ItemIsEnabled
+        return QtCore.Qt.ItemFlag.ItemIsEnabled | QtCore.Qt.ItemFlag.ItemIsSelectable | \
+            QtCore.Qt.ItemFlag.ItemIsDragEnabled | QtCore.Qt.ItemFlag.ItemIsDropEnabled
 
     def mimeTypes(self):
         return ['text/xml']
 
     def mimeData(self, indexes):
         mimedata = QtCore.QMimeData()
-        mimedata.setData('text/xml', 'mimeData')
+        mimedata.setData('text/xml', b'mimeData')
         return mimedata
 
     def dropMimeData(self, data, action, row, column, parent):
@@ -49,7 +48,6 @@ class TreeModel(QtCore.QAbstractItemModel):
               (data.data('text/xml'), action, row, parent))
         print(QtCore.QAbstractItemModel.moveRow)
         return True
-
 
 class MainForm(QtWidgets.QMainWindow):
     def __init__(self, parent=None):
@@ -61,17 +59,16 @@ class MainForm(QtWidgets.QMainWindow):
         self.view.setModel(self.treeModel)
         self.view.setAcceptDrops(True)
         self.view.setDragEnabled(True)
-        self.view.setDragDropMode(QtWidgets.QAbstractItemView.DragDrop)
+        self.view.setDragDropMode(
+            QtWidgets.QAbstractItemView.DragDropMode.DragDrop)
 
         self.setCentralWidget(self.view)
-
 
 def main():
     app = QtWidgets.QApplication(sys.argv)
     form = MainForm()
     form.show()
-    app.exec_()
-
+    app.exec()
 
 if __name__ == '__main__':
     main()
