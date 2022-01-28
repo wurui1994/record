@@ -1,6 +1,9 @@
 // tcc -lgsl -lglut -lGL -run gsl_opengl.c
 // clang -lgsl -framework GLUT -framework OpenGL gsl_opengl.c
 #include <gsl/gsl_qrng.h>
+#ifdef __APPLE__
+#define GL_SILENCE_DEPRECATION
+#endif
 #include <GL/glut.h>
 
 // #pragma comment(lib,"glut32")

@@ -1,4 +1,5 @@
-// tcc -lmpir -run gmptest.c
+// tcc -lgmp -run gmp_demo.c
+// tcc -lmpir -run gmp_demo.c
 #include <stdio.h> //hello world 工程默认的，如果你建立的是空工程就不需要这句
 #include <gmp.h>//记得引入GMP.H的头文件
 
