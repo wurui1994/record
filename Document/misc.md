@@ -5,3 +5,4 @@
 * [文字渲染一探](https://www.e-learn.cn/topic/3748790)
 * [Inigo Quilez的shadertoy](https://www.shadertoy.com/user/iq)
 * [Inigo Quilez的网站](https://www.iquilezles.org/)
+* [CMake Cookbook](https://github.com/xiaoweiChen/CMake-Cookbook)
