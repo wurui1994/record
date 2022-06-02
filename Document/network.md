@@ -1,2 +1,8 @@
 - [科学上网工具哪个好？一灯不是和尚为您科普VPN、SS、SSR、V2Ray、Trojan和WireGuard的前世今生、区别和关系以及翻墙软件的前景](https://iyideng.me/black-technology/cgfw/vpn-ss-ssr-v2ray-trojan-wireguard-bypass-gfw.html)
 - [V2Ray客户端](https://tlanyan.me/v2ray-clients-download/)
+- [Design SIOCGIFADDR on IPv6 socket](https://www.ooseel.net/me/2021/02/design-siocgifaddr-on-ipv6-socket/)
+- [Assign ipv6 address using ioctl](https://stackoverflow.com/questions/8240724/assign-ipv6-address-using-ioctl)
+- [Get IPv6 addresses in linux using ioctl](https://stackoverflow.com/questions/20743709/get-ipv6-addresses-in-linux-using-ioctl)
+- [Get IP, IPv6 and MAC addresses using ioctl and procfs on Linux in C](https://domen.ipavec.net/en/get-ip-ipv6-and-mac-addresses-using-ioctl-and-procfs-linux-c/)
+- [How to get my IP address programmatically on iOS/macOS?](https://stackoverflow.com/questions/7072989/how-to-get-my-ip-address-programmatically-on-ios-macos)
+- [MAC address with getifaddrs](https://stackoverflow.com/questions/6762766/mac-address-with-getifaddrs)

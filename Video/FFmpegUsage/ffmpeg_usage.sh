@@ -4,6 +4,8 @@ ffplay -f dshow -i dummy -list_devices true 2>&1|findstr dshow
 ffplay -f dshow -i video="Camera"
 # Screen Record use gdigrab
 ffplay -f gdigrab -i desktop -video_size 1280x720
+# lavfi
+ffplay -f lavfi mandelbrot
 # render subtitle without video
 ffplay -f lavfi -i color=s=1289x720 -vf subtitles=test.ass
 ffplay -f lavfi -i nullsrc=s=1280x720,geq=r=0:g=0:b=0 -vf subtitles=test.ass
@@ -28,4 +30,4 @@ ffplay -i test.mkv -vf "subtitles=test.ass,scale=1280:720[mainvideo];movie=test.
 
 ffmpeg -i test.mkv -vf "subtitles=test.ass,scale=1280:720[mainvideo];movie=test.png [watermark];[mainvideo][watermark]overlay" test_new.mkv
 
-ffplay.exe -i test.mkv -vf "setpts=PTS/8.0,scale=1280:720" -af "atempo=2.0,atempo=2.0,atempo=2.0"
+ffplay -i test.mkv -vf "setpts=PTS/8.0,scale=1280:720" -af "atempo=2.0,atempo=2.0,atempo=2.0"

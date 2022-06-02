@@ -5,6 +5,7 @@ git clone https://repo.or.cz/tinycc.git
 mkdir build_tcc binary_tcc
 cd build_tcc
 ../tinycc/configure --prefix=$(pwd)/../binary_tcc
+time make -j16
 time make -j16 install
 # For M1 arm64 `ln -s /opt/homebrew/include /usr/local/include` `ln -s /opt/homebrew/lib /usr/local/lib`
 export TEMP_INCLUDE_PATH=/Users/wurui/Documents/GitHub/binary_tcc/temp_include
