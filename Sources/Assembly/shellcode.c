@@ -20,7 +20,7 @@ int add(int a, int b)
 
 #ifdef __arm64__
 /*
-0000000000000000 <ltmp0>:
+0000000000000000 <_add2>:
        0: ff 43 00 d1   sub     sp, sp, #16
        4: e0 0f 00 b9   str     w0, [sp, #12]
        8: e1 0b 00 b9   str     w1, [sp, #8]
@@ -29,41 +29,29 @@ int add(int a, int b)
       14: 00 01 09 0b   add     w0, w8, w9
       18: ff 43 00 91   add     sp, sp, #16
       1c: c0 03 5f d6   ret
-
-0000000000000020 <_add2>:
-      20: ff 43 00 d1   sub     sp, sp, #16
-      24: e0 0f 00 b9   str     w0, [sp, #12]
-      28: e1 0b 00 b9   str     w1, [sp, #8]
-      2c: e8 0f 40 b9   ldr     w8, [sp, #12]
-      30: e9 0b 40 b9   ldr     w9, [sp, #8]
-      34: 00 01 09 0b   add     w0, w8, w9
-      38: ff 43 00 91   add     sp, sp, #16
-      3c: c0 03 5f d6   ret
 */
 asm(
     "_add2:\n"
     "sub sp, sp, #16\n"
-	"str w0, [sp, #12]\n"
-	"str w1, [sp, #8]\n"
+    "str w0, [sp, #12]\n"
+    "str w1, [sp, #8]\n"
     "ldr w8, [sp, #12]\n"
     "ldr w9, [sp, #8]\n"
     "add w0, w8, w9\n"
     "add sp, sp, #16\n"
-    "ret\n"
-    );
-#define test(name) \
-    int name(int, int);\
-    asm(\
-    "_" #name ":\n"\
-    "sub sp, sp, #16\n"\
-	"str w0, [sp, #12]\n"\
-	"str w1, [sp, #8]\n"\
-    "ldr w8, [sp, #12]\n"\
-    "ldr w9, [sp, #8]\n"\
-    "add w0, w8, w9\n"\
-    "add sp, sp, #16\n"\
-    "ret\n"\
-    );
+    "ret\n");
+#define test(name)            \
+    int name(int, int);       \
+    asm(                      \
+        "_" #name ":\n"       \
+        "sub sp, sp, #16\n"   \
+        "str w0, [sp, #12]\n" \
+        "str w1, [sp, #8]\n"  \
+        "ldr w8, [sp, #12]\n" \
+        "ldr w9, [sp, #8]\n"  \
+        "add w0, w8, w9\n"    \
+        "add sp, sp, #16\n"   \
+        "ret\n");
 #else
 
 #if INTEL_SYNTAX
@@ -76,8 +64,7 @@ asm(".intel_syntax noprefix\n"
     "mov eax, dword ptr [rbp - 4]\n"
     "add eax, dword ptr [rbp - 8]\n"
     "pop rbp\n"
-    "ret"
-);
+    "ret");
 #else
 asm(
     "_add2:\n"
@@ -88,8 +75,7 @@ asm(
     "movl    -4(%rbp), %eax\n"
     "addl    -8(%rbp), %eax\n"
     "popq    %rbp\n"
-    "retq"
-);
+    "retq");
 #endif
 #endif
 
@@ -102,18 +88,20 @@ test(add3);
 typedef int add4(int, int);
 
 // shelcode string to ptr [arm64 shellcode has null-byte can't use strlen !]
-void* getExecPointer(char* shellcode, size_t len) 
+void *execCode(char *shellcode, size_t len)
 {
 #ifdef _WIN32
-	void* address_shellcode = VirtualAlloc(0, len + 1, MEM_COMMIT, PAGE_EXECUTE_READWRITE);
-	memcpy(address_shellcode, shellcode, len);
+    void *address_shellcode = VirtualAlloc(0, len + 1, MEM_COMMIT, PAGE_EXECUTE_READWRITE);
+    memcpy(address_shellcode, shellcode, len);
     return address_shellcode;
 #else
     void *ptr = mmap(0, 0x1000, PROT_WRITE | PROT_READ, MAP_ANON | MAP_PRIVATE | MAP_JIT, -1, 0);
-    if (ptr == MAP_FAILED) perror("mmap");
+    if (ptr == MAP_FAILED)
+        perror("mmap");
     void *dst = memcpy(ptr, shellcode, len);
     int status = mprotect(ptr, 0x1000, PROT_EXEC | PROT_READ);
-    if (status == -1) perror("mprotect");
+    if (status == -1)
+        perror("mprotect");
     return ptr;
 #endif
 }
@@ -147,7 +135,7 @@ c: e8 0f 40 b9   ldr     w8, [sp, #12]
 18: ff 43 00 91   add     sp, sp, #16
 1c: c0 03 5f d6   ret
 */
- 
+
 char shellcode_string[] = "\xff\x43\x00\xd1\xe0\x0f\x00\xb9\xe1\x0b\x00\xb9\xe8\x0f\x40\xb9\xe9\x0b\x40\xb9\x00\x01\x09\x0b\xff\x43\x00\x91\xc0\x03\x5f\xd6";
 #else
 /*
@@ -164,7 +152,7 @@ char shellcode_string[] = "\xff\x43\x00\xd1\xe0\x0f\x00\xb9\xe1\x0b\x00\xb9\xe8\
 100003c2c: 0f 1f 40 00                  nopl    (%rax)
 */
 
-char shellcode_string[] = "\x55\x48\x89\xe5\x89\x7d\xfc\x89\x75\xf8\x8b\x45\xfc\x03\x45\xf8\x5d\xc3\x00";//\x2e\x66\x0f\x1f\x04\x00\x0f\x1f\x00";
+char shellcode_string[] = "\x55\x48\x89\xe5\x89\x7d\xfc\x89\x75\xf8\x8b\x45\xfc\x03\x45\xf8\x5d\xc3\x00"; //\x2e\x66\x0f\x1f\x04\x00\x0f\x1f\x00";
 #endif
 #endif
 
@@ -176,16 +164,16 @@ int main()
 
     int x = add2(1, 2);
     int y = add2(3, 4);
-    printf("%d %d\n",x, y);
+    printf("%d %d\n", x, y);
 
 #ifdef __arm64__
-    int z = add3(5,8);
+    int z = add3(5, 8);
     printf("%d\n", z);
 #endif
 #endif
 
-    void* ptr = getExecPointer(shellcode_string, sizeof(shellcode_string));
-    add4* f = (add4*)ptr;
-    int r = f(7,8);
+    void *ptr = execCode(shellcode_string, sizeof(shellcode_string));
+    add4 *f = (add4 *)ptr;
+    int r = f(7, 8);
     printf("%d\n", r);
 }
