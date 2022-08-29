@@ -14,3 +14,5 @@ clang -g main.c -o main `pkg-config --cflags --libs libprofiler`
 env CPUPROFILE=./test.prof ./main
 pprof ./main test.prof --text
 pprof ./main test.prof --pdf > test.pdf
+pprof ./main test.prof --svg > test.svg
+pprof ./main test.prof --web
