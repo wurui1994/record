@@ -16,3 +16,6 @@ pprof ./main test.prof --text
 pprof ./main test.prof --pdf > test.pdf
 pprof ./main test.prof --svg > test.svg
 pprof ./main test.prof --web
+# brew install qcachegrind
+pprof --callgrind ./main test.prof > test.callgrind
+qcachegrind test.callgrind
