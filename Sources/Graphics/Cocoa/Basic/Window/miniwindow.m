@@ -1,5 +1,5 @@
 #import <Cocoa/Cocoa.h>
-// clang -w -fobjc-arc -framework AppKit mini.m -o mini && ./mini
+// clang -w -fobjc-arc -framework AppKit miniwindow.m -o mini && ./mini
 @interface AppDelegate : NSObject <NSApplicationDelegate> {
 }
 @end
@@ -16,6 +16,8 @@
 int main(int argc, char const* argv[])
 {
     [NSApplication sharedApplication];
+    [NSApp setActivationPolicy:NSApplicationActivationPolicyRegular];
+
     NSWindow* window = [[NSWindow alloc] initWithContentRect:(NSMakeRect(0, 0, 640, 480)) styleMask:(NSWindowStyleMaskTitled)backing:(NSBackingStoreBuffered)defer:(true)];
     //
     NSView* view = [[NSView alloc] initWithFrame:NSMakeRect(100, 100, 100, 100)];
@@ -33,9 +35,11 @@ int main(int argc, char const* argv[])
 
     //
     // [window setTitlebarAppearsTransparent:YES];
-    [window orderFrontRegardless];
     [window center];
+    // [window orderFrontRegardless];
+    [window makeKeyAndOrderFront : nil];
     AppDelegate* appDelegate = [[AppDelegate alloc] init];
     [NSApp setDelegate:appDelegate];
+    [NSApp activateIgnoringOtherApps:YES];
     [NSApp run];
 }
