@@ -1,3 +1,6 @@
+// JAVA_OPTS=-XstartOnFirstThread groovy groovy_lwjgl.groovy
+// ref:https://blog.csdn.net/chiduokui9989/article/details/100852400
+
 @Grab(group="org.lwjgl", module="lwjgl", version="latest.release")
 @Grab(group="org.lwjgl", module="lwjgl-opengl", version="latest.release")
 @Grab(group="org.lwjgl", module="lwjgl-glfw", version="latest.release")
@@ -10,6 +13,10 @@
 @Grab(group="org.lwjgl", module="lwjgl", version="latest.release",classifier="natives-linux")
 @Grab(group="org.lwjgl", module="lwjgl-opengl", version="latest.release",classifier="natives-linux")
 @Grab(group="org.lwjgl", module="lwjgl-glfw", version="latest.release",classifier="natives-linux")   
+//macOS  
+@Grab(group="org.lwjgl", module="lwjgl", version="latest.release",classifier="natives-macos-arm64")
+@Grab(group="org.lwjgl", module="lwjgl-opengl", version="latest.release",classifier="natives-macos-arm64")
+@Grab(group="org.lwjgl", module="lwjgl-glfw", version="latest.release",classifier="natives-macos-arm64")   
 
 import org.lwjgl.*;
 import org.lwjgl.glfw.*;
