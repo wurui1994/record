@@ -45,10 +45,10 @@ var z = "Foobar"
 proc ffi(foo: ptr array[6, char]) = echo repr(foo)
 ffi(cast[ptr array[6, char]](addr z[0]))
 
-import strutils, random
+import strutils, std/random
 
 randomize()
-let answer = random(10) + 1
+let answer = rand(10) + 1
 # while true:
 echo "I have a number from 1 to 10, what is it? "
 let guess = parseInt("12")
