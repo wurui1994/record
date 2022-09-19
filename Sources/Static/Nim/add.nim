@@ -9,3 +9,4 @@ proc add_generic[T](a: T, b: T): T = a + b
 
 echo add(2,3), add2(3,4), add_generic("Hello,", "World!")
 echo 2.add(4), "Hello".add_generic("World!")
+echo 2.add 8, 3 .add 12, "Hello" .add_generic "World!"
