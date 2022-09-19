@@ -7,3 +7,4 @@
 * [Inigo Quilez的网站](https://www.iquilezles.org/)
 * [CMake Cookbook](https://github.com/xiaoweiChen/CMake-Cookbook)
 * [Apple OSS Distributions ](https://github.com/apple-oss-distributions)
+* [Actor-framework Scheduler](https://actor-framework.readthedocs.io/en/stable/Scheduler.html)
