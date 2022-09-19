@@ -4,7 +4,7 @@ export PATH=$PATH:/Applications/Xcode.app/Contents/Applications/Instruments.app/
 instruments -t "Time Profiler" ./main
 # dtrace -l -n profile-*
 # brew install gprof2dot
-dtrace -x ustackframes=100 -n 'profile-997 /execname == "test"/ { @[ustack()] = count(); }' -o user_stacks.txt -c './test'
+dtrace -x ustackframes=100 -n 'profile-997 /execname == "main"/ { @[ustack()] = count(); }' -o user_stacks.txt -c './main'
 gprof2dot -f dtrace user_stacks.txt | dot -Tpdf -o output.pdf
 # brew install flamegraph
 stackcollapse.pl user_stacks.txt | flamegraph.pl > pretty-graph.svg
