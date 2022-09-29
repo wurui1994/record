@@ -12,23 +12,46 @@
 #include <Windows.h>
 #endif
 
+void test_one()
+{
+	dispatch_queue_t dq = dispatch_queue_create("com.test", DISPATCH_QUEUE_SERIAL);
+	printf("%p\n", dq);
+	dispatch_async(dq, ^{
+#ifdef _WIN32
+		Sleep(1000);
+#else
+		usleep(1000 * 1000); // 线程休眠一秒
+#endif
+	  puts("hello");
+	  exit(0);
+	});
+	dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(500 * NSEC_PER_MSEC)), dispatch_get_main_queue(), ^{
+	  // dispatch_resume(dq);
+	  puts("world");
+	});
+	dispatch_main();
+}
+
+void test_serial()
+{
+	dispatch_queue_t dq = dispatch_queue_create(0, DISPATCH_QUEUE_SERIAL);
+	dispatch_async(dq, ^{while (1);});
+	dispatch_async(dq, ^{while (1);});
+	dispatch_main();
+}
+
+void test_concurrent()
+{
+	dispatch_queue_t dq = dispatch_queue_create(0, DISPATCH_QUEUE_CONCURRENT);
+	dispatch_async(dq, ^{while (1);});
+	dispatch_async(dq, ^{while (1);});
+	dispatch_main();
+}
+
 int main(int argc, char const *argv[])
 {
-    dispatch_queue_t dq = dispatch_queue_create("com.test", DISPATCH_QUEUE_SERIAL);
-    printf("%p\n", dq);
-    dispatch_async(dq, ^{
-    #ifdef _WIN32
-      Sleep(1000);
-    #else
-      usleep(1000 * 1000); // 线程休眠一秒
-    #endif
-      puts("hello");
-      exit(0);
-    });
-    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(500 * NSEC_PER_MSEC)), dispatch_get_main_queue(), ^{
-      // dispatch_resume(dq);
-      puts("world");
-    });
-    dispatch_main();
-    return 0;
+	// test_one();
+	// test_serial();
+	test_concurrent();
+	return 0;
 }
