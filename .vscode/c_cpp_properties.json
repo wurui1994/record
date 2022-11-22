@@ -4,10 +4,11 @@
             "name": "Mac",
             "includePath": [
                 "/usr/local/include",
+                "${HOMEBREW_PREFIX}/include",
                 "${workspaceRoot}"
             ],
             "defines": [],
-            "intelliSenseMode": "clang-x64",
+            "intelliSenseMode": "${default}",
             "browse": {
                 "path": [
                     "/usr/local/include",
@@ -29,7 +30,7 @@
                 "${workspaceRoot}"
             ],
             "defines": [],
-            "intelliSenseMode": "clang-x64",
+            "intelliSenseMode": "${default}",
             "browse": {
                 "path": [
                     "/usr/include",
@@ -43,26 +44,15 @@
         {
             "name": "Win32",
             "includePath": [
-                "C:/Program Files (x86)/Microsoft Visual Studio/2017/Enterprise/VC/Tools/MSVC/14.11.25503/include/*",
-                "C:/Program Files (x86)/Windows Kits/10/Include/10.0.16299.0/um",
-                "C:/Program Files (x86)/Windows Kits/10/Include/10.0.16299.0/ucrt",
-                "C:/Program Files (x86)/Windows Kits/10/Include/10.0.16299.0/shared",
-                "C:/Program Files (x86)/Windows Kits/10/Include/10.0.16299.0/winrt",
                 "${workspaceRoot}"
             ],
             "defines": [
                 "_DEBUG",
                 "UNICODE"
             ],
-            "intelliSenseMode": "msvc-x64",
+            "intelliSenseMode": "${default}",
             "browse": {
                 "path": [
-                    "C:/Program Files (x86)/Microsoft Visual Studio/2017/Enterprise/VC/Tools/MSVC/14.11.25503/include/*",
-                    "C:/Program Files (x86)/Windows Kits/10/Include/10.0.16299.0/um",
-                    "C:/Program Files (x86)/Windows Kits/10/Include/10.0.16299.0/ucrt",
-                    "C:/Program Files (x86)/Windows Kits/10/Include/10.0.16299.0/shared",
-                    "C:/Program Files (x86)/Windows Kits/10/Include/10.0.16299.0/winrt",
-                    "D:/Software/GitHub/vcpkg/installed/x86-windows/include",
                     "${workspaceRoot}"
                 ],
                 "limitSymbolsToIncludedHeaders": true,
