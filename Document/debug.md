@@ -23,3 +23,15 @@ sudo $HOME/.vscode/extensions/ms-vscode.cpptools-*/debugAdapters/lldb-mi/bin/lld
 #!/bin/sh
 sudo /usr/bin/gdb $@
 ```
+
+### codelldb
+```sh
+cd $HOME/.vscode/extensions/vadimcn.vscode-lldb-*/adapter/
+# mv codelldb_orig codelldb 
+mv codelldb codelldb_orig
+cat > codelldb <<EOF
+#!/bin/sh
+sudo \$HOME/.vscode/extensions/vadimcn.vscode-lldb-*/adapter/codelldb_orig \$@
+EOF
+chmod +x codelldb
+```
