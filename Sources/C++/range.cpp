@@ -26,11 +26,24 @@ private:
     size_t m; // max (iter)
 };
 
-auto range(auto end) -> Range<decltype(end)>
+auto range(auto end)
 {
     return {{}, end, 1};
 }
 
+#if 0 // old style
+auto range(auto begin, auto end) ->
+std::enable_if_t<std::is_same_v<char, decltype(begin)>, Range<char>>
+{
+    return Range<char> {begin, end, 1};
+}
+
+auto range(auto begin, auto end) ->
+std::enable_if_t<!std::is_same_v<char, decltype(begin)>, Range<decltype(begin + end)>>
+{
+    return Range<decltype(begin + end)> (begin, end, 1);
+}
+#else
 auto range(auto begin, auto end) 
 {
     if constexpr (std::is_same_v<char, decltype(begin)>
@@ -39,6 +52,7 @@ auto range(auto begin, auto end)
     else
         return Range<decltype(begin + end)> (begin, end, 1);
 }
+#endif
 
 // plus not for char
 // Range<char> range(char begin, char end)
@@ -46,7 +60,7 @@ auto range(auto begin, auto end)
 //     return {begin, end, 1};
 // }
 
-auto range(auto begin, auto end, auto step) -> Range<decltype(begin + step)>
+auto range(auto begin, auto end, auto step)
 {
     return Range<decltype(begin + step)>(begin, end, step);
 }
