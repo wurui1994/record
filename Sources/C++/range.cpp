@@ -28,7 +28,7 @@ private:
 
 auto range(auto end)
 {
-    return {{}, end, 1};
+    return Range{{}, end, 1};
 }
 
 #if 0 // old style
