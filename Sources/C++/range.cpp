@@ -32,6 +32,7 @@ auto range(auto end)
 }
 
 #if 0 // old style
+#if 0 // std::enable_if_t
 auto range(auto begin, auto end) ->
 std::enable_if_t<std::is_same_v<char, decltype(begin)>, Range<char>>
 {
@@ -43,6 +44,17 @@ std::enable_if_t<!std::is_same_v<char, decltype(begin)>, Range<decltype(begin + 
 {
     return Range<decltype(begin + end)> (begin, end, 1);
 }
+#else // std::conditional_t
+template <typename U, typename V>
+using T = std::conditional_t<std::is_same_v<char, U>, 
+        Range<char>, Range<decltype(U() + V())>>;
+// c++ 11
+template <typename B, typename E>
+T<B,E> range(B begin, E end)
+{
+    return T<B,E> (begin, end, 1);
+}
+#endif
 #else
 auto range(auto begin, auto end) 
 {
