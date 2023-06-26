@@ -17,7 +17,8 @@ export FRAMEWORK_PATH=$(xcrun --show-sdk-path)/System/Library/Frameworks
 # support opengl 
 mkdir -p ${TEMP_INCLUDE_PATH}
 ln -s ${FRAMEWORK_PATH}/OpenGL.framework/Headers ${TEMP_INCLUDE_PATH}/OpenGL
-ln -s ${FRAMEWORK_PATH}/GLUT.framework/Headers ${TEMP_INCLUDE_PATH}/GL
+# ln -s ${FRAMEWORK_PATH}/GLUT.framework/Headers ${TEMP_INCLUDE_PATH}/GL
+sudo ln -s $(xcrun --show-sdk-path)/System/Library/Frameworks/GLUT.framework/Headers $(xcrun --show-sdk-path)/usr/include/GL
 ## support opengl native
 tcc ${FRAMEWORK_PATH}/GLUT.framework/GLUT.tbd -lgsl -run gsl_opengl.c 
 ## support opengl with xquartz

@@ -3,7 +3,8 @@
 #include <time.h>
 #include <stdio.h>
 #include <stdlib.h>
-#include <openblas/cblas.h>
+// #include <openblas/cblas.h>
+#include <cblas.h>
 
 #pragma comment(lib,"openblas.lib")
 int main()
