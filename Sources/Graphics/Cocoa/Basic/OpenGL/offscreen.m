@@ -52,7 +52,7 @@ int main(int argc, const char* argv[])
     glVertex2i(50, 100);
     glEnd();
     // -------
-    errorCode = CGLFlushDrawable(context);
+    // errorCode = CGLFlushDrawable(context);
 
     char data[100 * 100 * 3];
     glReadPixels(0, 0, 100, 100, GL_BGR, GL_UNSIGNED_BYTE, data);
